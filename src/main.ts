@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 
 import router from './router'
+import './styles/font.css'
 import './styles/style.css'
 import App from './App.vue'
 import VueTheMask from 'vue-the-mask'

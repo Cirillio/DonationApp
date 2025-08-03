@@ -1,7 +1,7 @@
 <template>
   <Button
     @click="toggleMode"
-    variant="outline"
+    variant="ring"
     class="relative p-0 aspect-square grid place-items-center overflow-hidden"
   >
     <Transition name="rotate-fade" mode="out-in">

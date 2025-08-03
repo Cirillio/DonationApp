@@ -12,7 +12,6 @@ const blankSchema = z.object({
 
   blankName: z
     .string()
-    .trim()
     .refine((value) => value.trim().length === 0 || value.trim().length >= 3, 'Хотя бы 3 символа.')
     .max(50, 'Имя должно быть не длиннее 50 символов.')
     .regex(/^[\p{L}\s-]*$/u, 'Имя может содержать только буквы, пробелы и тире.')

@@ -48,10 +48,10 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 :root {
-  --background: oklch(98.7% 0.003 250); /* очень светлый чистый фон с голубоватым нюансом */
+  --background: oklch(95% 0 165.414); /* очень светлый чистый фон с голубоватым нюансом */
   --foreground: oklch(15% 0.005 260); /* почти чёрный, очень лёгкий холодный оттенок */
 
-  --card: oklch(100% 0 0); /* чисто белый */
+  --card: oklch(98.309% 0.00011 271.152); /* чисто белый */
   --card-foreground: oklch(17% 0.004 260);
 
   --popover: oklch(96.3% 0.006 245); /* светло-голубой поповер */
@@ -70,10 +70,10 @@
   --accent: oklch(88% 0.034 245); /* мягкая бирюза */
   --accent-foreground: oklch(19% 0.02 240);
 
-  --destructive: oklch(68% 0.17 27); /* ярко-красный (ошибка) */
-  --destructive-foreground: oklch(43.725% 0.16818 31.451);
+  --destructive: oklch(61.277% 0.24634 28.771); /* ярко-красный (ошибка) */
+  --destructive-foreground: oklch(42.884% 0.17599 29.223);
 
-  --border: oklch(88% 0.003 240 / 0.5);
+  --border: oklch(69.275% 0.00008 271.152 / 0.5);
   --input: oklch(97% 0.003 250 / 0.65);
   --ring: oklch(79% 0.21 151);
 
@@ -103,8 +103,8 @@
   --accent: oklch(88% 0.02 270); /* ярко-белый с сиреневым тоном */
   --accent-foreground: oklch(17% 0.012 270);
 
-  --destructive: oklch(0.3959 0.1331 25.72);
-  --destructive-foreground: oklch(0.6368 0.2078 25.33);
+  --destructive: oklch(60.494% 0.22306 21.138); /* ярко-красный (ошибка) */
+  --destructive-foreground: oklch(42.884% 0.17599 29.223);
 
   --border: oklch(0.3703 0.0119 285.81); /* явный бордер */
   --input: oklch(14% 0.008 260 / 0.7); /* чуть прозрачнее фон */
@@ -114,6 +114,10 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+
+  html {
+    font-family: 'Geist';
   }
 
   body {
@@ -136,11 +140,11 @@
   }
 
   [data-slot='form-message'] {
-    @apply text-xs md:text-sm;
+    @apply text-xs md:text-base text-destructive;
   }
 
   [data-slot='form-description'] {
-    @apply text-xs;
+    @apply text-xs md:text-base;
   }
 }
 
@@ -155,7 +159,9 @@
 }
 
 .form-bg {
-  background-image: url('/img/form-bump.jpg');
+  /* background-image: url('/img/form-bump.jpg'); */
+  background-image: url('/img/bg-main1.jpg');
+
   background-repeat: no-repeat;
   background-size: cover;
 }

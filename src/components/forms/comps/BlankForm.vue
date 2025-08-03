@@ -7,6 +7,13 @@ import { useForm } from 'vee-validate'
 import { useDonationStore } from '@/stores/donation.store'
 import { FormField } from '@/components/ui/form'
 
+import { configure } from 'vee-validate'
+
+configure({
+  validateOnBlur: true,
+  validateOnModelUpdate: false,
+})
+
 const donationStore = useDonationStore()
 
 const { phoneMask, phoneMaskSelected } = useFormConfig({
@@ -49,23 +56,17 @@ watch(
   <form @submit.prevent="() => {}">
     <CardTitledContent icon="f7--person-crop-rectangle" title="Анкета">
       <template #desc>
-        <span class="text-center max-[400px]:text-xs text-sm text-muted-foreground"
-          >Пожалуйста, укажите имя,
-          <div class="mt-1 dark:m-0 flex gap-2 dark:gap-1 items-center">
-            <span
-              class="dark:text-primary dark:bg-transparent dark:p-0 bg-primary/50 text-primary-foreground px-1.5 py-0.5 rounded-md"
-              >номер телефона</span
-            >
-            и
-            <span
-              class="dark:text-primary dark:bg-transparent dark:p-0 bg-primary/50 text-primary-foreground px-1.5 py-0.5 rounded-md"
-              >дату рождения</span
-            >
+        <span
+          class="max-md:text-center md:flex items-center gap-1 md:text-base text-sm text-muted-foreground"
+          >Пожалуйста, укажите <PrimaryBadge> номер телефона </PrimaryBadge>
+          <div class="max-md:mt-1 dark:m-0 flex justify-center gap-2 dark:gap-1 items-center">
+            имя и
+            <PrimaryBadge> дату рождения</PrimaryBadge>
           </div>
         </span>
       </template>
 
-      <div class="flex flex-col w-full gap-4">
+      <div class="flex flex-col w-full gap-4 md:gap-6">
         <!-- Phone -->
         <FormField
           v-slot="{ componentField, resetField }"
@@ -74,18 +75,26 @@ watch(
         >
           <FormItem class="gap-1">
             <FormControl>
-              <TypedInput
+              <IconInput
                 v-mask="phoneMask"
                 v-bind="componentField"
-                icon="f7--phone"
+                :icon="true"
                 :placeholder="phoneMaskSelected.code"
                 name="blankPhone"
                 type="tel"
               >
+                <template #icon>
+                  <span class="iconify f7--phone md:size-6 size-5 dark:text-primary"></span>
+                </template>
+
                 <template #actionButton>
                   <DropdownMenu>
                     <DropdownMenuTrigger as-child>
-                      <Button :variant="'outline'" class="px-3 gap-1 md:gap-2 w-fit">
+                      <Button
+                        size="lg"
+                        :variant="'outline'"
+                        class="px-3 gap-1 md:gap-2 md:px-4 w-fit"
+                      >
                         <span v-if="phoneMaskSelected" class="text-sm md:text-base">{{
                           phoneMaskSelected.icon
                         }}</span>
@@ -96,7 +105,7 @@ watch(
 
                     <DropdownMenuContent
                       :align="'end'"
-                      class="min-w-[var(--radix-dropdown-menu-trigger-width)] gap-2 duration-25 flex flex-col"
+                      class="min-w-[var(--radix-dropdown-menu-trigger-width)] gap-1 duration-25 flex flex-col"
                     >
                       <DropdownMenuItem
                         v-for="spec in phoneSpecs"
@@ -108,20 +117,20 @@ watch(
                             resetField({ value: spec.code })
                           }
                         "
-                        class="flex gap-2 md:py-1 cursor-pointer"
+                        class="flex gap-4 max-md:p-2.5 max-md:px-3.5 py-1.5 px-4 !text-base md:!text-lg cursor-pointer"
                         :class="{
-                          '!bg-primary !text-primary-foreground shadow-sm':
+                          '!bg-background shadow-sm dark:!bg-card':
                             phoneMaskSelected.code === spec.code,
                         }"
                       >
-                        <span class="text-sm md:text-base">{{ spec.icon }}</span>
+                        <span class="">{{ spec.icon }}</span>
                         <span>{{ spec.name }}</span>
                         <span class="ml-auto">{{ spec.code }}</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </template>
-              </TypedInput>
+              </IconInput>
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -136,13 +145,18 @@ watch(
           >
             <FormItem class="gap-1 flex-3">
               <FormControl>
-                <TypedInput
+                <IconInput
                   v-bind="componentField"
-                  icon="f7--person"
-                  placeholder=""
+                  :icon="true"
+                  placeholder="Имя"
                   name="blankName"
                   type="text"
-                />
+                >
+                  <template #icon>
+                    <span
+                      class="iconify f7--person md:size-6 size-5 text-muted-foreground"
+                    ></span> </template
+                ></IconInput>
               </FormControl>
               <FormMessage />
               <FormDescription>Оставьте пустым для анонимности</FormDescription>
@@ -157,25 +171,26 @@ watch(
           >
             <FormItem class="gap-1 flex-2">
               <FormControl>
-                <TypedInput
+                <IconInput
                   v-bind="componentField"
-                  icon="f7--calendar"
+                  :icon="true"
                   placeholder="дд.мм.гггг"
                   name="blankBirth"
-                  type="text"
+                  type="tel"
                   v-mask="'##.##.####'"
-                />
+                >
+                  <template #icon>
+                    <span
+                      class="iconify f7--calendar md:size-6 size-5 dark:text-primary"
+                    ></span> </template
+                ></IconInput>
               </FormControl>
               <FormMessage />
             </FormItem>
           </FormField>
         </div>
 
-        <div class="flex gap-2 items-center">
-          <Separator class="shrink mx-2" />
-          <span class="text-xs md:text-sm text-muted-foreground">Дополнительно</span>
-          <Separator class="shrink mx-2" />
-        </div>
+        <TextSeparator class="md:*:text-base"> Дополнительно </TextSeparator>
 
         <!-- Group -->
         <FormField
@@ -191,6 +206,7 @@ watch(
                   v-bind="componentField"
                   label="От лица группы"
                   icon="f7--person-2"
+                  :size="'lg'"
                 />
               </div>
             </FormControl>

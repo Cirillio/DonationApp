@@ -33,16 +33,15 @@ const check = computed({
 <template>
   <Button
     @click="check = !check"
-    class="group h-10 gap-2 p-3 pl-2 duration-150"
+    class="group gap-2 p-3 pl-2.5 duration-150"
     :variant="check ? 'ring' : 'outline'"
     type="button"
-    size="sm"
   >
     <span v-if="icon" class="iconify text-muted-foreground size-5 md:size-6" :class="[icon]"></span>
 
     <div v-if="label || desc" class="flex flex-col text-start flex-1">
-      <span class="text-sm md:text-base">{{ label }}</span>
-      <span class="text-xs md:text-sm text-muted-foreground">{{ desc }}</span>
+      <span class="text-base md:text-lg">{{ label }}</span>
+      <span class="text-sm text-muted-foreground">{{ desc }}</span>
     </div>
 
     <slot name="content"></slot>

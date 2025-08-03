@@ -40,8 +40,10 @@ declare module 'vue' {
     FormItem: typeof import('./src/components/ui/form/FormItem.vue')['default']
     FormLabel: typeof import('./src/components/ui/form/FormLabel.vue')['default']
     FormMessage: typeof import('./src/components/ui/form/FormMessage.vue')['default']
+    IconInput: typeof import('./src/components/ui/input/IconInput.vue')['default']
     Input: typeof import('./src/components/ui/input/Input.vue')['default']
     Label: typeof import('./src/components/ui/label/Label.vue')['default']
+    PrimaryBadge: typeof import('./src/components/ui/badge/PrimaryBadge.vue')['default']
     RadioButton: typeof import('./src/components/ui/radiolist/RadioButton.vue')['default']
     RadioList: typeof import('./src/components/ui/radiolist/RadioList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -79,6 +81,7 @@ declare module 'vue' {
     TabsList: typeof import('./src/components/ui/tabs/TabsList.vue')['default']
     TabsTrigger: typeof import('./src/components/ui/tabs/TabsTrigger.vue')['default']
     Textarea: typeof import('./src/components/ui/textarea/Textarea.vue')['default']
+    TextSeparator: typeof import('./src/components/ui/separator/TextSeparator.vue')['default']
     ThemeToggler: typeof import('./src/components/ui/theme/ThemeToggler.vue')['default']
     TypedInput: typeof import('./src/components/ui/input/TypedInput.vue')['default']
   }

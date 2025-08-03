@@ -65,12 +65,11 @@ watch(
       desc="Минимальная сумма пожертвования 100 рублей"
     >
       <template #desc>
-        <span class="max-[400px]:text-xs text-sm text-muted-foreground"
+        <span class="max-[400px]:text-xs text-sm md:text-base text-muted-foreground"
           >Начните помогать от
-          <span
-            class="dark:text-primary dark:bg-transparent dark:p-0 bg-primary/50 text-primary-foreground px-1.5 py-0.5 rounded-md"
-            >100</span
-          >
+
+          <PrimaryBadge> {{ paymentAmounts[0].value }}</PrimaryBadge>
+
           рублей
         </span>
       </template>
@@ -78,21 +77,26 @@ watch(
         <FormField v-slot="{ resetField, meta, handleBlur, validate }" name="payAmount">
           <FormItem class="gap-0">
             <FormControl>
-              <TypedInput
+              <IconInput
                 @blur="(e: Event) => (meta.dirty ? handleBlur(e) : undefined)"
                 ref="currencyRef"
                 :value="currencyFormatted"
-                icon="f7--money-rubl"
+                :icon="true"
                 placeholder="100,00"
                 name="payAmount"
                 type="text"
-              />
+              >
+                <template #icon>
+                  <span
+                    class="iconify f7--money-rubl size-5 md:size-6 dark:text-primary"
+                  ></span> </template
+              ></IconInput>
               <FormMessage />
 
               <RadioList orientation="wrap" class="mt-1" ref="amountsRef">
                 <template #item="{ select, selected }">
                   <RadioButton
-                    class="text-xs !max-h-8 px-2 md:text-sm"
+                    class="text-xs !max-h-8 px-2 md:text-base sm:text-sm"
                     v-for="_amount in paymentAmounts"
                     :key="_amount.label"
                     :onSelect="() => {
@@ -111,26 +115,24 @@ watch(
           </FormItem>
         </FormField>
 
-        <div class="flex gap-2 items-center">
-          <Separator class="shrink mx-2" />
-          <span class="text-xs text-nowrap md:text-sm text-muted-foreground">Cпособ оплаты</span>
-          <Separator class="shrink mx-2" />
-        </div>
+        <TextSeparator>
+          <PrimaryBadge> Cпособ оплаты </PrimaryBadge>
+        </TextSeparator>
 
         <FormField v-slot="{ setValue, value }" name="payPaymentType">
           <FormItem class="gap-1">
             <FormControl>
-              <div class="flex md:flex-col gap-2">
+              <div class="flex flex-col gap-2">
                 <CheckBlock
                   v-for="p in paymentTypes"
                   :key="p.type"
-                  class="w-full flex-1 !py-4 px-2 md:px-4 md:!h-12"
+                  class="w-full flex-1"
                   @onCheck="(check: boolean)=> check ? setValue(p.type) : setValue(undefined)"
                   :checked="p.type === value"
                 >
                   <template #content>
-                    <div class="flex text-xs md:text-base gap-1 md:gap-2 items-center">
-                      <img :src="p.icon" :alt="p.type" class="md:w-6 md:h-6 w-5 h-5" />
+                    <div class="flex gap-2 items-center">
+                      <img :src="p.icon" :alt="p.type" class="w-6 h-6" />
                       {{ p.name }}
                     </div>
                   </template>
