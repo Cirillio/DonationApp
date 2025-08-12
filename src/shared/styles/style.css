@@ -1,0 +1,167 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@iconify/tailwind4" {
+  prefixes: f7;
+}
+
+@custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-ghost: var(--ghost);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+:root {
+  --background: oklch(95% 0 165.414); /* очень светлый чистый фон с голубоватым нюансом */
+  --foreground: oklch(15% 0.005 260); /* почти чёрный, очень лёгкий холодный оттенок */
+
+  --card: oklch(98.309% 0.00011 271.152); /* чисто белый */
+  --card-foreground: oklch(17% 0.004 260);
+
+  --popover: oklch(96.3% 0.006 245); /* светло-голубой поповер */
+  --popover-foreground: oklch(18% 0.005 260);
+
+  --primary: oklch(82% 0.208 151); /* Vue-зелёный ярче обычного */
+  --primary-foreground: oklch(14% 0.03 151); /* очень тёмный для контраста */
+
+  --secondary: oklch(92% 0.008 255); /* светлый голубой */
+  --secondary-foreground: oklch(24% 0.007 260);
+
+  --muted: oklch(94% 0.003 240); /* мягкий холодный серый */
+  --muted-foreground: oklch(37% 0.004 250 / 0.7);
+
+  --ghost: oklch(91% 0.012 150 / 0.09); /* нежно-зелёный прозрачный */
+  --accent: oklch(88% 0.034 245); /* мягкая бирюза */
+  --accent-foreground: oklch(19% 0.02 240);
+
+  --destructive: oklch(61.277% 0.24634 28.771); /* ярко-красный (ошибка) */
+  --destructive-foreground: oklch(42.884% 0.17599 29.223);
+
+  --border: oklch(69.275% 0.00008 271.152 / 0.5);
+  --input: oklch(97% 0.003 250 / 0.65);
+  --ring: oklch(79% 0.21 151);
+
+  --radius: 1rem;
+}
+
+.dark {
+  --background: oklch(0.2103 0.0059 285.89);
+  --foreground: oklch(98% 0.006 260); /* чистый белый */
+
+  --card: oklch(0.2739 0.0055 286.03); /* чуть светлее фон, для карточек */
+  --card-foreground: oklch(0.7118 0.0129 286.07);
+
+  --popover: oklch(0.2739 0.0055 286.03); /* отдельные блоки, тоже светлее основного */
+  --popover-foreground: oklch(95% 0.008 260);
+
+  --primary: oklch(85.178% 0.2145 153.686); /* vue green — на таком фоне смотрится супер ярко */
+  --primary-foreground: oklch(0.2103 0.0059 285.89);
+
+  --secondary: oklch(0.312 0.0124 285.66); /* серый для второстепенных блоков */
+  --secondary-foreground: oklch(96% 0.008 260);
+
+  --muted: oklch(28% 0.006 260);
+  --muted-foreground: oklch(75% 0.008 260 / 0.7);
+
+  --ghost: oklch(32% 0.012 170 / 0.15); /* прозрачный мятный */
+  --accent: oklch(88% 0.02 270); /* ярко-белый с сиреневым тоном */
+  --accent-foreground: oklch(17% 0.012 270);
+
+  --destructive: oklch(60.494% 0.22306 21.138); /* ярко-красный (ошибка) */
+  --destructive-foreground: oklch(42.884% 0.17599 29.223);
+
+  --border: oklch(0.3703 0.0119 285.81); /* явный бордер */
+  --input: oklch(14% 0.008 260 / 0.7); /* чуть прозрачнее фон */
+  --ring: oklch(78% 0.21 152);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    font-family: 'Geist';
+  }
+
+  body {
+    @apply bg-background;
+  }
+}
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .ringed {
+    @apply border border-ring bg-popover/30 ring-ring/50 ring-[3px] backdrop-blur-lg shadow-xs;
+  }
+
+  [data-slot='form-message'] {
+    @apply text-xs md:text-base text-destructive;
+  }
+
+  [data-slot='form-description'] {
+    @apply text-xs md:text-base;
+  }
+}
+
+/* body {
+  background-image: url('/img/bg-main1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+
+.x-pad {
+  @apply xl:px-40 lg:px-16 md:px-8 sm:px-4 px-2;
+}
+
+.form-bg {
+  /* background-image: url('/img/form-bump.jpg'); */
+  background-image: url('/img/bg-main1.jpg');
+
+  background-repeat: no-repeat;
+  background-size: cover;
+}
