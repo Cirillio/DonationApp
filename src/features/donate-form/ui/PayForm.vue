@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { FormField } from '@/shared/ui/form'
-import { onMounted, ref, watch } from 'vue'
+import { watch } from 'vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useDonationStore } from '@/features/donate-form/model/donation-store'
@@ -29,20 +29,18 @@ const donorPay = useForm({
   name: 'donationPayment',
 })
 
-const amountsRef = ref()
+const selectAmount = (selectedAmount: number) => {
 
-onMounted(() => {
-  if (donorPay.values.amount) currencySet(donorPay.values.amount)
-})
+  if (selectedAmount === currencyNumber.value) {
+    currencySet(null)
+    donorPay.setFieldValue('amount', undefined, true)
+    donorPay.setFieldTouched('amount', false)
+  }
+  else {
+    currencySet(selectedAmount)
+    donorPay.setFieldValue('amount', selectedAmount, true)
+  }
 
-watch(currencyNumber, (newAmount) => {
-  donorPay.setFieldValue('amount', newAmount, false)
-  if (amountsRef.value && amountsRef.value.selected !== newAmount)
-    amountsRef.value.select(undefined)
-})
-
-const selectAmount = (selectedAmount: number | null) => {
-  currencySet(selectedAmount)
 }
 
 watch(
@@ -65,54 +63,37 @@ watch(
 
 <template>
   <div class="flex flex-col gap-6">
-    <FormField v-slot="{ meta, handleBlur }" name="amount">
-      <FormItem v-auto-animate class="gap-1">
-        <FormLabel>Сумма</FormLabel>
+    <FormField v-slot="{ setValue, handleBlur, handleInput }" name="amount" :validate-on-blur="!donorPay.isFieldDirty" "
+    >
+      <FormItem class=" gap-1">
+      <FormLabel class="label-required gap-0.5">Сумма</FormLabel>
 
-        <FormControl>
-          <Input
-            v-bind="meta"
-            @blur="handleBlur"
-            ref="currencyRef"
-            :value="currencyFormatted"
-            :placeholder="PAYMENT_AMOUNTS_MIN.label"
-            name="amount"
-            type="text"
-          >
-          </Input>
+      <FormControl>
+        <Input ref="currencyRef" v-model="currencyFormatted" :placeholder="PAYMENT_AMOUNTS_MIN.label" name="amount"
+           @blur="handleBlur" @input="handleInput" @change="() => setValue(currencyNumber)" />
 
-          <FormMessage />
-          <RadioList orientation="wrap" class="mt-1" ref="amountsRef">
-            <template #item="{ select, selected }">
-              <RadioButton
-                class="text-xs !max-h-8 px-2 md:text-base sm:text-sm"
-                v-for="amount in PAYMENT_AMOUNTS"
-                :key="amount.label"
-                :onSelect="() => selectAmount(select(amount.value) as number | null)"
-                :selected="amount.value === selected"
-                size="sm"
-              >
-                {{ amount.label }}
-              </RadioButton>
-            </template>
-          </RadioList>
-        </FormControl>
+        <FormMessage />
+
+        <div class="flex flex-wrap gap-1 w-full">
+          <Button v-for="amount in PAYMENT_AMOUNTS" :key="amount.label"
+            :variant="currencyNumber === amount.value ? 'secondary' : 'ghost'" size="sm"
+            @click="selectAmount(amount.value)">
+            {{ amount.label }}
+          </Button>
+        </div>
+      </FormControl>
       </FormItem>
     </FormField>
 
-    <FormField v-slot="{ value }" name="type">
-      <FormItem v-auto-animate class="gap-1">
-        <FormLabel>Способ оплаты</FormLabel>
+    <FormField v-slot="{ value, setValue }" name="type">
+      <FormItem class="gap-1">
+        <FormLabel class="label-required gap-0.5">Способ оплаты</FormLabel>
 
         <FormControl>
           <div class="flex flex-col gap-2">
-            <CheckBlock
-              v-for="p in PAYMENT_TYPES"
-              :key="p.type"
-              class="w-full flex-1"
-              @onCheck="(check: boolean)=> check ? donorPay.setFieldValue('type', p.type) : donorPay.setFieldValue('type', undefined)"
-              :checked="p.type === value"
-            >
+            <CheckBlock v-for="p in PAYMENT_TYPES" :key="p.type" class="w-full flex-1"
+              @onCheck="(check: boolean) => check ? setValue(p.type) : setValue(undefined)"
+              :checked="p.type === value">
               <template #content>
                 <div class="flex gap-2 items-center">
                   <img :src="p.icon" :alt="p.type" class="w-6 h-6" />
@@ -129,11 +110,8 @@ watch(
     <FormField v-slot="{ componentField }" :validate-on-blur="!donorPay.isFieldDirty" name="note">
       <FormItem class="gap-1">
         <FormControl>
-          <Textarea
-            :placeholder="placeholders.get(donationStore.blankForm.isGroup || false)"
-            v-bind="componentField"
-            class="resize-none min-h-24 text-sm"
-          />
+          <Textarea :placeholder="placeholders.get(donationStore.blankForm.isGroup || false)" v-bind="componentField"
+            class="resize-none min-h-24 text-sm" />
         </FormControl>
         <FormMessage />
       </FormItem>

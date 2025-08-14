@@ -29,7 +29,9 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       class="flex items-center justify-center text-current transition-all duration-150"
     >
       <slot>
-        <span class="iconify f7--checkmark-alt text-primary-foreground size-4"></span>
+        <span
+          class="iconify f7--checkmark-alt text-primary-foreground dark:!text-secondary size-5"
+        ></span>
       </slot>
     </CheckboxIndicator>
   </CheckboxRoot>

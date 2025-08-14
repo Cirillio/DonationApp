@@ -48,7 +48,7 @@ const check = computed({
 
     <Checkbox
       :model-value="check"
-      class="cursor-pointer w-5 h-5 border-border rounded-[var(--radius)] transition-all bg-none ml-auto"
+      class="cursor-pointer group-hover:bg-card size-6 border-border rounded-[var(--radius)] transition-all bg-none ml-auto"
     />
   </Button>
 </template>

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { BlankSchema } from '@/domain/blank/schema'
 import type { PaySchema } from '@/domain/payment/schema'
 import { DEFAULT_BLANK_FORM } from '@/domain/blank/default'
@@ -27,6 +27,8 @@ export const useDonationStore = defineStore('donation', () => {
   const blankValid = ref(false)
   const payValid = ref(false)
 
+  const isValid = computed(() => blankValid.value && payValid.value)
+
   function setBlankValidity(isValid: boolean) {
     blankValid.value = isValid
   }
@@ -46,5 +48,6 @@ export const useDonationStore = defineStore('donation', () => {
     setBlankValidity,
     payValid,
     blankValid,
+    isValid,
   }
 })

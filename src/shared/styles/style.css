@@ -49,13 +49,17 @@
 }
 
 :root {
-  --background: oklch(97.52% 0.0034 247.86);
-
-  --primary: oklch(82% 0.208 151); /* оставил из твоей схемы */
-  --secondary: oklch(0% 0 0); /* оставил из твоей схемы */
   --radius: 0.75rem;
 
+  --background: oklch(96.92% 0.00353 248.573);
   --foreground: oklch(14.48% 0 260);
+
+  --primary: oklch(82% 0.208 151);
+  --primary-foreground: oklch(22.211% 0.05115 158.939);
+
+  --secondary: oklch(0% 0 0);
+  --secondary-foreground: oklch(100% 0.00011 271.152);
+
   --card: oklch(100% 0 0);
   --card-foreground: oklch(14.48% 0 260);
 
@@ -75,41 +79,37 @@
   --border: oklch(88% 0 260);
   --input: oklch(95% 0 260);
   --ring: oklch(82% 0.208 151);
-
-  --primary-foreground: oklch(22.211% 0.05115 158.939);
-  --secondary-foreground: oklch(100% 0.00011 271.152);
 }
 
 .dark {
-  /* не трогаю: background / primary / secondary */
-  --background: oklch(0.2103 0.0059 285.89);
-  --primary: oklch(85.178% 0.2145 153.686);
-  --secondary: oklch(0.312 0.0124 285.66);
+  --background: oklch(14.25% 0.004 250);
+  --foreground: oklch(96% 0.003 260);
 
-  /* обновлено */
-  --foreground: oklch(96% 0.006 260);
-  --card: oklch(28% 0.006 286); /* чуть светлее фона */
-  --card-foreground: oklch(90% 0.008 260);
+  --primary: oklch(80.98% 0.20302 150.883);
+  --primary-foreground: oklch(12% 0.02 151);
 
-  --popover: oklch(28% 0.006 286);
-  --popover-foreground: oklch(96% 0.008 260);
+  --secondary: oklch(100% 0.00011 271.152);
+  --secondary-foreground: oklch(9.693% 0.00001 271.152);
 
-  --muted: oklch(33% 0.006 285);
-  --muted-foreground: oklch(80% 0.008 260 / 0.72);
+  --card: oklch(18% 0.004 260);
+  --card-foreground: oklch(96% 0.003 260);
 
-  --ghost: oklch(32% 0.012 170 / 0.15);
-  --accent: oklch(78% 0.16 90); /* яркое золото на тёмном */
-  --accent-foreground: oklch(20% 0.02 90);
+  --popover: oklch(22% 0.006 260);
+  --popover-foreground: oklch(96% 0.003 260);
 
-  --destructive: oklch(62% 0.23 25);
-  --destructive-foreground: oklch(98% 0.01 260);
+  --muted: oklch(30% 0.005 260);
+  --muted-foreground: oklch(70% 0.01 260);
 
-  --border: oklch(33% 0.01 285.8); /* явный контур на тёмном */
-  --input: oklch(24% 0.006 286 / 0.75);
-  --ring: oklch(85% 0.21 152);
+  --ghost: oklch(100% 0 0 / 0);
+  --accent: oklch(53.45% 0.12413 285.907);
+  --accent-foreground: oklch(100% 0.00011 271.152);
 
-  --primary-foreground: oklch(19% 0.02 151);
-  --secondary-foreground: oklch(96% 0.008 260);
+  --destructive: oklch(50.772% 0.18643 31.857);
+  --destructive-foreground: oklch(68.04% 0.20874 30.776);
+
+  --border: oklch(28% 0.003 260);
+  --input: oklch(24% 0.004 260);
+  --ring: oklch(72% 0.18 151);
 }
 
 @layer base {
@@ -138,6 +138,16 @@
 
   .ringed {
     @apply border border-ring bg-popover/30 ring-ring/50 ring-[3px] backdrop-blur-lg shadow-xs;
+  }
+
+  .label-required::after {
+    content: '*';
+    @apply text-destructive-foreground;
+  }
+
+  .label-optional::after {
+    content: '*';
+    @apply text-muted-foreground;
   }
 }
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import AsideNav from './AsideNav.vue'
-import AppLogo from './AppLogo.vue'
+import AsideNav from './/AsideNav.vue'
+import AppLogo from '../AppLogo.vue'
 </script>
 
 <template>
@@ -8,5 +8,7 @@ import AppLogo from './AppLogo.vue'
     <AppLogo />
     <Separator />
     <AsideNav />
+    <Separator class="mt-auto" />
+    <ThemeToggler class="mx-auto" />
   </aside>
 </template>

@@ -56,7 +56,7 @@ watch(
       :validate-on-blur="!donorBlank.isFieldDirty"
     >
       <FormItem class="gap-1">
-        <FormLabel>Телефон</FormLabel>
+        <FormLabel class="label-required gap-0.5">Телефон </FormLabel>
         <div class="flex gap-2">
           <FormControl>
             <Input
@@ -88,8 +88,7 @@ watch(
                   @select="() => selectPhoneCode(spec.id)"
                   class="flex gap-2 px-3 cursor-pointer"
                   :class="{
-                    '!bg-secondary !text-secondary-foreground dark:!bg-card':
-                      selectedCode.code === spec.code,
+                    '!bg-secondary !text-secondary-foreground': selectedCode.code === spec.code,
                   }"
                 >
                   <span class="">{{ spec.icon }}</span>
@@ -106,7 +105,7 @@ watch(
 
     <FormField v-slot="{ componentField }" :validate-on-blur="!donorBlank.isFieldDirty" name="name">
       <FormItem class="gap-1">
-        <FormLabel>Имя</FormLabel>
+        <FormLabel class="label-optional gap-0.5">Имя</FormLabel>
 
         <FormControl>
           <Input v-bind="componentField" placeholder="Хотя бы 3 символа" name="name" type="text">
@@ -123,7 +122,7 @@ watch(
       name="birth"
     >
       <FormItem class="gap-1">
-        <FormLabel>Дата рождения</FormLabel>
+        <FormLabel class="label-required gap-0.5">Дата рождения</FormLabel>
 
         <FormControl>
           <Input

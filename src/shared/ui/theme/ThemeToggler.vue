@@ -1,12 +1,12 @@
 <template>
-  <Button
-    @click="toggleMode"
-    variant="outline"
-    class="relative p-0 aspect-square grid place-items-center overflow-hidden"
-  >
-    <Transition name="rotate-fade" mode="out-in">
-      <Icon :key="mode" :class="iconClass" class="size-4 md:size-5" />
-    </Transition>
+  <Button @click="toggleMode" variant="outline" size="sm">
+    <div class="relative aspect-square grid place-items-center overflow-hidden">
+      <Transition name="rotate-fade" mode="out-in">
+        <Icon :key="mode" :class="iconClass" class="size-4" />
+      </Transition>
+    </div>
+
+    <span> {{ mode === 'light' ? 'Светлая' : mode === 'dark' ? 'Тёмная' : 'Авто' }} </span>
   </Button>
 </template>
 
@@ -27,7 +27,7 @@ const iconClass = computed(() => {
     case 'dark':
       return 'f7--moon'
     case 'auto':
-      return 'f7--desktopcomputer'
+      return 'f7--gear-alt'
     default:
       return ''
   }
