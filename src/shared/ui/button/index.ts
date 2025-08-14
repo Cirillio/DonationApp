@@ -19,11 +19,14 @@ export const buttonVariants = cva(
         secondary:
           'bg-secondary border border-secondary/10 text-secondary-foreground hover:bg-secondary/90 focus-visible:ring-secondary/20',
 
-        ghost: 'bg-transparent border border-transparent text-foreground hover:bg-input/75',
+        ghost: 'bg-input/50 border border-transparent text-foreground hover:bg-input',
 
         link: 'bg-transparent text-foreground hover:text-primary !shadow-none',
 
         text: 'bg-transparent border border-transparent text-foreground !shadow-none',
+
+        accent:
+          'bg-accent border border-accent/10 text-accent-foreground hover:bg-accent/90 focus-visible:ring-accent/20',
       },
       size: {
         default: 'px-4 py-2 text-base has-[>svg]:px-3',

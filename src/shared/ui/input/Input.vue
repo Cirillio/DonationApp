@@ -36,7 +36,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 
         'disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
 
-        '[&[aria-invalid=true]]:border-destructive',
+        '[&[aria-invalid=true]]:border-destructive [&[aria-invalid=true]]:bg-destructive/10',
         '[&[aria-invalid=true]]:ring-destructive/20 [&[aria-invalid=true]]:hover:border-destructive',
         'dark:[&[aria-invalid=true]]:ring-destructive/40',
 

@@ -6,13 +6,13 @@ import MainHeader from '../ui/MainHeader.vue'
   <div class="h-[100dvh] w-screen grid grid-cols-[auto_1fr]">
     <MainHeader />
     <main class="grid grid-rows-[auto_1fr] h-full">
-      <div class="flex px-4 py-2 gap-2 items-center bg-card border-b border-border">
-        <Badge variant="outline">aS</Badge>
+      <div class="flex p-2 gap-2 items-center bg-card border-b border-border">
+        <Badge variant="default" class="text-sm">• Собрано всего: 999</Badge>
+        <Badge variant="secondary" class="text-sm">• Собрано в этом месяце: 999</Badge>
+        <Badge variant="accent" class="text-sm">• Собрано за прошлый месяц: 999</Badge>
       </div>
-      <div class="overflow-y-scroll w-full h-full bg-background/25 text-card-foreground">
-        <div class="grid grid-rows-[1fr_auto] gap-2 items-center min-h-full">
-          <router-view></router-view>
-        </div>
+      <div class="overflow-y-scroll w-full h-full">
+        <router-view></router-view>
       </div>
     </main>
   </div>

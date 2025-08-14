@@ -53,7 +53,7 @@
 
   --primary: oklch(82% 0.208 151); /* оставил из твоей схемы */
   --secondary: oklch(0% 0 0); /* оставил из твоей схемы */
-  --radius: 1.5rem;
+  --radius: 0.75rem;
 
   --foreground: oklch(14.48% 0 260);
   --card: oklch(100% 0 0);
@@ -69,8 +69,8 @@
   --accent: oklch(51.054% 0.16569 287.383);
   --accent-foreground: oklch(100% 0 0);
 
-  --destructive: oklch(63% 0.24 25);
-  --destructive-foreground: oklch(98% 0.01 260);
+  --destructive: oklch(71.18% 0.18224 32.072);
+  --destructive-foreground: oklch(59.629% 0.23885 28.694);
 
   --border: oklch(88% 0 260);
   --input: oklch(95% 0 260);

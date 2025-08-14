@@ -49,7 +49,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col gap-6 p-6 rounded-lg bg-card">
+  <div class="flex flex-col gap-6">
     <FormField
       v-slot="{ componentField }"
       name="phone"
@@ -109,7 +109,8 @@ watch(
         <FormLabel>Имя</FormLabel>
 
         <FormControl>
-          <Input v-bind="componentField" placeholder="Имя" name="name" type="text"> </Input>
+          <Input v-bind="componentField" placeholder="Хотя бы 3 символа" name="name" type="text">
+          </Input>
         </FormControl>
         <FormMessage />
         <FormDescription>Оставьте пустым для анонимности</FormDescription>

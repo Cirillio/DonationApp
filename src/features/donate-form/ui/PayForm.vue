@@ -64,7 +64,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col gap-6 p-6 rounded-lg bg-card">
+  <div class="flex flex-col gap-6">
     <FormField v-slot="{ meta, handleBlur }" name="amount">
       <FormItem v-auto-animate class="gap-1">
         <FormLabel>Сумма</FormLabel>
