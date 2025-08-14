@@ -19,7 +19,13 @@ defineProps({
 </script>
 
 <template>
-  <Button :size="size" @click="onSelect" :variant="selected ? 'ring' : 'outline'" type="button">
+  <Button
+    :size="size"
+    @click="onSelect"
+    :variant="selected ? 'secondary' : 'text'"
+    :class="{ 'opacity-50': !selected }"
+    type="button"
+  >
     <slot />
   </Button>
 </template>

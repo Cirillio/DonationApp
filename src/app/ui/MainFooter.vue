@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import AppLogo from '../app/AppLogo.vue'
+import AppLogo from './AppLogo.vue'
 </script>
 
 <template>

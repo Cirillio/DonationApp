@@ -1,38 +1,34 @@
 <script lang="ts" setup>
-import { watch } from 'vue'
-import { useFormConfig } from '@/composables/useFormConfig'
-import { blankSchema, phoneSpecs, placeholders } from '@/data/donation'
+import { FormField } from '@/shared/ui/form'
 import { toTypedSchema } from '@vee-validate/zod'
+import blankSchema from '@/domain/blank/schema'
+import { DEFAULT_BLANK_FORM } from '@/domain/blank/default'
 import { useForm } from 'vee-validate'
+import { PHONE_SPECS } from '@/features/phone-input/data/phone-specs'
+import { useCodeSelector } from '@/features/phone-input/composables/useCodeSelector'
+
 import { useDonationStore } from '@/features/donate-form/model/donation-store'
-import { FormField } from '@/components/ui/form'
-
-import { configure } from 'vee-validate'
-
-configure({
-  validateOnBlur: true,
-  validateOnModelUpdate: false,
-})
+import { watch } from 'vue'
+import { PhoneSpec } from '@/features/phone-input/model/types'
 
 const donationStore = useDonationStore()
 
-const { phoneMask, phoneMaskSelected } = useFormConfig({
-  phoneSelector: {
-    _default: donationStore.phoneCode,
-    phoneSpecs: phoneSpecs,
-  },
-})
-
 const donorBlank = useForm({
   validationSchema: toTypedSchema(blankSchema),
-  initialValues: {
-    ...donationStore.blankForm,
-    blankPhone: donationStore.blankForm.blankPhone
-      ? donationStore.blankForm.blankPhone
-      : phoneMaskSelected.value.code,
-  },
+  initialValues: DEFAULT_BLANK_FORM,
   name: 'donationBlank',
 })
+
+const { selectedCode, currentMask, selectById } = useCodeSelector({
+  defaultId: 'RU',
+  phoneSpecs: PHONE_SPECS,
+})
+
+const selectPhoneCode = (id: PhoneSpec['id']) => {
+  selectById(id)
+  donationStore.phoneCode = id
+  donorBlank.resetField('phone')
+}
 
 watch(
   () => donorBlank.values,
@@ -53,186 +49,115 @@ watch(
 </script>
 
 <template>
-  <form @submit.prevent="() => {}">
-    <CardTitledContent icon="f7--person-crop-rectangle" title="Анкета">
-      <template #desc>
-        <span
-          class="max-md:text-center md:flex items-center gap-1 md:text-base text-sm text-muted-foreground"
-          >Пожалуйста, укажите <PrimaryBadge> номер телефона </PrimaryBadge>
-          <div class="max-md:mt-1 dark:m-0 flex justify-center gap-2 dark:gap-1 items-center">
-            имя и
-            <PrimaryBadge> дату рождения</PrimaryBadge>
-          </div>
-        </span>
-      </template>
+  <div class="flex flex-col gap-6 p-6 rounded-lg bg-card">
+    <FormField
+      v-slot="{ componentField }"
+      name="phone"
+      :validate-on-blur="!donorBlank.isFieldDirty"
+    >
+      <FormItem class="gap-1">
+        <FormLabel>Телефон</FormLabel>
+        <div class="flex gap-2">
+          <FormControl>
+            <Input
+              v-mask="currentMask"
+              v-bind="componentField"
+              :placeholder="selectedCode.code"
+              name="phone"
+              type="tel"
+            >
+            </Input>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button size="default" :variant="'outline'">
+                  <span v-if="selectedCode" class="text-sm md:text-base">{{
+                    selectedCode.icon
+                  }}</span>
+                  <span v-else class="text-sm">Select</span>
+                  <Icon class="f7--chevron-down size-3.5 md:size-4" />
+                </Button>
+              </DropdownMenuTrigger>
 
-      <div class="flex flex-col w-full gap-4 md:gap-6">
-        <!-- Phone -->
-        <FormField
-          v-slot="{ componentField, resetField }"
-          :validate-on-blur="!donorBlank.isFieldDirty"
-          name="blankPhone"
-        >
-          <FormItem class="gap-1">
-            <FormControl>
-              <IconInput
-                v-mask="phoneMask"
-                v-bind="componentField"
-                :icon="true"
-                :placeholder="phoneMaskSelected.code"
-                name="blankPhone"
-                type="tel"
+              <DropdownMenuContent
+                :align="'end'"
+                class="min-w-[var(--radix-dropdown-menu-trigger-width)] gap-1 duration-150 flex flex-col"
               >
-                <template #icon>
-                  <span class="iconify f7--phone md:size-6 size-5 dark:text-primary"></span>
-                </template>
-
-                <template #actionButton>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger as-child>
-                      <Button
-                        size="lg"
-                        :variant="'outline'"
-                        class="px-3 gap-1 md:gap-2 md:px-4 w-fit"
-                      >
-                        <span v-if="phoneMaskSelected" class="text-sm md:text-base">{{
-                          phoneMaskSelected.icon
-                        }}</span>
-                        <span v-else class="text-sm text-muted-foreground">Select</span>
-                        <F7Icon class="f7--chevron-down size-3.5 md:size-4 text-muted-foreground" />
-                      </Button>
-                    </DropdownMenuTrigger>
-
-                    <DropdownMenuContent
-                      :align="'end'"
-                      class="min-w-[var(--radix-dropdown-menu-trigger-width)] gap-1 duration-25 flex flex-col"
-                    >
-                      <DropdownMenuItem
-                        v-for="spec in phoneSpecs"
-                        :key="spec.id"
-                        @select="
-                          () => {
-                            phoneMaskSelected = spec
-                            donationStore.phoneCode = spec.id
-                            resetField({ value: spec.code })
-                          }
-                        "
-                        class="flex gap-4 max-md:p-2.5 max-md:px-3.5 py-1.5 px-4 !text-base md:!text-lg cursor-pointer"
-                        :class="{
-                          '!bg-background shadow-sm dark:!bg-card':
-                            phoneMaskSelected.code === spec.code,
-                        }"
-                      >
-                        <span class="">{{ spec.icon }}</span>
-                        <span>{{ spec.name }}</span>
-                        <span class="ml-auto">{{ spec.code }}</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </template>
-              </IconInput>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        </FormField>
-
-        <div class="flex max-[400px]:flex-col gap-4">
-          <!-- Name -->
-          <FormField
-            v-slot="{ componentField }"
-            :validate-on-blur="!donorBlank.isFieldDirty"
-            name="blankName"
-          >
-            <FormItem class="gap-1 flex-3">
-              <FormControl>
-                <IconInput
-                  v-bind="componentField"
-                  :icon="true"
-                  placeholder="Имя"
-                  name="blankName"
-                  type="text"
+                <DropdownMenuItem
+                  v-for="spec in PHONE_SPECS"
+                  :key="spec.id"
+                  @select="() => selectPhoneCode(spec.id)"
+                  class="flex gap-2 px-3 cursor-pointer"
+                  :class="{
+                    '!bg-secondary !text-secondary-foreground dark:!bg-card':
+                      selectedCode.code === spec.code,
+                  }"
                 >
-                  <template #icon>
-                    <span
-                      class="iconify f7--person md:size-6 size-5 text-muted-foreground"
-                    ></span> </template
-                ></IconInput>
-              </FormControl>
-              <FormMessage />
-              <FormDescription>Оставьте пустым для анонимности</FormDescription>
-            </FormItem>
-          </FormField>
-
-          <!-- Birth -->
-          <FormField
-            v-slot="{ componentField }"
-            :validate-on-blur="!donorBlank.isFieldDirty"
-            name="blankBirth"
-          >
-            <FormItem class="gap-1 flex-2">
-              <FormControl>
-                <IconInput
-                  v-bind="componentField"
-                  :icon="true"
-                  placeholder="дд.мм.гггг"
-                  name="blankBirth"
-                  type="tel"
-                  v-mask="'##.##.####'"
-                >
-                  <template #icon>
-                    <span
-                      class="iconify f7--calendar md:size-6 size-5 dark:text-primary"
-                    ></span> </template
-                ></IconInput>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
+                  <span class="">{{ spec.icon }}</span>
+                  <span>{{ spec.name }}</span>
+                  <span class="ml-auto">{{ spec.code }}</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </FormControl>
         </div>
+        <FormMessage />
+      </FormItem>
+    </FormField>
 
-        <TextSeparator class="md:*:text-base"> Дополнительно </TextSeparator>
+    <FormField v-slot="{ componentField }" :validate-on-blur="!donorBlank.isFieldDirty" name="name">
+      <FormItem class="gap-1">
+        <FormLabel>Имя</FormLabel>
 
-        <!-- Group -->
-        <FormField
-          v-slot="{ componentField }"
-          :validate-on-blur="!donorBlank.isFieldDirty"
-          name="blankGroup"
-        >
-          <FormItem class="gap-1">
-            <FormControl>
-              <div class="flex flex-col">
-                <CheckBlock
-                  class="w-full"
-                  v-bind="componentField"
-                  label="От лица группы"
-                  icon="f7--person-2"
-                  :size="'lg'"
-                />
-              </div>
-            </FormControl>
-            <FormDescription>Отметьте, если участвует коллектив</FormDescription>
-            <FormMessage />
-          </FormItem>
-        </FormField>
+        <FormControl>
+          <Input v-bind="componentField" placeholder="Имя" name="name" type="text"> </Input>
+        </FormControl>
+        <FormMessage />
+        <FormDescription>Оставьте пустым для анонимности</FormDescription>
+      </FormItem>
+    </FormField>
 
-        <!-- Desc -->
-        <FormField
-          v-slot="{ componentField }"
-          :validate-on-blur="!donorBlank.isFieldDirty"
-          name="blankDesc"
-        >
-          <FormItem class="gap-1">
-            <FormControl>
-              <Textarea
-                :placeholder="placeholders.get(donorBlank.values.blankGroup || false)"
-                v-bind="componentField"
-                class="resize-none min-h-24 text-sm"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        </FormField>
-      </div>
-    </CardTitledContent>
-  </form>
+    <FormField
+      v-slot="{ componentField }"
+      :validate-on-blur="!donorBlank.isFieldDirty"
+      name="birth"
+    >
+      <FormItem class="gap-1">
+        <FormLabel>Дата рождения</FormLabel>
+
+        <FormControl>
+          <Input
+            v-bind="componentField"
+            placeholder="дд.мм.гггг"
+            name="birth"
+            type="tel"
+            v-mask="'##.##.####'"
+          >
+          </Input>
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+
+    <FormField
+      v-slot="{ componentField }"
+      :validate-on-blur="!donorBlank.isFieldDirty"
+      name="isGroup"
+    >
+      <FormItem class="gap-1">
+        <FormControl>
+          <div class="flex flex-col">
+            <CheckBlock
+              class="w-full"
+              v-bind="componentField"
+              label="От лица группы"
+              icon="f7--person-2"
+              :size="'default'"
+            />
+          </div>
+        </FormControl>
+        <FormDescription>Отметьте, если участвует коллектив</FormDescription>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+  </div>
 </template>

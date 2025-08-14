@@ -5,6 +5,7 @@ const useCodeSelector = (params: CodeSelector) => {
   const selectedCode = ref<PhoneSpec>(
     params.phoneSpecs.find((c) => c.id === params.defaultId) as PhoneSpec
   )
+
   const currentMask = ref<string>('')
 
   watch(
@@ -22,7 +23,16 @@ const useCodeSelector = (params: CodeSelector) => {
     { immediate: true }
   )
 
-  return { selectedCode, currentMask }
+  function selectById(id: PhoneSpec['id']) {
+    const found = params.phoneSpecs.find((c) => c.id === id) ?? null
+    if (!found) {
+      console.warn(`Страна с ID ${id} не найдена.`)
+      return
+    }
+    selectedCode.value = found
+  }
+
+  return { selectedCode, currentMask, selectById }
 }
 
 export { useCodeSelector }

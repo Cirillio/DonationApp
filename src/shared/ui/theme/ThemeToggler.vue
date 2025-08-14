@@ -1,11 +1,11 @@
 <template>
   <Button
     @click="toggleMode"
-    variant="ring"
+    variant="outline"
     class="relative p-0 aspect-square grid place-items-center overflow-hidden"
   >
     <Transition name="rotate-fade" mode="out-in">
-      <F7Icon :key="mode" :class="iconClass" class="size-4 md:size-5" />
+      <Icon :key="mode" :class="iconClass" class="size-4 md:size-5" />
     </Transition>
   </Button>
 </template>

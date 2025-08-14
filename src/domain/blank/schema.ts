@@ -3,21 +3,21 @@ import { isValidPhoneNumber } from 'libphonenumber-js'
 const dateRegex = /^\d{2}\.\d{2}\.\d{4}$/
 
 const blankSchema = z.object({
-  blankPhone: z
+  phone: z
     .string('Пожалуйста, укажите номер телефона.')
     .nonempty('Телефон обязателен для заполнения.')
     .refine((value) => {
       return isValidPhoneNumber(value)
     }, 'Номер указан неверно.'),
 
-  blankName: z
+  name: z
     .string()
     .refine((value) => value.trim().length === 0 || value.trim().length >= 3, 'Хотя бы 3 символа.')
     .max(50, 'Имя должно быть не длиннее 50 символов.')
     .regex(/^[\p{L}\s-]*$/u, 'Имя может содержать только буквы, пробелы и тире.')
     .optional(),
 
-  blankBirth: z
+  birth: z
     .string()
     .nonempty('Пожалуйста, заполните дату рождения.')
     .regex(dateRegex, 'Неверный формат даты.')
@@ -42,8 +42,7 @@ const blankSchema = z.object({
       return date >= hundredYearsAgo
     }, 'Возраст не может быть больше 100 лет.'),
 
-  blankGroup: z.boolean().optional(),
-  blankDesc: z.string().trim().optional(),
+  isGroup: z.boolean().optional(),
 })
 
 export default blankSchema

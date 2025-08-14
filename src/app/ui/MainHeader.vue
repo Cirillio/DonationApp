@@ -1,13 +1,12 @@
 <script lang="ts" setup>
-import HeaderNav from './HeaderNav.vue'
+import AsideNav from './AsideNav.vue'
 import AppLogo from './AppLogo.vue'
 </script>
 
 <template>
-  <div class="x-pad backdrop-blur-xs">
-    <header class="flex flex-col md:flex-row py-2 items-center justify-between">
-      <AppLogo />
-      <HeaderNav class="max-md:hidden" />
-    </header>
-  </div>
+  <aside class="flex flex-col gap-4 py-6 px-4 items-center border-r border-border bg-card">
+    <AppLogo />
+    <Separator />
+    <AsideNav />
+  </aside>
 </template>

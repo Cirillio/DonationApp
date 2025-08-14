@@ -1,43 +1,49 @@
 <script lang="ts" setup>
-import { FormField } from '@/components/ui/form'
-
+import { FormField } from '@/shared/ui/form'
 import { onMounted, ref, watch } from 'vue'
-import { CurrencyDisplay } from 'vue-currency-input'
-import { useFormConfig } from '@/composables/useFormConfig'
-import { paySchema, paymentAmounts, paymentTypes } from '@/data/donation'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useDonationStore } from '@/features/donate-form/model/donation-store'
-import { nextTick } from 'vue'
+import { useCurrencyInput, CurrencyDisplay } from 'vue-currency-input'
+import { PAYMENT_AMOUNTS, PAYMENT_AMOUNTS_MIN, DEFAULT_PAY_FORM } from '@/domain/payment/default'
+import { PAYMENT_TYPES } from '@/domain/payment/types'
+import paySchema from '@/domain/payment/schema'
+import { placeholders } from './copy'
+
 const donationStore = useDonationStore()
 
-const { currencyFormatted, currencyNumber, currencyRef, currencySet } = useFormConfig({
-  currencyOptions: {
-    currency: 'RUB',
-    currencyDisplay: CurrencyDisplay.hidden,
-    precision: 2,
-  },
+const {
+  formattedValue: currencyFormatted,
+  setValue: currencySet,
+  numberValue: currencyNumber,
+  inputRef: currencyRef,
+} = useCurrencyInput({
+  currency: 'RUB',
+  currencyDisplay: CurrencyDisplay.hidden,
+  precision: 2,
 })
 
 const donorPay = useForm({
   validationSchema: toTypedSchema(paySchema),
-  initialValues: { ...donationStore.payForm },
+  initialValues: DEFAULT_PAY_FORM,
   name: 'donationPayment',
 })
 
 const amountsRef = ref()
 
-onMounted(async () => {
-  await nextTick()
-  if (donorPay.values.payAmount) currencySet(donorPay.values.payAmount)
+onMounted(() => {
+  if (donorPay.values.amount) currencySet(donorPay.values.amount)
 })
 
-watch(currencyNumber, (_new) => {
-  const newAmount = _new || 0
-  donorPay.setFieldValue('payAmount', newAmount, false)
-  if (amountsRef.value.selected !== newAmount && amountsRef.value)
+watch(currencyNumber, (newAmount) => {
+  donorPay.setFieldValue('amount', newAmount, false)
+  if (amountsRef.value && amountsRef.value.selected !== newAmount)
     amountsRef.value.select(undefined)
 })
+
+const selectAmount = (selectedAmount: number | null) => {
+  currencySet(selectedAmount)
+}
 
 watch(
   () => donorPay.values,
@@ -58,91 +64,79 @@ watch(
 </script>
 
 <template>
-  <form @submit.prevent="">
-    <CardTitledContent
-      icon="f7--creditcard"
-      title="Оплата"
-      desc="Минимальная сумма пожертвования 100 рублей"
-    >
-      <template #desc>
-        <span class="max-[400px]:text-xs text-sm md:text-base text-muted-foreground"
-          >Начните помогать от
+  <div class="flex flex-col gap-6 p-6 rounded-lg bg-card">
+    <FormField v-slot="{ meta, handleBlur }" name="amount">
+      <FormItem v-auto-animate class="gap-1">
+        <FormLabel>Сумма</FormLabel>
 
-          <PrimaryBadge> {{ paymentAmounts[0].value }}</PrimaryBadge>
+        <FormControl>
+          <Input
+            v-bind="meta"
+            @blur="handleBlur"
+            ref="currencyRef"
+            :value="currencyFormatted"
+            :placeholder="PAYMENT_AMOUNTS_MIN.label"
+            name="amount"
+            type="text"
+          >
+          </Input>
 
-          рублей
-        </span>
-      </template>
-      <div class="flex flex-col w-full gap-4">
-        <FormField v-slot="{ resetField, meta, handleBlur, validate }" name="payAmount">
-          <FormItem class="gap-0">
-            <FormControl>
-              <IconInput
-                @blur="(e: Event) => (meta.dirty ? handleBlur(e) : undefined)"
-                ref="currencyRef"
-                :value="currencyFormatted"
-                :icon="true"
-                placeholder="100,00"
-                name="payAmount"
-                type="text"
+          <FormMessage />
+          <RadioList orientation="wrap" class="mt-1" ref="amountsRef">
+            <template #item="{ select, selected }">
+              <RadioButton
+                class="text-xs !max-h-8 px-2 md:text-base sm:text-sm"
+                v-for="amount in PAYMENT_AMOUNTS"
+                :key="amount.label"
+                :onSelect="() => selectAmount(select(amount.value) as number | null)"
+                :selected="amount.value === selected"
+                size="sm"
               >
-                <template #icon>
-                  <span
-                    class="iconify f7--money-rubl size-5 md:size-6 dark:text-primary"
-                  ></span> </template
-              ></IconInput>
-              <FormMessage />
+                {{ amount.label }}
+              </RadioButton>
+            </template>
+          </RadioList>
+        </FormControl>
+      </FormItem>
+    </FormField>
 
-              <RadioList orientation="wrap" class="mt-1" ref="amountsRef">
-                <template #item="{ select, selected }">
-                  <RadioButton
-                    class="text-xs !max-h-8 px-2 md:text-base sm:text-sm"
-                    v-for="_amount in paymentAmounts"
-                    :key="_amount.label"
-                    :onSelect="() => {
-                    const _new = select(_amount.value) as number | null
-                    _new ? validate() : resetField()
-                    currencySet(_new)
-                  }"
-                    :selected="_amount.value === selected"
-                    size="sm"
-                  >
-                    {{ _amount.label }}
-                  </RadioButton>
-                </template>
-              </RadioList>
-            </FormControl>
-          </FormItem>
-        </FormField>
+    <FormField v-slot="{ value }" name="type">
+      <FormItem v-auto-animate class="gap-1">
+        <FormLabel>Способ оплаты</FormLabel>
 
-        <TextSeparator>
-          <PrimaryBadge> Cпособ оплаты </PrimaryBadge>
-        </TextSeparator>
+        <FormControl>
+          <div class="flex flex-col gap-2">
+            <CheckBlock
+              v-for="p in PAYMENT_TYPES"
+              :key="p.type"
+              class="w-full flex-1"
+              @onCheck="(check: boolean)=> check ? donorPay.setFieldValue('type', p.type) : donorPay.setFieldValue('type', undefined)"
+              :checked="p.type === value"
+            >
+              <template #content>
+                <div class="flex gap-2 items-center">
+                  <img :src="p.icon" :alt="p.type" class="w-6 h-6" />
+                  {{ p.name }}
+                </div>
+              </template>
+            </CheckBlock>
+          </div>
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
 
-        <FormField v-slot="{ setValue, value }" name="payPaymentType">
-          <FormItem class="gap-1">
-            <FormControl>
-              <div class="flex flex-col gap-2">
-                <CheckBlock
-                  v-for="p in paymentTypes"
-                  :key="p.type"
-                  class="w-full flex-1"
-                  @onCheck="(check: boolean)=> check ? setValue(p.type) : setValue(undefined)"
-                  :checked="p.type === value"
-                >
-                  <template #content>
-                    <div class="flex gap-2 items-center">
-                      <img :src="p.icon" :alt="p.type" class="w-6 h-6" />
-                      {{ p.name }}
-                    </div>
-                  </template>
-                </CheckBlock>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        </FormField>
-      </div>
-    </CardTitledContent>
-  </form>
+    <FormField v-slot="{ componentField }" :validate-on-blur="!donorPay.isFieldDirty" name="note">
+      <FormItem class="gap-1">
+        <FormControl>
+          <Textarea
+            :placeholder="placeholders.get(donationStore.blankForm.isGroup || false)"
+            v-bind="componentField"
+            class="resize-none min-h-24 text-sm"
+          />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+  </div>
 </template>

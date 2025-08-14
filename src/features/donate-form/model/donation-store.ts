@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { DEFAULT_PAY_FORM, DEFAULT_BLANK_FORM } from '@/data/donation'
-import type { BlankSchema, PaySchema } from '@/data/donation'
+import type { BlankSchema } from '@/domain/blank/schema'
+import type { PaySchema } from '@/domain/payment/schema'
+import { DEFAULT_BLANK_FORM } from '@/domain/blank/default'
+import { DEFAULT_PAY_FORM } from '@/domain/payment/default'
 
 export const useDonationStore = defineStore('donation', () => {
   const blankForm = ref<Partial<BlankSchema>>(DEFAULT_BLANK_FORM)

@@ -1,32 +1,52 @@
 <script lang="ts" setup>
-import { BlankForm, PayForm } from '@/components/forms'
-import DonateControls from '@/components/controls/DonateControls.vue'
-import { formSteps } from '@/data/donation/steps.data'
-import { useStepperStore } from '@/app/stepper.store'
+import BlankForm from '@/features/donate-form/ui/BlankForm.vue'
+import PayForm from '@/features/donate-form/ui/PayForm.vue'
+import { useDonationStore } from '@/features/donate-form/model/donation-store'
+import { configure } from 'vee-validate'
 
-const stepper = useStepperStore()
-stepper.initStepper({ steps: formSteps })
+configure({
+  validateOnBlur: true,
+  validateOnModelUpdate: false,
+})
+const donationStore = useDonationStore()
 </script>
 
 <template>
-  <div class="flex md:x-pad max-md:h-full h-fit w-full justify-center items-center">
-    <div
-      class="md:max-w-[648px] w-full h-full max-md:flex justify-center items-center px-4 md:px-14 py-16 md:shadow-xs md:border bg-background/80 dark:bg-background/60 md:rounded-md backdrop-blur-lg"
-    >
-      <div class="flex gap-4 md:gap-8 flex-col">
-        <BlankForm v-if="stepper.currentStep === 0" />
-        <PayForm v-if="stepper.currentStep === 1" />
-        <div class="flex flex-col w-full">
-          <div class="w-full h-2 md:h-3 rounded-full bg-ring/25">
-            <div
-              class="h-full bg-primary ring ring-primary rounded-full transition-all duration-150"
-              :style="{ width: `${stepper.completedRatio * 100}%` }"
+  <div class="flex h-full w-full justify-center items-center">
+    <div class="flex flex-col items-end gap-4 bg-ghost rounded-md p-12">
+      <div class="flex max-md:flex-col gap-8">
+        <div class="flex flex-col gap-8 flex-1">
+          <div class="flex gap-4">
+            <Icon variant="fill" class="f7--person size-7" />
+            <div class="flex items-center bg-card rounded-md w-full h-full px-4 py-2">
+              <h3 class="text-2xl font-semibold text-foreground">Анкета</h3>
+            </div>
+            <Icon
+              :variant="donationStore.blankValid ? 'secondary' : 'fill'"
+              :class="{ 'text-primary': donationStore.blankValid }"
+              class="f7--checkmark-alt size-7"
             />
           </div>
+          <BlankForm class="flex-1" />
         </div>
 
-        <DonateControls />
+        <div class="flex w-2 min-h-0 min-w-0 rounded-md bg-card"></div>
+
+        <div class="flex flex-col gap-8 flex-1">
+          <div class="flex gap-4">
+            <Icon variant="fill" class="f7--creditcard size-7" />
+            <div class="flex items-center bg-card rounded-md w-full h-full px-4 py-2">
+              <h3 class="text-2xl font-semibold text-foreground">Оплата</h3>
+            </div>
+            <Icon
+              :variant="donationStore.payValid ? 'secondary' : 'fill'"
+              class="f7--checkmark-alt size-7"
+            />
+          </div>
+          <PayForm />
+        </div>
       </div>
+      <Button variant="secondary" size="lg">Пожертвовать</Button>
     </div>
   </div>
 </template>

@@ -2,11 +2,14 @@ import { z } from 'zod'
 import { PAYMENT_TYPE_VALUES } from '@/domain/payment/types'
 
 const paySchema = z.object({
-  payAmount: z
+  amount: z
     .number('Пожалуйста, укажите сумму пожертвования.')
-    .min(100, 'Указанная сумма меньше минимальной.'),
+    .min(100, 'Указанная сумма меньше минимальной.')
+    .nullable(),
 
-  payPaymentType: z.enum(PAYMENT_TYPE_VALUES, 'Пожалуйста, укажите способ оплаты.'),
+  type: z.enum(PAYMENT_TYPE_VALUES, 'Пожалуйста, укажите способ оплаты.'),
+
+  note: z.string().trim().optional(),
 })
 
 export default paySchema

@@ -1,5 +1,5 @@
 <script lang="ts" setup generic="T">
-import { ref, computed, defineExpose } from 'vue'
+import { ref, computed } from 'vue'
 
 defineProps<{
   orientation?: 'horizontal' | 'vertical' | 'wrap'

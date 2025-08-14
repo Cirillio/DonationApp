@@ -1,5 +1,5 @@
-import sbp_icon from '@/assets/icons/payment/SBP.svg'
-import bankcard_icon from '@/assets/icons/payment/bankcard.svg'
+import sbp_icon from '@/shared/assets/icons/payment/SBP.svg'
+import bankcard_icon from '@/shared/assets/icons/payment/bankcard.svg'
 
 export const PAYMENT_TYPE_VALUES = ['sbp', 'bankcard'] as const
 
