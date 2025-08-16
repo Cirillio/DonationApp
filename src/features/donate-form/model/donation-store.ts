@@ -7,7 +7,6 @@ import { DEFAULT_PAY_FORM } from '@/domain/payment/default'
 
 export const useDonationStore = defineStore('donation', () => {
   const blankForm = ref<Partial<BlankSchema>>(DEFAULT_BLANK_FORM)
-  const phoneCode = ref('RU')
 
   const payForm = ref<Partial<PaySchema>>(DEFAULT_PAY_FORM)
 
@@ -39,7 +38,6 @@ export const useDonationStore = defineStore('donation', () => {
 
   return {
     blankForm,
-    phoneCode,
     payForm,
     resetBlankForm,
     resetPayForm,

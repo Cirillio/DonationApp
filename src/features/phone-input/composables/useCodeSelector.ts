@@ -1,15 +1,15 @@
 import { ref, watch } from 'vue'
-import type { PhoneSpec, CodeSelector } from '../model/types'
+import type { PhoneSpec, CodeSelectorParams } from '../model/types'
 
-const useCodeSelector = (params: CodeSelector) => {
-  const selectedCode = ref<PhoneSpec>(
+const useCodeSelector = (params: CodeSelectorParams) => {
+  const selectedSpec = ref<PhoneSpec>(
     params.phoneSpecs.find((c) => c.id === params.defaultId) as PhoneSpec
   )
 
   const currentMask = ref<string>('')
 
   watch(
-    () => selectedCode.value.id,
+    () => selectedSpec.value.id,
     (newId) => {
       const foundCountry = params.phoneSpecs.find((c) => c.id === newId)
 
@@ -29,10 +29,10 @@ const useCodeSelector = (params: CodeSelector) => {
       console.warn(`Страна с ID ${id} не найдена.`)
       return
     }
-    selectedCode.value = found
+    selectedSpec.value = found
   }
 
-  return { selectedCode, currentMask, selectById }
+  return { selectedSpec, currentMask, selectById }
 }
 
 export { useCodeSelector }

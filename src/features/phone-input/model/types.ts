@@ -1,4 +1,4 @@
-export type CodeSelector = {
+export type CodeSelectorParams = {
   defaultId: PhoneSpec['id']
   phoneSpecs: readonly PhoneSpec[]
 }

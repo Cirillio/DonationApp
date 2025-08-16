@@ -1,8 +1,8 @@
 import type { PhoneSpec, PhoneSpecId } from '../model/types'
 
 export const PHONE_SPECS = [
-  { id: 'RU', icon: '🇷🇺', name: 'Россия', code: '+7', mask: '+7 (###) ###-##-##' },
-  { id: 'TJ', icon: '🇹🇯', name: 'Таджикистан', code: '+992', mask: '+992 ## ### ## ##' },
+  { id: 'RU', icon: '🇷🇺', name: 'Россия', code: '+7', mask: '(###) ###-##-##' },
+  { id: 'TJ', icon: '🇹🇯', name: 'Таджикистан', code: '+992', mask: '## ### ## ##' },
 ] as const satisfies readonly PhoneSpec[]
 
 export type PhoneSpecs = typeof PHONE_SPECS

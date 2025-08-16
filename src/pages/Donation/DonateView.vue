@@ -16,12 +16,12 @@ const donationStore = useDonationStore()
   <div class="flex h-full w-full justify-center items-center max-w-[868px] mx-auto">
     <div class="flex flex-col gap-4">
       <div class="flex gap-1 mb-4 items-center">
-        <Icon variant="primary" class="f7--heart-fill size-5" />
+        <Icon variant="fill" class="f7--heart size-6" />
         <Label class="text-3xl font-bold text-foreground">Оформление пожертвования</Label>
       </div>
 
-      <div class="flex max-md:flex-col gap-8">
-        <Card class="flex flex-col gap-4 flex-1 light:border-none">
+      <div class="flex max-md:flex-col gap-8 relative">
+        <Card class="flex flex-col gap-4 flex-1 light:border-none bg-card/90">
           <CardHeader class="flex gap-4 items-center">
             <Icon variant="ghost" class="f7--person size-6" />
 
@@ -45,7 +45,7 @@ const donationStore = useDonationStore()
           </CardFooter>
         </Card>
 
-        <Card class="flex flex-col gap-4 flex-1 light:border-none">
+        <Card class="flex flex-col gap-4 flex-1 light:border-none bg-card/90">
           <CardHeader class="flex gap-4 items-center">
             <Icon variant="ghost" class="f7--creditcard size-6" />
             <CardTitle class="text-2xl w-full">Оплата</CardTitle>
@@ -70,13 +70,24 @@ const donationStore = useDonationStore()
         </Card>
       </div>
 
-      <Button
-        :disabled="!donationStore.isValid"
-        class="dark:bg-primary dark:text-primary-foreground ml-auto"
-        variant="accent"
-        size="lg"
-        >Пожертвовать</Button
-      >
+      <div class="ml-auto flex items-center gap-5">
+        <div
+          class="h-10 w-10 border bg-[radial-gradient(circle_at_center,var(--primary)_0%,transparent_100%)]"
+        ></div>
+        <Button
+          variant="ghost"
+          size="sm"
+          class="dark:border-primary/50 dark:hover:border-primary border-accent/50 hover:border-accent"
+          >Платёж активен? Нажмите здесь</Button
+        >
+        <Button
+          :disabled="!donationStore.isValid"
+          class="dark:bg-primary dark:text-primary-foreground dark:hover:shadow-primary/25 dark:shadow-black shadow-muted hover:shadow-accent/50 shadow-lg active:scale-99"
+          variant="accent"
+          size="lg"
+          >Пожертвовать</Button
+        >
+      </div>
     </div>
   </div>
 </template>

@@ -70,13 +70,17 @@ watch(
 
       <FormControl>
         <Input ref="currencyRef" v-model="currencyFormatted" :placeholder="PAYMENT_AMOUNTS_MIN.label" name="amount"
-           @blur="handleBlur" @input="handleInput" @change="() => setValue(currencyNumber)" />
+           @blur="handleBlur" @input="handleInput" @change="() => setValue(currencyNumber)"
+           inputmode="numeric"
+           />
 
         <FormMessage />
 
         <div class="flex flex-wrap gap-1 w-full">
-          <Button v-for="amount in PAYMENT_AMOUNTS" :key="amount.label"
-            :variant="currencyNumber === amount.value ? 'secondary' : 'ghost'" size="sm"
+          <Button
+          class="px-2 py-1"
+          v-for="amount in PAYMENT_AMOUNTS" :key="amount.label"
+            :variant="currencyNumber === amount.value ? 'secondary' : 'outline'" size="sm"
             @click="selectAmount(amount.value)">
             {{ amount.label }}
           </Button>
