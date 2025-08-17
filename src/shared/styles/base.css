@@ -1,0 +1,16 @@
+@layer base {
+  html {
+    font-family: 'Geist';
+  }
+
+  html,
+  body,
+  #app {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    @apply bg-background;
+  }
+}

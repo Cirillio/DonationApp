@@ -1,23 +1,28 @@
 <script lang="ts" setup>
 import Aside from '../ui/Aside/Aside.vue'
+import HeaderTimer from '../ui/HeaderTimer/HeaderTimer.vue'
 </script>
 
 <template>
-  <div class="h-[100dvh] w-screen grid grid-cols-[auto_1fr]">
+  <div class="h-dvh min-h-0 w-screen flex md:grid grid-cols-[auto_1fr] overflow-hidden">
     <Aside class="max-md:hidden" />
-    <main class="grid grid-rows-[auto_1fr] h-full">
-      <div class="flex p-2 items-center justify-between bg-card border-b border-border">
+    <main class="flex flex-col min-h-0 w-full min-w-0 overflow-hidden">
+      <div
+        class="flex p-2 sticky items-center justify-between bg-card shadow-xs dark:border-b border-border"
+      >
+        <!-- Затычки пока что -->
         <div class="flex gap-2">
-          <Badge variant="default" class="text-sm">• Собрано всего: 999</Badge>
-          <Badge variant="secondary" class="text-sm">• Собрано в этом месяце: 999</Badge>
-          <Badge variant="accent" class="text-sm">• Собрано за прошлый месяц: 999</Badge>
+          <Badge variant="default" class="text-sm max-xl:text-xs">• Собрано всего: 999</Badge>
+          <Badge variant="secondary" class="text-sm max-xl:text-xs"
+            >• Собрано в этом месяце: 999</Badge
+          >
+          <Badge variant="accent" class="text-sm max-xl:text-xs"
+            >• Собрано за прошлый месяц: 999</Badge
+          >
         </div>
-        <div class="text-muted-foreground flex items-center gap-1">
-          <Icon class="f7--clock size-4" />
-          14.08.2025 | 21:35
-        </div>
+        <HeaderTimer />
       </div>
-      <div class="overflow-y-scroll w-full h-full">
+      <div class="flex-1 min-h-0 min-w-0 overflow-y-auto overscroll-contain">
         <router-view></router-view>
       </div>
     </main>

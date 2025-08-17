@@ -8,5 +8,8 @@ export function getCurrentFormattedDateTime() {
   const hours = String(now.getHours()).padStart(2, '0')
   const minutes = String(now.getMinutes()).padStart(2, '0')
 
-  return `${day}.${month}.${year} ${hours}:${minutes}`
+  const date = `${day}.${month}.${year}`
+  const time = `${hours}:${minutes}`
+
+  return { date, time }
 }

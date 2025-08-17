@@ -1,164 +1,17 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@plugin "@iconify/tailwind4" {
-  prefixes: f7;
-}
 
-@custom-variant dark (&:is(.dark *));
-@custom-variant light (&:is(.light *));
+/* Utilities */
+@import './plugins.css';
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
+/* Base styles */
+@import './base.css';
 
-  --color-ghost: var(--ghost);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
+/* Fonts */
+@import './font.css';
 
-:root {
-  --radius: 0.75rem;
+/* Themes */
+@import './themes.css';
 
-  --background: oklch(96.92% 0.00353 248.573);
-  --foreground: oklch(14.48% 0 260);
-
-  --primary: oklch(82% 0.208 151);
-  --primary-foreground: oklch(22.211% 0.05115 158.939);
-
-  --secondary: oklch(0% 0 0);
-  --secondary-foreground: oklch(100% 0.00011 271.152);
-
-  --card: oklch(100% 0 0);
-  --card-foreground: oklch(14.48% 0 260);
-
-  --popover: oklch(94% 0.02 255);
-  --popover-foreground: oklch(14.48% 0 260);
-
-  --muted: oklch(82% 0.01 255);
-  --muted-foreground: oklch(62% 0 260);
-
-  --ghost: oklch(100% 0 0 / 0);
-  --accent: oklch(51.054% 0.16569 287.383);
-  --accent-foreground: oklch(100% 0 0);
-
-  --destructive: oklch(71.18% 0.18224 32.072);
-  --destructive-foreground: oklch(59.629% 0.23885 28.694);
-
-  --border: oklch(88% 0 260);
-  --input: oklch(95% 0 260);
-  --ring: oklch(82% 0.208 151);
-}
-
-.dark {
-  --background: oklch(14.25% 0.004 250);
-  --foreground: oklch(96% 0.003 260);
-
-  --primary: oklch(80.98% 0.20302 150.883);
-  --primary-foreground: oklch(12% 0.02 151);
-
-  --secondary: oklch(100% 0.00011 271.152);
-  --secondary-foreground: oklch(9.693% 0.00001 271.152);
-
-  --card: oklch(18% 0.004 260);
-  --card-foreground: oklch(96% 0.003 260);
-
-  --popover: oklch(22% 0.006 260);
-  --popover-foreground: oklch(96% 0.003 260);
-
-  --muted: oklch(30% 0.005 260);
-  --muted-foreground: oklch(70% 0.01 260);
-
-  --ghost: oklch(100% 0 0 / 0);
-  --accent: oklch(53.45% 0.12413 285.907);
-  --accent-foreground: oklch(100% 0.00011 271.152);
-
-  --destructive: oklch(50.772% 0.18643 31.857);
-  --destructive-foreground: oklch(68.04% 0.20874 30.776);
-
-  --border: oklch(28% 0.003 260);
-  --input: oklch(24% 0.004 260);
-  --ring: oklch(72% 0.18 151);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  html {
-    font-family: 'Geist';
-  }
-
-  body {
-    @apply bg-background;
-  }
-}
-@layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-
-  .ringed {
-    @apply border border-ring bg-popover/30 ring-ring/50 ring-[3px] backdrop-blur-lg shadow-xs;
-  }
-
-  .label-required::after {
-    content: '*';
-    @apply text-destructive-foreground;
-  }
-
-  .label-optional::after {
-    content: '*';
-    @apply text-muted-foreground;
-  }
-}
-
-.x-pad {
-  @apply xl:px-40 lg:px-16 md:px-8 sm:px-4 px-2;
-}
-
-.form-bg {
-  /* background-image: url('/img/form-bump.jpg'); */
-  background-image: url('/img/bg-main1.jpg');
-
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+/* Utilities */
+@import './utilities.css';

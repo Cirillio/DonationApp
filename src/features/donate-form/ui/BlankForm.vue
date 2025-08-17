@@ -1,15 +1,14 @@
 <script lang="ts" setup>
+import { watch, onBeforeUnmount, onMounted } from 'vue'
 import { FormField } from '@/shared/ui/form'
+import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import makeBlankSchema from '@/domain/blank/schema'
 import { DEFAULT_BLANK_FORM } from '@/domain/blank/default'
-import { useForm } from 'vee-validate'
 import { PHONE_SPECS, DEFAULT_PHONE_SPEC } from '@/features/phone-input/data/phone-specs'
 import { useCodeSelector } from '@/features/phone-input/composables/useCodeSelector'
 import parsePhoneNumber from 'libphonenumber-js'
 import { useDonationStore } from '@/features/donate-form/model/donation-store'
-import { watch } from 'vue'
-import { PhoneSpec } from '@/features/phone-input/model/types'
 
 const donationStore = useDonationStore()
 
@@ -28,6 +27,9 @@ const donorBlank = useForm({
   name: 'donationBlank',
 })
 
+onBeforeUnmount(() => donorBlank.resetForm({ values: DEFAULT_BLANK_FORM }))
+onMounted(() => donorBlank.resetForm({ values: DEFAULT_BLANK_FORM }))
+
 const onPastePhone = (e: ClipboardEvent) => {
   e.preventDefault()
   const pasted = e.clipboardData?.getData('text') || ''
@@ -39,20 +41,25 @@ const onPastePhone = (e: ClipboardEvent) => {
   }
 }
 
-const selectPhoneCode = (specId: PhoneSpec['id']) => {
-  selectPhoneCodeById(specId)
-  donorBlank.resetField('phone')
-}
-
-watch(selectedSpec, () => donorBlank.resetField('phone'), {
-  immediate: true,
-})
+watch(
+  selectedSpec,
+  () => {
+    donorBlank.validateField('phone', {
+      mode: 'silent',
+    })
+    donorBlank.resetField('phone', { value: '' })
+  },
+  {
+    immediate: true,
+  }
+)
 
 watch(
   () => donorBlank.values,
   (values) => (donationStore.blankForm = { ...values }),
   {
     deep: true,
+    immediate: true,
   }
 )
 
@@ -63,7 +70,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-4">
     <FormField
       name="phone"
       v-slot="{ componentField }"
@@ -71,26 +78,24 @@ watch(
     >
       <FormItem class="gap-1">
         <FormLabel class="label-required gap-0.5">Телефон </FormLabel>
-        <div class="flex gap-2">
+        <div class="flex">
           <FormControl>
-            <div class="flex shadow-xs rounded-md">
-              <div
-                class="text-foreground !opacity-100 px-3 flex rounded-md rounded-r-none items-center border-r-0 border border-border"
-              >
-                {{ selectedSpec.code }}
-              </div>
-              <Input
-                class="rounded-l-none shadow-none"
-                v-mask="currentMask"
-                type="tel"
-                v-bind="componentField"
-                @paste="onPastePhone"
-                :placeholder="selectedSpec.mask"
-              />
+            <div
+              class="text-foreground !opacity-100 px-3 flex rounded-md rounded-r-none items-center border-r-0 border border-border"
+            >
+              {{ selectedSpec.code }}
             </div>
+            <Input
+              class="rounded-none shadow-none"
+              type="tel"
+              v-bind="componentField"
+              @paste="onPastePhone"
+              :placeholder="selectedSpec.mask"
+              v-mask="currentMask"
+            />
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
-                <Button size="default" :variant="'outline'">
+                <Button :variant="'outline'" class="rounded-l-none border-l-0 px-2.5">
                   <span v-if="selectedSpec" class="text-sm md:text-base">{{
                     selectedSpec.icon
                   }}</span>
@@ -106,8 +111,8 @@ watch(
                 <DropdownMenuItem
                   v-for="spec in PHONE_SPECS"
                   :key="spec.id"
-                  @select="() => selectPhoneCode(spec.id)"
-                  class="flex gap-2 px-3 cursor-pointer"
+                  @select="() => selectPhoneCodeById(spec.id)"
+                  class="flex gap-2 px-3 text-sm max-sm:text-base cursor-pointer"
                   :class="{
                     '!bg-secondary !text-secondary-foreground': selectedSpec?.code === spec.code,
                   }"
@@ -120,7 +125,9 @@ watch(
             </DropdownMenu>
           </FormControl>
         </div>
-        <FormMessage />
+        <AutoAnimated>
+          <FormMessage />
+        </AutoAnimated>
       </FormItem>
     </FormField>
 
@@ -129,10 +136,11 @@ watch(
         <FormLabel class="label-optional gap-0.5">Имя</FormLabel>
 
         <FormControl>
-          <Input v-bind="componentField" placeholder="Хотя бы 3 символа" name="name" type="text">
-          </Input>
+          <Input v-bind="componentField" placeholder="Хотя бы 3 символа" name="name" type="text" />
         </FormControl>
-        <FormMessage />
+        <AutoAnimated>
+          <FormMessage />
+        </AutoAnimated>
         <FormDescription>Оставьте пустым для анонимности</FormDescription>
       </FormItem>
     </FormField>
@@ -155,7 +163,9 @@ watch(
             inputmode="numeric"
           />
         </FormControl>
-        <FormMessage />
+        <AutoAnimated>
+          <FormMessage />
+        </AutoAnimated>
       </FormItem>
     </FormField>
 
@@ -177,7 +187,9 @@ watch(
           </div>
         </FormControl>
         <FormDescription>Отметьте, если участвует коллектив</FormDescription>
-        <FormMessage />
+        <AutoAnimated>
+          <FormMessage />
+        </AutoAnimated>
       </FormItem>
     </FormField>
   </div>

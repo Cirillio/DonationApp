@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { FormField } from '@/shared/ui/form'
-import { watch } from 'vue'
+import { watch, onBeforeUnmount, onMounted } from 'vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useDonationStore } from '@/features/donate-form/model/donation-store'
@@ -28,6 +28,9 @@ const donorPay = useForm({
   initialValues: DEFAULT_PAY_FORM,
   name: 'donationPayment',
 })
+
+onBeforeUnmount(() => donorPay.resetForm({values: DEFAULT_PAY_FORM}))
+onMounted(() => donorPay.resetForm({values: DEFAULT_PAY_FORM}))
 
 const selectAmount = (selectedAmount: number) => {
 
@@ -62,19 +65,20 @@ watch(
 </script>
 
 <template>
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-4">
     <FormField v-slot="{ setValue, handleBlur, handleInput }" name="amount" :validate-on-blur="!donorPay.isFieldDirty" "
     >
       <FormItem class=" gap-1">
-      <FormLabel class="label-required gap-0.5">Сумма</FormLabel>
-
+      <FormLabel class="label-required gap-0.5 ">Сумма</FormLabel>
       <FormControl>
         <Input ref="currencyRef" v-model="currencyFormatted" :placeholder="PAYMENT_AMOUNTS_MIN.label" name="amount"
            @blur="handleBlur" @input="handleInput" @change="() => setValue(currencyNumber)"
-           inputmode="numeric"
+           inputmode="numeric" class=""
            />
 
-        <FormMessage />
+        <AutoAnimated>
+          <FormMessage />
+        </AutoAnimated>
 
         <div class="flex flex-wrap gap-1 w-full">
           <Button
@@ -91,23 +95,26 @@ watch(
 
     <FormField v-slot="{ value, setValue }" name="type">
       <FormItem class="gap-1">
-        <FormLabel class="label-required gap-0.5">Способ оплаты</FormLabel>
+        <FormLabel class="label-required gap-0.5 ">Способ оплаты</FormLabel>
 
         <FormControl>
           <div class="flex flex-col gap-2">
-            <CheckBlock v-for="p in PAYMENT_TYPES" :key="p.type" class="w-full flex-1"
+            <CheckBlock v-for="p in PAYMENT_TYPES" :key="p.type" class="w-full px-3 flex-1"
               @onCheck="(check: boolean) => check ? setValue(p.type) : setValue(undefined)"
+              :showCheckbox="false"
               :checked="p.type === value">
               <template #content>
-                <div class="flex gap-2 items-center">
-                  <img :src="p.icon" :alt="p.type" class="w-6 h-6" />
+                <div class="flex w-full   gap-3 items-center">
+                  <img :src="p.icon" :alt="p.type" class="size-6" />
                   {{ p.name }}
                 </div>
               </template>
             </CheckBlock>
           </div>
         </FormControl>
-        <FormMessage />
+        <AutoAnimated>
+          <FormMessage />
+        </AutoAnimated>
       </FormItem>
     </FormField>
 
@@ -117,8 +124,12 @@ watch(
           <Textarea :placeholder="placeholders.get(donationStore.blankForm.isGroup || false)" v-bind="componentField"
             class="resize-none min-h-24 text-sm" />
         </FormControl>
-        <FormMessage />
+        <AutoAnimated>
+          <FormMessage />
+        </AutoAnimated>
       </FormItem>
     </FormField>
   </div>
 </template>
+
+

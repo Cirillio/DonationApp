@@ -1,26 +1,22 @@
 import { NavLink } from '@/domain/app/navigation/types'
-import { ref } from 'vue'
 
-export const headerLinks = ref<NavLink[]>([
+export const navLinks = [
   {
-    name: 'donat',
-    title: 'Пожертвование',
-    url: '/',
+    name: 'donation',
+    title: 'Пожертвования',
+    url: '/donation',
     icon: 'f7--heart',
-    active: false,
   },
   {
     name: 'stats',
     title: 'Статистика',
     url: '/stats',
     icon: 'f7--chart-pie',
-    active: false,
   },
   {
     name: 'news',
     title: 'Новости',
     url: '/news',
     icon: 'f7--envelope',
-    active: false,
   },
-])
+] as NavLink[]

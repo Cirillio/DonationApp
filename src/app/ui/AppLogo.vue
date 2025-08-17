@@ -1,10 +1,7 @@
 <script lang="ts" setup>
-import { APP_TITLE, Logo } from '../shared/config/logo'
+import { Logo } from '@/app/shared/config/app-main'
 </script>
 
 <template>
-  <div class="w-fit flex gap-1 select-none pointer-events-none items-center">
-    <img class="size-8" :src="Logo" alt="chilgazi_fund-logo" />
-    <span class="text-2xl font-bold tracking-tight text-foreground">{{ APP_TITLE }}</span>
-  </div>
+  <img :src="Logo" alt="chilgazi_fund-logo" class="select-none pointer-events-none" />
 </template>

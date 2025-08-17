@@ -1,0 +1,24 @@
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .label-required::after {
+    content: '*';
+    @apply text-destructive-foreground;
+  }
+
+  .label-optional::after {
+    content: '*';
+    @apply text-muted-foreground;
+  }
+
+  .card-focused {
+    @apply -translate-y-2  drop-shadow-2xl drop-shadow-accent/15 dark:drop-shadow-primary/15 z-30;
+  }
+}

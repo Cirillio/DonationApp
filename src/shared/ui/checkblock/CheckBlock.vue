@@ -14,6 +14,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  showCheckbox: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 const emits = defineEmits<{
@@ -47,6 +51,7 @@ const check = computed({
     <slot name="content"></slot>
 
     <Checkbox
+      v-if="showCheckbox"
       :model-value="check"
       class="cursor-pointer group-hover:bg-card size-6 border-border rounded-[var(--radius)] transition-all bg-none ml-auto"
     />

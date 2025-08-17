@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AutoAnimated: typeof import('./src/shared/ui/auto-animated/AutoAnimated.vue')['default']
     Badge: typeof import('./src/shared/ui/badge/Badge.vue')['default']
     Button: typeof import('./src/shared/ui/button/Button.vue')['default']
     Card: typeof import('./src/shared/ui/card/Card.vue')['default']
