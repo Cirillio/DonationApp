@@ -78,13 +78,13 @@ watch(
     >
       <FormItem class="gap-1">
         <FormLabel class="label-required gap-0.5">Телефон </FormLabel>
-        <div class="flex">
+        <div class="flex rounded-md shadow-xs">
+          <div
+            class="text-foreground !opacity-100 px-3 flex rounded-md rounded-r-none items-center border-r-0 border border-border"
+          >
+            {{ selectedSpec.code }}
+          </div>
           <FormControl>
-            <div
-              class="text-foreground !opacity-100 px-3 flex rounded-md rounded-r-none items-center border-r-0 border border-border"
-            >
-              {{ selectedSpec.code }}
-            </div>
             <Input
               class="rounded-none shadow-none"
               type="tel"
@@ -93,37 +93,37 @@ watch(
               :placeholder="selectedSpec.mask"
               v-mask="currentMask"
             />
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <Button :variant="'outline'" class="rounded-l-none border-l-0 px-2.5">
-                  <span v-if="selectedSpec" class="text-sm md:text-base">{{
-                    selectedSpec.icon
-                  }}</span>
-                  <span v-else class="text-sm">Select</span>
-                  <Icon class="f7--chevron-down size-3.5 md:size-4" />
-                </Button>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent
-                :align="'end'"
-                class="min-w-[var(--radix-dropdown-menu-trigger-width)] gap-1 duration-150 flex flex-col"
-              >
-                <DropdownMenuItem
-                  v-for="spec in PHONE_SPECS"
-                  :key="spec.id"
-                  @select="() => selectPhoneCodeById(spec.id)"
-                  class="flex gap-2 px-3 text-sm max-sm:text-base cursor-pointer"
-                  :class="{
-                    '!bg-secondary !text-secondary-foreground': selectedSpec?.code === spec.code,
-                  }"
-                >
-                  <span class="">{{ spec.icon }}</span>
-                  <span>{{ spec.name }}</span>
-                  <span class="ml-auto">{{ spec.code }}</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </FormControl>
+          <DropdownMenu>
+            <DropdownMenuTrigger as-child>
+              <Button :variant="'outline'" class="rounded-l-none !shadow-none border-l-0 px-2.5">
+                <span v-if="selectedSpec" class="text-sm md:text-base">{{
+                  selectedSpec.icon
+                }}</span>
+                <span v-else class="text-sm">Select</span>
+                <Icon class="f7--chevron-down size-3.5 md:size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              :align="'end'"
+              class="min-w-[var(--radix-dropdown-menu-trigger-width)] gap-1 duration-150 flex flex-col"
+            >
+              <DropdownMenuItem
+                v-for="spec in PHONE_SPECS"
+                :key="spec.id"
+                @select="() => selectPhoneCodeById(spec.id)"
+                class="flex gap-2 px-3 text-sm max-sm:text-base cursor-pointer"
+                :class="{
+                  '!bg-secondary !text-secondary-foreground': selectedSpec?.code === spec.code,
+                }"
+              >
+                <span class="">{{ spec.icon }}</span>
+                <span>{{ spec.name }}</span>
+                <span class="ml-auto">{{ spec.code }}</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <AutoAnimated>
           <FormMessage />

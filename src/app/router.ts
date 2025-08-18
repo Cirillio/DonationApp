@@ -31,6 +31,12 @@ const routes = [
       title: navLinks[2].title,
     },
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../pages/NotFound/Page.vue'),
+    meta: { title: 'Страница не найдена' },
+  },
 ]
 
 const router = createRouter({

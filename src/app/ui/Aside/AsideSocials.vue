@@ -11,10 +11,7 @@ import { SOCIALS } from '@/app/shared/config/socials'
     target="_blank"
     class="w-full"
   >
-    <AsideNavButton
-      :active="true"
-      :class="'bg-[' + social.color + '] hover:bg-[' + social.color + ']/90'"
-    >
+    <AsideNavButton :class="[social.colorClass]" :active="true">
       <template v-slot:leading>
         <Icon class="size-5" :class="[social.icon]" />
       </template>

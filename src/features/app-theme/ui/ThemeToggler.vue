@@ -1,29 +1,41 @@
 <template>
-  <Button @click="toggleMode" variant="outline" size="sm" class="max-lg:aspect-square max-lg:p-2">
+  <Button
+    @click="appThemeStore.toggleTheme"
+    variant="outline"
+    size="sm"
+    class="max-lg:aspect-square max-lg:p-2"
+  >
     <div class="relative aspect-square grid place-items-center overflow-hidden">
       <Transition name="rotate-fade" mode="out-in">
-        <Icon :key="mode" :class="iconClass" class="size-4" />
+        <Icon :key="appThemeStore.mode" :class="iconClass" class="size-4" />
       </Transition>
     </div>
 
     <span class="max-lg:hidden">
-      {{ mode === 'light' ? 'Светлая' : mode === 'dark' ? 'Тёмная' : 'Авто' }}
+      {{ buttonTitle }}
     </span>
   </Button>
 </template>
 
 <script setup lang="ts">
+import { useAppThemeStore } from '@/features/app-theme/model/app-theme-store'
 import { computed } from 'vue'
-import { useColorMode } from '@vueuse/core'
 
-const mode = useColorMode({ emitAuto: true, disableTransition: false })
+const appThemeStore = useAppThemeStore()
 
-const toggleMode = () => {
-  mode.value = mode.value === 'light' ? 'dark' : mode.value === 'dark' ? 'auto' : 'light'
-}
+const buttonTitle = computed(() => {
+  switch (appThemeStore.mode) {
+    case 'light':
+      return 'Светлая'
+    case 'dark':
+      return 'Тёмная'
+    case 'auto':
+      return 'Авто'
+  }
+})
 
 const iconClass = computed(() => {
-  switch (mode.value) {
+  switch (appThemeStore.mode) {
     case 'light':
       return 'f7--sun-min'
     case 'dark':

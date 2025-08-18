@@ -3,6 +3,8 @@ import AsideNav from './AsideNav.vue'
 import AppLogo from '../AppLogo.vue'
 import { APP_TITLE } from '@/app/shared/config/app-main'
 import AsideSocials from './AsideSocials.vue'
+import ThemeToggler from '@/features/app-theme/ui/ThemeToggler.vue'
+import RadiusToggler from '@/features/app-radius/ui/RadiusToggler.vue'
 </script>
 
 <template>
@@ -21,6 +23,8 @@ import AsideSocials from './AsideSocials.vue'
     <AsideSocials />
 
     <Separator class="mt-auto" />
+
     <ThemeToggler class="mx-auto" />
+    <RadiusToggler />
   </aside>
 </template>
