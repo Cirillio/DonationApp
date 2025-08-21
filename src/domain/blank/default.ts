@@ -1,4 +1,4 @@
-import { BlankSchema } from './schema'
+import { BlankSchema } from './types'
 
 const DEFAULT_BLANK_FORM: Partial<BlankSchema> = {
   name: '',

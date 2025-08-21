@@ -1,4 +1,4 @@
-import { PaySchema } from '@/domain/payment/schema'
+import { PaySchema } from '@/domain/payment/types'
 
 const DEFAULT_PAY_FORM: Partial<PaySchema> = {
   amount: undefined,
