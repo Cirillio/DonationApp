@@ -3,9 +3,6 @@ import { Checkbox } from '../checkbox'
 import { computed } from 'vue'
 
 const props = defineProps({
-  label: String,
-  desc: String,
-  icon: String,
   modelValue: {
     type: Boolean,
     default: undefined, // Чтобы можно было отличить "не передан" от false
@@ -41,13 +38,6 @@ const check = computed({
     :variant="check ? 'secondary' : 'outline'"
     type="button"
   >
-    <span v-if="icon" class="iconify size-5 md:size-6" :class="[icon]"></span>
-
-    <div v-if="label || desc" class="flex flex-col text-start flex-1">
-      <span class="">{{ label }}</span>
-      <span class="max-sm:text-sm text-muted-foreground">{{ desc }}</span>
-    </div>
-
     <slot name="content"></slot>
 
     <Checkbox

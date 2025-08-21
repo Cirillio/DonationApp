@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { watch, onBeforeUnmount, onMounted } from 'vue'
 import { FormField } from '@/shared/ui/form'
-import { useForm } from 'vee-validate'
+import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import makeBlankSchema from '@/domain/blank/schema'
 import { DEFAULT_BLANK_FORM } from '@/domain/blank/default'
@@ -9,8 +9,26 @@ import { PHONE_SPECS, DEFAULT_PHONE_SPEC } from '@/features/phone-input/data/pho
 import { useCodeSelector } from '@/features/phone-input/composables/useCodeSelector'
 import parsePhoneNumber from 'libphonenumber-js'
 import { useDonationStore } from '@/features/donate-form/model/donation-store'
+import z from 'zod'
+
+// import { configure } from 'vee-validate'
+
+// configure({
+//   validateOnModelUpdate: false,
+//   validateOnInput: false,
+//   validateOnChange: false,
+//   validateOnBlur: false,
+// })
 
 const donationStore = useDonationStore()
+
+const donorBlank = useForm({
+  validationSchema: toTypedSchema(makeBlankSchema(() => selectedSpec.value?.code || '')),
+  initialValues: DEFAULT_BLANK_FORM,
+  name: 'donationBlank',
+})
+
+const phoneField = useField('phone', toTypedSchema(z.string().optional()), {})
 
 const {
   selectedSpec,
@@ -20,16 +38,6 @@ const {
   defaultId: DEFAULT_PHONE_SPEC.id,
   phoneSpecs: PHONE_SPECS,
 })
-
-const donorBlank = useForm({
-  validationSchema: toTypedSchema(makeBlankSchema(() => selectedSpec.value?.code || '')),
-  initialValues: DEFAULT_BLANK_FORM,
-  name: 'donationBlank',
-})
-
-onBeforeUnmount(() => donorBlank.resetForm({ values: DEFAULT_BLANK_FORM }))
-onMounted(() => donorBlank.resetForm({ values: DEFAULT_BLANK_FORM }))
-
 const onPastePhone = (e: ClipboardEvent) => {
   e.preventDefault()
   const pasted = e.clipboardData?.getData('text') || ''
@@ -41,18 +49,7 @@ const onPastePhone = (e: ClipboardEvent) => {
   }
 }
 
-watch(
-  selectedSpec,
-  () => {
-    donorBlank.validateField('phone', {
-      mode: 'silent',
-    })
-    donorBlank.resetField('phone', { value: '' })
-  },
-  {
-    immediate: true,
-  }
-)
+watch(selectedSpec, () => resetPhone(), { immediate: true })
 
 watch(
   () => donorBlank.values,
@@ -67,41 +64,41 @@ watch(
   () => donorBlank.meta.value.valid,
   (valid) => donationStore.setBlankValidity(valid)
 )
+onMounted(() => {
+  donationStore.initValidator('donationBlank', donorBlank.validate)
+})
+onBeforeUnmount(() => {
+  donorBlank.resetForm({ values: DEFAULT_BLANK_FORM })
+})
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
-    <FormField
-      name="phone"
-      v-slot="{ componentField }"
-      :validate-on-blur="!donorBlank.isFieldDirty"
-    >
+    <FormField name="phone">
       <FormItem class="gap-1">
-        <FormLabel class="label-required gap-0.5">Телефон </FormLabel>
-        <div class="flex rounded-md shadow-xs">
+        <FormLabel class="label-required gap-0.5 max-md:text-lg">Телефон </FormLabel>
+        <div class="flex rounded-md shadow-xs max-md:*:text-lg">
           <div
             class="text-foreground !opacity-100 px-3 flex rounded-md rounded-r-none items-center border-r-0 border border-border"
           >
             {{ selectedSpec.code }}
           </div>
+
           <FormControl>
             <Input
-              class="rounded-none shadow-none"
+              class="rounded-none shadow-none max-md:min-h-11"
               type="tel"
-              v-bind="componentField"
               @paste="onPastePhone"
               :placeholder="selectedSpec.mask"
               v-mask="currentMask"
+              name="phone"
+              inputmode="tel"
             />
           </FormControl>
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
-              <Button :variant="'outline'" class="rounded-l-none !shadow-none border-l-0 px-2.5">
-                <span v-if="selectedSpec" class="text-sm md:text-base">{{
-                  selectedSpec.icon
-                }}</span>
-                <span v-else class="text-sm">Select</span>
-                <Icon class="f7--chevron-down size-3.5 md:size-4" />
+              <Button :variant="'outline'" class="rounded-l-none !shadow-none border-l-0 px-3">
+                <Icon class="f7--chevron-down size-4.5 md:size-4" />
               </Button>
             </DropdownMenuTrigger>
 
@@ -113,82 +110,85 @@ watch(
                 v-for="spec in PHONE_SPECS"
                 :key="spec.id"
                 @select="() => selectPhoneCodeById(spec.id)"
-                class="flex gap-2 px-3 text-sm max-sm:text-base cursor-pointer"
+                class="flex gap-1 px-3 text-sm max-md:text-base cursor-pointer"
                 :class="{
                   '!bg-secondary !text-secondary-foreground': selectedSpec?.code === spec.code,
                 }"
               >
-                <span class="">{{ spec.icon }}</span>
                 <span>{{ spec.name }}</span>
-                <span class="ml-auto">{{ spec.code }}</span>
+
+                <span class="ml-auto">({{ spec.code }})</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
         <AutoAnimated>
-          <FormMessage />
+          <FormMessage class="max-md:!text-sm" />
         </AutoAnimated>
       </FormItem>
     </FormField>
 
-    <FormField v-slot="{ componentField }" :validate-on-blur="!donorBlank.isFieldDirty" name="name">
+    <FormField name="name">
       <FormItem class="gap-1">
-        <FormLabel class="label-optional gap-0.5">Имя</FormLabel>
-
-        <FormControl>
-          <Input v-bind="componentField" placeholder="Хотя бы 3 символа" name="name" type="text" />
-        </FormControl>
-        <AutoAnimated>
-          <FormMessage />
-        </AutoAnimated>
-        <FormDescription>Оставьте пустым для анонимности</FormDescription>
-      </FormItem>
-    </FormField>
-
-    <FormField
-      v-slot="{ componentField }"
-      :validate-on-blur="!donorBlank.isFieldDirty"
-      name="birth"
-    >
-      <FormItem class="gap-1">
-        <FormLabel class="label-required gap-0.5">Дата рождения</FormLabel>
+        <FormLabel class="label-optional gap-0.5 max-md:text-lg">Имя</FormLabel>
 
         <FormControl>
           <Input
-            v-bind="componentField"
+            placeholder="Хотя бы 3 символа"
+            type="text"
+            class="max-md:min-h-11 max-md:text-lg"
+            name="name"
+          />
+        </FormControl>
+
+        <AutoAnimated>
+          <FormMessage class="max-md:!text-sm" />
+        </AutoAnimated>
+        <FormDescription class="max-md:!text-sm">Оставьте пустым для анонимности</FormDescription>
+      </FormItem>
+    </FormField>
+
+    <FormField name="birth">
+      <FormItem class="gap-1">
+        <FormLabel class="label-required gap-0.5 max-md:text-lg">Дата рождения</FormLabel>
+
+        <FormControl>
+          <Input
+            type="text"
             placeholder="дд.мм.гггг"
             name="birth"
-            type="tel"
             v-mask="'##.##.####'"
             inputmode="numeric"
+            class="max-md:min-h-11 max-md:text-lg"
           />
         </FormControl>
         <AutoAnimated>
-          <FormMessage />
+          <FormMessage class="max-md:!text-sm" />
         </AutoAnimated>
       </FormItem>
     </FormField>
 
     <FormField
+      name="isGroup"
       v-slot="{ componentField }"
       :validate-on-blur="!donorBlank.isFieldDirty"
-      name="isGroup"
     >
       <FormItem class="gap-1">
         <FormControl>
           <div class="flex flex-col">
-            <CheckBlock
-              class="w-full"
-              v-bind="componentField"
-              label="От лица группы"
-              icon="f7--person-2"
-              :size="'default'"
-            />
+            <CheckBlock class="w-full max-md:!min-h-11" :size="'default'" v-bind="componentField">
+              <template v-slot:content>
+                <Icon class="f7--person-2 size-6" />
+                <span class="max-md:text-lg font-normal">От лица группы</span>
+              </template>
+            </CheckBlock>
           </div>
         </FormControl>
-        <FormDescription>Отметьте, если участвует коллектив</FormDescription>
+        <FormDescription class="max-md:!text-sm"
+          >Отметьте, если участвует коллектив</FormDescription
+        >
         <AutoAnimated>
-          <FormMessage />
+          <FormMessage class="max-md:!text-sm" />
         </AutoAnimated>
       </FormItem>
     </FormField>

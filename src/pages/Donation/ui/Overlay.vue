@@ -1,3 +1,5 @@
 <template>
-  <div class="fixed w-full h-full bg-background/50 opacity-50 z-20 pointer-events-auto" />
+  <div
+    class="fixed w-full h-full bg-background opacity-10 z-20 pointer-events-auto touch-manipulation"
+  />
 </template>

@@ -26,7 +26,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
     :class="
       cn(
         // базовые размеры и форма
-        'flex h-fit w-full min-w-0 px-4 py-2 rounded-md text-base outline-none transition-all duration-150 shadow-xs',
+        'flex h-fit w-full min-w-0 px-4 py-2 rounded-md text-base outline-none transition-all duration-150 shadow-xs touch-manipulation',
 
         // цвета и бордер
         'bg-card text-foreground border border-border',

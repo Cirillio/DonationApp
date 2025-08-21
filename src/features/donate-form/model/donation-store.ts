@@ -4,11 +4,28 @@ import type { BlankSchema } from '@/domain/blank/schema'
 import type { PaySchema } from '@/domain/payment/schema'
 import { DEFAULT_BLANK_FORM } from '@/domain/blank/default'
 import { DEFAULT_PAY_FORM } from '@/domain/payment/default'
+import { FormValidationResult } from 'vee-validate'
+
+type Validator = () => Promise<FormValidationResult<BlankSchema | PaySchema>>
 
 export const useDonationStore = defineStore('donation', () => {
   const blankForm = ref<Partial<BlankSchema>>(DEFAULT_BLANK_FORM)
 
   const payForm = ref<Partial<PaySchema>>(DEFAULT_PAY_FORM)
+
+  const formValidators = new Map<string, Validator>()
+
+  const initValidator = (id: string, validator: Validator) => {
+    formValidators.set(id, validator)
+  }
+
+  const clearValidators = () => {
+    formValidators.clear()
+  }
+
+  const validate = async () => {
+    return await Promise.all([...formValidators.values()].map((validator) => validator()))
+  }
 
   const resetBlankForm = () => {
     blankForm.value = DEFAULT_BLANK_FORM
@@ -47,5 +64,9 @@ export const useDonationStore = defineStore('donation', () => {
     payValid,
     blankValid,
     isValid,
+    initValidator,
+    validate,
+    formValidators,
+    clearValidators,
   }
 })

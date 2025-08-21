@@ -2,6 +2,7 @@ import { BorderRadius } from '@/domain/app/app-radius/types'
 
 export const BORDER_RADIUS = {
   none: '0rem',
+  '2xs': '0.125rem',
   xs: '0.25rem',
   sm: '0.5rem',
   md: '0.75rem',

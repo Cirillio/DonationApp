@@ -11,7 +11,7 @@ const { focused, bindFocus, isActive } = useCardFocus<'blank' | 'payment'>()
 provide('useCardFocus', { bindFocus, isActive })
 </script>
 <template>
-  <div class="min-h-full flex relative overflow-hidden">
+  <div class="min-h-full flex relative overflow-hidden pb-8">
     <Transition name="overlay-fade">
       <Overlay v-if="focused" />
     </Transition>

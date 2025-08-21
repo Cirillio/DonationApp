@@ -41,4 +41,4 @@ const createAppRadiusStore = () => {
   return { setMoreRadius, setLessRadius, canGoNext, canGoPrev, currentRadius }
 }
 
-export const useAppRadiusStore = defineStore('AppRadius', createAppRadiusStore)
+export const useAppRadiusStore = defineStore('appRadius', createAppRadiusStore)
