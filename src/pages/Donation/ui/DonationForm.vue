@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { inject, onBeforeUnmount } from 'vue'
+import { inject, onBeforeUnmount, ref } from 'vue'
 import FormCard from './FormCard.vue'
 import FormCardHeader from './FormCardHeader.vue'
 import BlankForm from '@/features/donate-form/ui/BlankForm.vue'
 import PayForm from '@/features/donate-form/ui/PayForm.vue'
 import { PAYMENT_AMOUNTS_MIN } from '@/domain/payment/default'
 import { useDonationStore } from '@/features/donate-form/model/donation-store'
+import Dialog from '@/shared/ui/dialog/Dialog.vue'
 
 const donationStore = useDonationStore()
 const { bindFocus, isActive } = inject('useCardFocus') as any
@@ -15,9 +16,18 @@ onBeforeUnmount(() => {
   donationStore.clearValidators()
 })
 
+const debugResults = ref()
+const dialogOpen = ref(false)
+
 const submit = async () => {
+  dialogOpen.value = true
   const res = await donationStore.validate()
   console.log(res)
+  if (res) {
+    debugResults.value = res
+    return
+  }
+  debugResults.value = "something went wrong. maybe you're entered invalid data."
 }
 </script>
 
@@ -87,14 +97,39 @@ const submit = async () => {
         class="max-md:text-xs dark:border-primary/50 dark:hover:border-primary border-accent/50 hover:border-accent"
         >Платёж активен? Нажмите здесь</Button
       >
-      <Button
-        @click="submit"
-        :disabled="!donationStore.isValid"
-        class="max-md:w-4/5 max-md:text-xl max-md:py-3 dark:bg-primary dark:text-primary-foreground dark:hover:shadow-primary/25 dark:shadow-black shadow-muted hover:shadow-accent/50 shadow-lg active:scale-99"
-        variant="accent"
-        size="lg"
-        >Пожертвовать</Button
+      <Dialog
+        :open="dialogOpen"
+        v-on:update:open="
+          (v) => {
+            if (!v) {
+              dialogOpen = v
+            } else {
+              debugResults = undefined
+            }
+          }
+        "
       >
+        <Button
+          @click="submit"
+          :disabled="!donationStore.isValid"
+          class="max-md:w-4/5 max-md:text-xl max-md:py-3 dark:bg-primary dark:text-primary-foreground dark:hover:shadow-primary/25 dark:shadow-black shadow-muted hover:shadow-accent/50 shadow-lg active:scale-99"
+          variant="accent"
+          size="lg"
+          >Пожертвовать</Button
+        >
+        <DialogContent
+          class="text-foreground flex flex-col border-border max-h-[80vh] light:border-transparent"
+        >
+          <DialogTitle> donation form debug dialog </DialogTitle>
+          <DialogDescription>shows final values to submit to backend</DialogDescription>
+          <div class="flex overflow-scroll min-h-full flex-1 h-2/3 max-md:text-xs">
+            <pre>{{ debugResults }}</pre>
+          </div>
+          <DialogClose>
+            <Button>Закрыть</Button>
+          </DialogClose>
+        </DialogContent>
+      </Dialog>
     </div>
   </section>
 </template>
