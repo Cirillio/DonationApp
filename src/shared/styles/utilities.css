@@ -19,6 +19,6 @@
   }
 
   .card-focused {
-    @apply md:-translate-y-2 drop-shadow-lg  md:drop-shadow-2xl drop-shadow-accent/15 dark:drop-shadow-primary/15 z-30;
+    @apply md:-translate-y-2  drop-shadow-lg  md:drop-shadow-xl drop-shadow-accent/5 dark:drop-shadow-primary/5 z-30;
   }
 }

@@ -1,34 +1,17 @@
 <script lang="ts" setup>
 import { watch, onBeforeUnmount, onMounted } from 'vue'
 import { FormField } from '@/shared/ui/form'
-import { useField, useForm } from 'vee-validate'
+import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import makeBlankSchema from '@/domain/blank/schema'
+import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/domain/blank/schema'
+import { BlankSchema } from '@/domain/blank/types'
 import { DEFAULT_BLANK_FORM } from '@/domain/blank/default'
 import { PHONE_SPECS, DEFAULT_PHONE_SPEC } from '@/features/phone-input/data/phone-specs'
 import { useCodeSelector } from '@/features/phone-input/composables/useCodeSelector'
 import parsePhoneNumber from 'libphonenumber-js'
 import { useDonationStore } from '@/features/donate-form/model/donation-store'
-import z from 'zod'
-
-// import { configure } from 'vee-validate'
-
-// configure({
-//   validateOnModelUpdate: false,
-//   validateOnInput: false,
-//   validateOnChange: false,
-//   validateOnBlur: false,
-// })
 
 const donationStore = useDonationStore()
-
-const donorBlank = useForm({
-  validationSchema: toTypedSchema(makeBlankSchema(() => selectedSpec.value?.code || '')),
-  initialValues: DEFAULT_BLANK_FORM,
-  name: 'donationBlank',
-})
-
-const phoneField = useField('phone', toTypedSchema(z.string().optional()), {})
 
 const {
   selectedSpec,
@@ -38,6 +21,12 @@ const {
   defaultId: DEFAULT_PHONE_SPEC.id,
   phoneSpecs: PHONE_SPECS,
 })
+
+const donorBlank = useForm<BlankSchema>({
+  initialValues: DEFAULT_BLANK_FORM,
+  name: 'donationBlank',
+})
+
 const onPastePhone = (e: ClipboardEvent) => {
   e.preventDefault()
   const pasted = e.clipboardData?.getData('text') || ''
@@ -49,7 +38,16 @@ const onPastePhone = (e: ClipboardEvent) => {
   }
 }
 
-watch(selectedSpec, () => resetPhone(), { immediate: true })
+const resetPhoneField = () => {
+  donorBlank.resetField('phone')
+  donorBlank.validateField('phone', {
+    mode: 'silent',
+  })
+}
+
+watch(selectedSpec, () => resetPhoneField(), {
+  immediate: true,
+})
 
 watch(
   () => donorBlank.values,
@@ -74,7 +72,14 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <FormField name="phone">
+    <FormField
+      name="phone"
+      v-slot="{ componentField }"
+      :rules="toTypedSchema(phoneSchema(() => selectedSpec.code || ''))"
+      :validate-on-input="false"
+      :validate-on-model-update="false"
+      :validate-on-blur="!donorBlank.isFieldDirty"
+    >
       <FormItem class="gap-1">
         <FormLabel class="label-required gap-0.5 max-md:text-lg">Телефон </FormLabel>
         <div class="flex rounded-md shadow-xs max-md:*:text-lg">
@@ -86,6 +91,9 @@ onBeforeUnmount(() => {
 
           <FormControl>
             <Input
+              v-model="componentField.modelValue"
+              @change="componentField.onChange"
+              @blur="componentField.onBlur"
               class="rounded-none shadow-none max-md:min-h-11"
               type="tel"
               @paste="onPastePhone"
@@ -128,12 +136,20 @@ onBeforeUnmount(() => {
       </FormItem>
     </FormField>
 
-    <FormField name="name">
+    <FormField
+      name="name"
+      v-slot="{ componentField }"
+      :rules="toTypedSchema(nameSchema)"
+      :validate-on-input="false"
+      :validate-on-model-update="false"
+      :validate-on-blur="!donorBlank.isFieldDirty"
+    >
       <FormItem class="gap-1">
         <FormLabel class="label-optional gap-0.5 max-md:text-lg">Имя</FormLabel>
 
         <FormControl>
           <Input
+            v-bind="componentField"
             placeholder="Хотя бы 3 символа"
             type="text"
             class="max-md:min-h-11 max-md:text-lg"
@@ -148,12 +164,21 @@ onBeforeUnmount(() => {
       </FormItem>
     </FormField>
 
-    <FormField name="birth">
+    <FormField
+      name="birth"
+      :rules="toTypedSchema(birthSchema)"
+      :validate-on-input="false"
+      :validate-on-blur="!donorBlank.isFieldDirty"
+      v-slot="{ componentField }"
+    >
       <FormItem class="gap-1">
         <FormLabel class="label-required gap-0.5 max-md:text-lg">Дата рождения</FormLabel>
 
         <FormControl>
           <Input
+            v-model="componentField.modelValue"
+            @change="componentField.onChange"
+            @blur="componentField.onBlur"
             type="text"
             placeholder="дд.мм.гггг"
             name="birth"
@@ -171,6 +196,7 @@ onBeforeUnmount(() => {
     <FormField
       name="isGroup"
       v-slot="{ componentField }"
+      :rules="toTypedSchema(isGroupSchema)"
       :validate-on-blur="!donorBlank.isFieldDirty"
     >
       <FormItem class="gap-1">
