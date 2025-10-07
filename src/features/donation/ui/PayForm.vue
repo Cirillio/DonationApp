@@ -63,7 +63,7 @@ defineExpose({
       v-slot="{ setValue, handleBlur, handleInput }"
     >
       <FormItem class="gap-1">
-        <FormLabel class="label-required gap-0.5 max-md:text-lg">Сумма</FormLabel>
+        <FormLabel class="label-required gap-0.5 text-lg">Сумма</FormLabel>
         <div class="relative">
           <FormControl>
             <Input
@@ -75,13 +75,13 @@ defineExpose({
               @change="() => setValue(currencyNumber)"
               inputmode="numeric"
               placeholder="100,00"
-              class="max-md:min-h-11 max-md:text-lg pr-10"
+              class="max-md:min-h-11 text-lg pr-10"
             />
           </FormControl>
         </div>
 
         <AutoAnimated>
-          <FormMessage class="max-md:!text-sm" />
+          <FormMessage class="text-base" />
         </AutoAnimated>
 
         <div class="flex flex-wrap gap-1 w-full">
@@ -90,8 +90,6 @@ defineExpose({
             :key="amount.label"
             :variant="getPaymentAmountButtonVariant(amount.value)"
             @click="selectAmount(amount.value)"
-            class="px-2 py-1 max-md:text-base"
-            size="md"
           >
             {{ amount.label }}
           </Button>
@@ -101,7 +99,7 @@ defineExpose({
 
     <FormField :rules="toTypedSchema(typeSchema)" v-slot="{ value, setValue }" name="type">
       <FormItem class="gap-1">
-        <FormLabel class="label-required gap-0.5 max-md:text-lg">Способ оплаты</FormLabel>
+        <FormLabel class="label-required gap-0.5 text-lg">Способ оплаты</FormLabel>
 
         <FormControl>
           <div class="flex flex-col gap-2">
@@ -111,11 +109,11 @@ defineExpose({
               :checked="p.type === value"
               :showCheckbox="false"
               @onCheck="(check: boolean) => check ? setValue(p.type) : setValue(undefined)"
-              class="w-full px-3 flex-1 max-md:min-h-14"
+              class="w-full px-3 flex-1 min-h-12"
             >
               <template #content>
-                <div class="flex w-full max-md:text-lg font-normal gap-3 items-center">
-                  <img :src="p.icon" :alt="p.type" class="size-6 max-md:size-7" />
+                <div class="flex w-full text-lg font-normal gap-3 items-center">
+                  <img :src="p.icon" :alt="p.type" class="size-7" />
                   {{ p.name }}
                 </div>
               </template>
@@ -123,7 +121,7 @@ defineExpose({
           </div>
         </FormControl>
         <AutoAnimated>
-          <FormMessage class="max-md:!text-sm" />
+          <FormMessage class="text-base" />
         </AutoAnimated>
       </FormItem>
     </FormField>
@@ -139,11 +137,11 @@ defineExpose({
           <Textarea
             placeholder="Можете указать пожелания или список участников, если участвует коллектив."
             v-bind="componentField"
-            class="resize-none min-h-24 text-sm max-md:text-base"
+            class="resize-none min-h-24 text-base"
           />
         </FormControl>
         <AutoAnimated>
-          <FormMessage class="max-md:!text-sm" />
+          <FormMessage class="text-sm" />
         </AutoAnimated>
       </FormItem>
     </FormField>

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import Title from './ui/Title.vue'
-import DonationForm from './ui/DonationForm.vue'
+import DonationForm from '../../features/donation/ui/DonationForm.vue'
 import Body from './ui/Body.vue'
 </script>
 <template>
@@ -8,7 +7,6 @@ import Body from './ui/Body.vue'
     <div class="flex min-h-full w-full items-center">
       <Body>
         <template v-slot:body>
-          <Title />
           <DonationForm />
         </template>
       </Body>

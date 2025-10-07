@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onBeforeUnmount, ref } from 'vue'
-import FormCard from './FormCard.vue'
+import FormCard from '@/pages/Donation/ui/FormCard.vue'
 import BlankForm from '@/features/donation/ui/BlankForm.vue'
 import PayForm from '@/features/donation/ui/PayForm.vue'
 import { PAYMENT_AMOUNTS_MIN } from '@/domain/payment/config'
@@ -63,7 +63,7 @@ onBeforeUnmount(() => {
     </div>
 
     <div
-      class="md:ml-auto flex max-md:flex-col-reverse items-center max-md:justify-center gap-4 py-4"
+      class="md:ml-auto flex max-md:flex-col-reverse items-center max-md:justify-center gap-4 py-2"
     >
       <Button
         variant="outline"
@@ -86,7 +86,7 @@ onBeforeUnmount(() => {
         <Button
           @click="submit"
           :disabled="isFormValid"
-          class="max-md:w-4/5 max-md:text-xl max-md:py-3 dark:bg-primary dark:text-primary-foreground dark:hover:shadow-primary/25 dark:shadow-black shadow-muted hover:shadow-accent/50 shadow-lg active:scale-99"
+          class="max-md:w-4/5 text-2xl shadow-lg shadow-accent/15 hover:shadow-accent/35 transition-shadow opacity-90 hover:opacity-100"
           variant="accent"
           size="lg"
           >Пожертвовать</Button

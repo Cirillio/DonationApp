@@ -8,15 +8,15 @@
           <Icon
             :key="valid"
             :variant="valid ? 'secondary' : 'outline'"
-            class="md:size-6 size-7"
+            class="md:size-8 size-7"
             :class="[valid ? 'f7--checkmark-alt' : icon]"
           />
         </Transition>
       </div>
 
       <div class="max-md:text-center">
-        <CardTitle class="text-2xl md:text-xl md:w-full">{{ title }}</CardTitle>
-        <CardDescription v-if="description" class="md:text-xs">{{ description }}</CardDescription>
+        <CardTitle class="text-2xl md:w-full">{{ title }}</CardTitle>
+        <CardDescription v-if="description" class="">{{ description }}</CardDescription>
       </div>
     </CardHeader>
 
@@ -28,7 +28,7 @@
 
     <Separator class="mt-auto" />
 
-    <CardFooter class="text-xs sm:text-sm text-pretty">
+    <CardFooter class="text-xs sm:text-base text-pretty">
       <slot name="footer" />
     </CardFooter>
   </Card>

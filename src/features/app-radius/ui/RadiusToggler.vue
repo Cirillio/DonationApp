@@ -12,22 +12,22 @@ const appRadiusStore = useAppRadiusStore()
       variant="outline"
       class="rounded-r-none !shadow-none px-1.5"
     >
-      <Icon class="size-5 f7--chevron-left" />
+      <Icon class="size-6 f7--chevron-left" />
     </Button>
     <span
-      class="flex-1 flex gap-1 border-y border-border text-sm text-foreground px-2 items-center justify-center"
+      class="flex-1 flex gap-1 border-y border-border text-lg text-foreground px-2 items-center justify-center"
     >
-      <Icon class="size-4 f7--square" />
+      <Icon class="size-6 f7--square" />
       {{ appRadiusStore.currentRadius }}
     </span>
     <Button
       :disabled="!appRadiusStore.canGoNext"
       @click="appRadiusStore.setMoreRadius"
-      size="sm"
+      size="lg"
       variant="outline"
       class="rounded-l-none !shadow-none px-1.5"
     >
-      <Icon class="size-5 f7--chevron-right" />
+      <Icon class="size-6 f7--chevron-right" />
     </Button>
   </div>
 </template>

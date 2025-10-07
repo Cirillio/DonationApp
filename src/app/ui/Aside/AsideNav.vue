@@ -14,7 +14,7 @@ const router = useRouter()
       <li v-for="link in links" :key="link.name" class="w-full flex">
         <AsideNavButton :active="link.name === activeLink?.name" @click="router.push(link.url)">
           <template v-slot:leading>
-            <Icon :class="[link.icon, 'size-5']" />
+            <Icon :class="[link.icon, 'size-6']" />
           </template>
 
           <template v-slot:label>
