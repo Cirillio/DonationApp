@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import type { blankSchema } from './types'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 const dateRegex = /^\d{2}\.\d{2}\.\d{4}$/
 
@@ -45,12 +44,4 @@ const birthSchema = z
 
 const isGroupSchema = z.boolean().optional()
 
-const fullBlankSchema = (getPhoneCode: () => string): blankSchema =>
-  z.object({
-    phone: phoneSchema(getPhoneCode),
-    name: nameSchema,
-    birth: birthSchema,
-    isGroup: isGroupSchema,
-  })
-
-export { fullBlankSchema, phoneSchema, nameSchema, birthSchema, isGroupSchema }
+export { phoneSchema, nameSchema, birthSchema, isGroupSchema }

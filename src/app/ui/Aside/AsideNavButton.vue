@@ -10,7 +10,7 @@ defineProps({
 <template>
   <Button
     :variant="active ? 'secondary' : 'outline'"
-    size="sm"
+    size="lg"
     class="lg:w-full gap-2 justify-start max-lg:aspect-square max-lg:p-2"
   >
     <slot name="leading" />

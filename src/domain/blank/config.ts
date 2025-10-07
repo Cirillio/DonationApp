@@ -1,6 +1,6 @@
 import { BlankSchema } from './types'
 
-const DEFAULT_BLANK_FORM: Partial<BlankSchema> = {
+const DEFAULT_BLANK_FORM: BlankSchema = {
   name: '',
   phone: '',
   birth: '',
