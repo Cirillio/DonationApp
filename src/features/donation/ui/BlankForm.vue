@@ -1,17 +1,14 @@
 <script lang="ts" setup>
-import { watch, onBeforeUnmount, onMounted } from 'vue'
+import { watch, computed } from 'vue'
 import { FormField } from '@/shared/ui/form'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/domain/blank/schema'
 import { BlankSchema } from '@/domain/blank/types'
-import { DEFAULT_BLANK_FORM } from '@/domain/blank/default'
+import { DEFAULT_BLANK_FORM } from '@/domain/blank/config'
 import { PHONE_SPECS, DEFAULT_PHONE_SPEC } from '@/features/phone-input/data/phone-specs'
 import { useCodeSelector } from '@/features/phone-input/composables/useCodeSelector'
 import parsePhoneNumber from 'libphonenumber-js'
-import { useDonationStore } from '@/features/donate-form/model/donation-store'
-
-const donationStore = useDonationStore()
 
 const {
   selectedSpec,
@@ -27,6 +24,23 @@ const donorBlank = useForm<BlankSchema>({
   name: 'donationBlank',
 })
 
+const resetPhoneField = () => {
+  donorBlank.setFieldValue('phone', DEFAULT_BLANK_FORM.phone, false)
+  donorBlank.validateField('phone', {
+    mode: 'silent',
+  })
+}
+
+watch(selectedSpec, () => resetPhoneField(), {
+  immediate: true,
+})
+
+defineExpose({
+  isValid: computed(() => donorBlank.meta.value.valid),
+  values: computed(() => donorBlank.values),
+  reset: () => donorBlank.resetForm({ values: DEFAULT_BLANK_FORM }),
+})
+
 const onPastePhone = (e: ClipboardEvent) => {
   e.preventDefault()
   const pasted = e.clipboardData?.getData('text') || ''
@@ -37,37 +51,6 @@ const onPastePhone = (e: ClipboardEvent) => {
     donorBlank.setFieldValue('phone', phone)
   }
 }
-
-const resetPhoneField = () => {
-  donorBlank.resetField('phone')
-  donorBlank.validateField('phone', {
-    mode: 'silent',
-  })
-}
-
-watch(selectedSpec, () => resetPhoneField(), {
-  immediate: true,
-})
-
-watch(
-  () => donorBlank.values,
-  (values) => (donationStore.blankForm = { ...values }),
-  {
-    deep: true,
-    immediate: true,
-  }
-)
-
-watch(
-  () => donorBlank.meta.value.valid,
-  (valid) => donationStore.setBlankValidity(valid)
-)
-onMounted(() => {
-  donationStore.initValidator('donationBlank', donorBlank.validate)
-})
-onBeforeUnmount(() => {
-  donorBlank.resetForm({ values: DEFAULT_BLANK_FORM })
-})
 </script>
 
 <template>
@@ -81,7 +64,7 @@ onBeforeUnmount(() => {
       :validate-on-blur="!donorBlank.isFieldDirty"
     >
       <FormItem class="gap-1">
-        <FormLabel class="label-required gap-0.5 max-md:text-lg">Телефон </FormLabel>
+        <FormLabel class="label-required gap-0.5 max-md:text-lg">Телефон</FormLabel>
         <div class="flex rounded-md shadow-xs max-md:*:text-lg">
           <div
             class="text-foreground !opacity-100 px-3 flex rounded-md rounded-r-none items-center border-r-0 border border-border"
@@ -91,16 +74,14 @@ onBeforeUnmount(() => {
 
           <FormControl>
             <Input
-              v-model="componentField.modelValue"
-              @change="componentField.onChange"
-              @blur="componentField.onBlur"
-              class="rounded-none shadow-none max-md:min-h-11"
-              type="tel"
+              v-bind="componentField"
               @paste="onPastePhone"
               :placeholder="selectedSpec.mask"
               v-mask="currentMask"
               name="phone"
               inputmode="tel"
+              type="tel"
+              class="rounded-none shadow-none max-md:min-h-11"
             />
           </FormControl>
           <DropdownMenu>
@@ -117,7 +98,7 @@ onBeforeUnmount(() => {
               <DropdownMenuItem
                 v-for="spec in PHONE_SPECS"
                 :key="spec.id"
-                @select="() => selectPhoneCodeById(spec.id)"
+                @select="selectPhoneCodeById(spec.id)"
                 class="flex gap-1 px-3 text-sm max-md:text-base cursor-pointer"
                 :class="{
                   '!bg-secondary !text-secondary-foreground': selectedSpec?.code === spec.code,

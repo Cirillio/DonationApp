@@ -1,6 +1,6 @@
 import type { BorderRadius } from '@/domain/app/app-radius/types'
-import { BORDER_RADIUS } from '@/shared/config/radius'
-import { RADIUS_TYPES } from '@/shared/config/radius'
+import { BORDER_RADIUS } from '@/domain/app/app-radius/config'
+import { RADIUS_TYPES } from '@/domain/app/app-radius/config'
 import { DEFAULT_RADIUS } from '@/domain/app/app-radius/default'
 import { ref, computed } from 'vue'
 

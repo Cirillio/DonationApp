@@ -1,57 +1,41 @@
 <script lang="ts" setup>
-import { inject, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import FormCard from './FormCard.vue'
-import FormCardHeader from './FormCardHeader.vue'
-import BlankForm from '@/features/donate-form/ui/BlankForm.vue'
-import PayForm from '@/features/donate-form/ui/PayForm.vue'
-import { PAYMENT_AMOUNTS_MIN } from '@/domain/payment/default'
-import { useDonationStore } from '@/features/donate-form/model/donation-store'
+import BlankForm from '@/features/donation/ui/BlankForm.vue'
+import PayForm from '@/features/donation/ui/PayForm.vue'
+import { PAYMENT_AMOUNTS_MIN } from '@/domain/payment/config'
 import Dialog from '@/shared/ui/dialog/Dialog.vue'
 
-const donationStore = useDonationStore()
-const { bindFocus, isActive } = inject('useCardFocus') as any
+const blankFormRef = ref<InstanceType<typeof BlankForm>>()
+const payFormRef = ref<InstanceType<typeof PayForm>>()
 
-onBeforeUnmount(() => {
-  donationStore.resetAll
-  donationStore.clearValidators()
-})
+const isFormValid = computed(() => blankFormRef.value?.isValid && payFormRef.value?.isValid)
 
 const debugResults = ref()
 const dialogOpen = ref(false)
 
 const submit = async () => {
   dialogOpen.value = true
-  const res = await donationStore.validate()
-  console.log(res)
-  if (res) {
-    debugResults.value = res
-    return
-  }
-  debugResults.value = "something went wrong. maybe you're entered invalid data."
+  debugResults.value = 'donation sends successfully.'
 }
+
+onBeforeUnmount(() => {
+  blankFormRef.value?.reset()
+  payFormRef.value?.reset()
+})
 </script>
 
 <template>
   <section class="flex flex-col gap-2 z-30">
     <div class="flex max-md:flex-col gap-4">
       <FormCard
-        v-bind="bindFocus('blank')"
-        :class="{
-          'card-focused': isActive('blank'),
-          'opacity-90 md:opacity-50': isActive('payment'),
-        }"
+        title="Анкета"
+        :icon="'f7--person'"
+        :valid="blankFormRef?.isValid"
+        description="Заполните обязательные поля"
       >
-        <template v-slot:header>
-          <FormCardHeader
-            title="Анкета"
-            :icon="'f7--person'"
-            :valid="donationStore.blankValid"
-            description="Заполните обязательные поля"
-          />
-        </template>
-
         <template v-slot:content>
-          <BlankForm />
+          <BlankForm ref="blankFormRef" />
         </template>
 
         <template v-slot:footer>
@@ -60,23 +44,13 @@ const submit = async () => {
       </FormCard>
 
       <FormCard
-        v-bind="bindFocus('payment')"
-        :class="{
-          'card-focused': isActive('payment'),
-          'opacity-90 md:opacity-50': isActive('blank'),
-        }"
+        title="Оплата"
+        :icon="'f7--creditcard'"
+        :valid="payFormRef?.isValid"
+        :description="'Минимальная сумма: ' + PAYMENT_AMOUNTS_MIN.label + 'Р'"
       >
-        <template v-slot:header>
-          <FormCardHeader
-            title="Оплата"
-            :icon="'f7--creditcard'"
-            :valid="donationStore.payValid"
-            :description="'Минимальная сумма: ' + PAYMENT_AMOUNTS_MIN.label + 'Р'"
-          />
-        </template>
-
         <template v-slot:content>
-          <PayForm />
+          <PayForm ref="payFormRef" />
         </template>
 
         <template v-slot:footer>
@@ -92,14 +66,14 @@ const submit = async () => {
       class="md:ml-auto flex max-md:flex-col-reverse items-center max-md:justify-center gap-4 py-4"
     >
       <Button
-        variant="ghost"
+        variant="outline"
         size="sm"
-        class="max-md:text-xs dark:border-primary/50 dark:hover:border-primary border-accent/50 hover:border-accent"
+        class="max-md:text-xs dark:border-accent/50 dark:hover:border-accent border-accent/50 hover:border-accent"
         >Платёж активен? Нажмите здесь</Button
       >
       <Dialog
         :open="dialogOpen"
-        v-on:update:open="
+        @update:open="
           (v) => {
             if (!v) {
               dialogOpen = v
@@ -111,7 +85,7 @@ const submit = async () => {
       >
         <Button
           @click="submit"
-          :disabled="!donationStore.isValid"
+          :disabled="isFormValid"
           class="max-md:w-4/5 max-md:text-xl max-md:py-3 dark:bg-primary dark:text-primary-foreground dark:hover:shadow-primary/25 dark:shadow-black shadow-muted hover:shadow-accent/50 shadow-lg active:scale-99"
           variant="accent"
           size="lg"
