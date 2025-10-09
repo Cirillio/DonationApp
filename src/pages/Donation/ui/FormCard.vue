@@ -4,7 +4,7 @@
       class="flex gap-2 md:gap-3 max-md:my-4 items-center max-md:flex-col max-md:justify-center"
     >
       <div class="relative aspect-square grid rounded-full place-items-center overflow-hidden">
-        <Transition name="check-swap" mode="out-in">
+        <Transition name="check-swap" mode="default">
           <Icon
             :key="valid"
             :variant="valid ? 'secondary' : 'outline'"
@@ -58,7 +58,7 @@ defineProps({
 <style scoped>
 .check-swap-enter-active,
 .check-swap-leave-active {
-  transition: opacity 100ms ease-in, transform 100ms ease-out;
+  transition: opacity 200ms ease-in-out, transform 200ms ease-out;
   transform-origin: center;
 }
 

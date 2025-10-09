@@ -1,5 +1,18 @@
 import { z } from 'zod'
 import { isValidPhoneNumber } from 'libphonenumber-js'
+
+const parseBirthDate = (val: string): Date | null => {
+  const [day, month, year] = val.split('.').map(Number)
+  const date = new Date(year, month - 1, day)
+
+  // Проверка что дата валидна
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+    return null
+  }
+
+  return date
+}
+
 const dateRegex = /^\d{2}\.\d{2}\.\d{4}$/
 
 const phoneSchema = (getPhoneCode: () => string) =>
@@ -20,25 +33,18 @@ const nameSchema = z
 const birthSchema = z
   .string()
   .nonempty('Пожалуйста, заполните дату рождения.')
-  .regex(dateRegex, 'Неверный формат даты.')
+  .regex(dateRegex, 'Неверный формат даты (дд.мм.гггг)')
+  .refine((val) => parseBirthDate(val) !== null, 'Такой даты не существует.')
   .refine((val) => {
-    const [day, month, year] = val.split('.').map(Number)
-    const date = new Date(year, month - 1, day)
-    // Проверка что дата валидна и соответствует введённой
-    return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
-  }, 'Такой даты не существует.')
-  .refine((val) => {
-    const [day, month, year] = val.split('.').map(Number)
-    const date = new Date(year, month - 1, day)
-    const today = new Date()
-    const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate())
+    const date = parseBirthDate(val)!
+    const eighteenYearsAgo = new Date()
+    eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18)
     return date <= eighteenYearsAgo
   }, 'Вам должно быть не менее 18 лет.')
   .refine((val) => {
-    const [day, month, year] = val.split('.').map(Number)
-    const date = new Date(year, month - 1, day)
-    const today = new Date()
-    const hundredYearsAgo = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate())
+    const date = parseBirthDate(val)!
+    const hundredYearsAgo = new Date()
+    hundredYearsAgo.setFullYear(hundredYearsAgo.getFullYear() - 100)
     return date >= hundredYearsAgo
   }, 'Возраст не может быть больше 100 лет.')
 

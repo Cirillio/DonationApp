@@ -85,9 +85,9 @@ onBeforeUnmount(() => {
       >
         <Button
           @click="submit"
-          :disabled="isFormValid"
-          class="max-md:w-4/5 text-2xl shadow-lg shadow-accent/15 hover:shadow-accent/35 transition-shadow opacity-90 hover:opacity-100"
-          variant="accent"
+          :disabled="!isFormValid"
+          class="max-md:w-4/5 text-3xl shadow-md shadow-primary/15 hover:shadow-primary/35 transition-all hover:shadow-lg"
+          variant="default"
           size="lg"
           >Пожертвовать</Button
         >

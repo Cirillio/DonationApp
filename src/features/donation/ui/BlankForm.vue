@@ -25,7 +25,9 @@ const donorBlank = useForm<BlankSchema>({
 })
 
 const resetPhoneField = () => {
-  donorBlank.setFieldValue('phone', DEFAULT_BLANK_FORM.phone, false)
+  donorBlank.resetField('phone', {
+    value: DEFAULT_BLANK_FORM.phone,
+  })
   donorBlank.validateField('phone', {
     mode: 'silent',
   })
@@ -57,11 +59,11 @@ const onPastePhone = (e: ClipboardEvent) => {
   <div class="flex flex-col gap-4">
     <FormField
       name="phone"
-      v-slot="{ componentField }"
       :rules="toTypedSchema(phoneSchema(() => selectedSpec.code || ''))"
       :validate-on-input="false"
       :validate-on-model-update="false"
       :validate-on-blur="!donorBlank.isFieldDirty"
+      v-slot="{ componentField }"
     >
       <FormItem class="gap-1">
         <FormLabel class="label-required gap-0.5 text-lg">Телефон</FormLabel>
@@ -74,7 +76,9 @@ const onPastePhone = (e: ClipboardEvent) => {
 
           <FormControl>
             <Input
-              v-bind="componentField"
+              v-model="componentField.modelValue"
+              @blur="componentField.onBlur"
+              @change="componentField.onChange"
               @paste="onPastePhone"
               :placeholder="selectedSpec.mask"
               v-mask="currentMask"
@@ -91,22 +95,21 @@ const onPastePhone = (e: ClipboardEvent) => {
               </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent
-              :align="'end'"
-              class="min-w-[var(--radix-dropdown-menu-trigger-width)] gap-1 duration-150 flex flex-col"
-            >
+            <DropdownMenuContent :align="'end'" class="duration-75 ease-linear flex flex-col">
               <DropdownMenuItem
                 v-for="spec in PHONE_SPECS"
                 :key="spec.id"
                 @select="selectPhoneCodeById(spec.id)"
-                class="flex gap-1 px-3 text-sm max-md:text-base md:text-lg cursor-pointer"
-                :class="{
-                  '!bg-secondary !text-secondary-foreground': selectedSpec?.code === spec.code,
-                }"
+                class="cursor-pointer p-0"
               >
-                <span>{{ spec.name }}</span>
-
-                <span class="ml-auto">({{ spec.code }})</span>
+                <Button
+                  :variant="selectedSpec?.code === spec.code ? 'secondary' : 'outline'"
+                  class="w-full space-x-1 rounded-none duration-300 border-0"
+                  size="lg"
+                >
+                  <span>{{ spec.name }}</span>
+                  <span class="ml-auto">({{ spec.code }})</span>
+                </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -119,18 +122,20 @@ const onPastePhone = (e: ClipboardEvent) => {
 
     <FormField
       name="name"
-      v-slot="{ componentField }"
       :rules="toTypedSchema(nameSchema)"
       :validate-on-input="false"
       :validate-on-model-update="false"
       :validate-on-blur="!donorBlank.isFieldDirty"
+      v-slot="{ componentField }"
     >
       <FormItem class="gap-1">
         <FormLabel class="label-optional gap-0.5 text-lg">Имя</FormLabel>
 
         <FormControl>
           <Input
-            v-bind="componentField"
+            v-model="componentField.modelValue"
+            @blur="componentField.onBlur"
+            @change="componentField.onChange"
             placeholder="Хотя бы 3 символа"
             type="text"
             class="max-md:min-h-11 text-lg"
@@ -147,10 +152,10 @@ const onPastePhone = (e: ClipboardEvent) => {
 
     <FormField
       name="birth"
+      v-slot="{ componentField }"
       :rules="toTypedSchema(birthSchema)"
       :validate-on-input="false"
       :validate-on-blur="!donorBlank.isFieldDirty"
-      v-slot="{ componentField }"
     >
       <FormItem class="gap-1">
         <FormLabel class="label-required gap-0.5 text-lg">Дата рождения</FormLabel>
@@ -158,8 +163,8 @@ const onPastePhone = (e: ClipboardEvent) => {
         <FormControl>
           <Input
             v-model="componentField.modelValue"
-            @change="componentField.onChange"
             @blur="componentField.onBlur"
+            @change="componentField.onChange"
             type="text"
             placeholder="дд.мм.гггг"
             name="birth"
@@ -174,12 +179,7 @@ const onPastePhone = (e: ClipboardEvent) => {
       </FormItem>
     </FormField>
 
-    <FormField
-      name="isGroup"
-      v-slot="{ componentField }"
-      :rules="toTypedSchema(isGroupSchema)"
-      :validate-on-blur="!donorBlank.isFieldDirty"
-    >
+    <FormField name="isGroup" v-slot="{ componentField }" :rules="toTypedSchema(isGroupSchema)">
       <FormItem class="gap-1">
         <FormControl>
           <div class="flex flex-col">

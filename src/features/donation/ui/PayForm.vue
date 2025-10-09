@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { FormField } from '@/shared/ui/form'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useCurrencyInput, CurrencyDisplay } from 'vue-currency-input'
@@ -10,12 +10,7 @@ import { handleNumericInput } from '@/shared/lib/numeric-input'
 import { amountSchema, noteSchema, typeSchema } from '@/domain/payment/schema'
 import { PaySchema } from '@/domain/payment/types'
 
-const {
-  formattedValue: currencyFormatted,
-  setValue: currencySet,
-  numberValue: currencyNumber,
-  inputRef: currencyRef,
-} = useCurrencyInput({
+const { formattedValue, inputRef, numberValue, setValue } = useCurrencyInput({
   currency: 'RUB',
   currencyDisplay: CurrencyDisplay.hidden,
   precision: 2,
@@ -26,23 +21,24 @@ const donorPay = useForm<PaySchema>({
   name: 'donationPayment',
 })
 
-const isAmountSelected = (amountValue: number): boolean => amountValue === currencyNumber.value
+watch(numberValue, (value) => {
+  donorPay.setFieldValue('amount', value ?? 0, false)
+})
 
-const selectAmount = (amountValue: number) => {
-  const isSelected = isAmountSelected(amountValue)
+watch(
+  () => donorPay.values.amount,
+  (value) => {
+    if (value !== numberValue.value) {
+      setValue(value ? value : null)
+    }
+  }
+)
 
-  currencySet(isSelected ? null : amountValue)
-
-  donorPay.setFieldValue(
-    'amount',
-    isSelected ? DEFAULT_PAY_FORM.amount : amountValue,
-    isSelected ? false : true
-  )
-
-  donorPay.validateField('amount', {
-    mode: isSelected ? 'silent' : 'force',
-  })
+const selectAmount = (amount: number) => {
+  donorPay.setFieldValue('amount', amount)
 }
+
+const isAmountSelected = (amount: number) => numberValue.value === amount
 
 const getPaymentAmountButtonVariant = (amountValue: number): 'secondary' | 'outline' =>
   isAmountSelected(amountValue) ? 'secondary' : 'outline'
@@ -60,19 +56,17 @@ defineExpose({
       name="amount"
       :rules="toTypedSchema(amountSchema)"
       :validate-on-blur="!donorPay.isFieldDirty"
-      v-slot="{ setValue, handleBlur, handleInput }"
+      v-slot="{ setValue, handleBlur }"
     >
       <FormItem class="gap-1">
         <FormLabel class="label-required gap-0.5 text-lg">Сумма</FormLabel>
         <div class="relative">
           <FormControl>
             <Input
-              ref="currencyRef"
-              v-model="currencyFormatted"
-              name="amount"
               @blur="handleBlur"
-              @input="(e: HTMLInputElement) => handleNumericInput(e?.value, () => handleInput(e))"
-              @change="() => setValue(currencyNumber)"
+              @change="() => setValue(numberValue)"
+              ref="inputRef"
+              v-model="formattedValue"
               inputmode="numeric"
               placeholder="100,00"
               class="max-md:min-h-11 text-lg pr-10"
@@ -136,7 +130,9 @@ defineExpose({
         <FormControl>
           <Textarea
             placeholder="Можете указать пожелания или список участников, если участвует коллектив."
-            v-bind="componentField"
+            v-model="componentField.modelValue"
+            @blur="componentField.onBlur"
+            @change="componentField.onChange"
             class="resize-none min-h-24 text-base"
           />
         </FormControl>
