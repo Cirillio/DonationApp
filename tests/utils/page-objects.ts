@@ -40,7 +40,8 @@ export class DonationPage {
     this.phoneCodeDropdown = page.locator('button:has(.f7--chevron-down)')
     this.nameInput = page.getByLabel('Имя')
     this.birthInput = page.getByLabel('Дата рождения')
-    this.isGroupCheckbox = page.getByText('От лица группы')
+    // isGroupCheckbox is actually a Button (CheckBlock component), not a checkbox
+    this.isGroupCheckbox = page.getByRole('button').filter({ hasText: 'От лица группы' })
 
     // Payment Form Locators
     this.amountInput = page.getByLabel('Сумма')
