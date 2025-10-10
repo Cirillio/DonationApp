@@ -125,7 +125,7 @@ export class DonationPage {
    * Select payment method (СБП or Банк карта)
    */
   async selectPaymentMethod(method: 'sbp' | 'card') {
-    const methodText = method === 'sbp' ? 'СБП' : 'Банк карта'
+    const methodText = method === 'sbp' ? 'СБП' : 'Картой онлайн'
     await this.page.getByText(methodText, { exact: true }).click()
   }
 
