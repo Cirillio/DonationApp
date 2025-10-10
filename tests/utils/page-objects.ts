@@ -101,9 +101,17 @@ export class DonationPage {
 
   /**
    * Select preset amount by clicking button
+   * Formats the amount to match button labels like "500,00" or "1 000,00"
    */
   async selectPresetAmount(amount: number) {
-    await this.page.getByRole('button', { name: String(amount), exact: true }).click()
+    // Format number to match button labels with Russian locale
+    // 500 → "500,00"
+    // 1000 → "1 000,00"
+    const formatted = amount.toLocaleString('ru-RU', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+    await this.page.getByRole('button', { name: formatted, exact: true }).click()
   }
 
   /**
