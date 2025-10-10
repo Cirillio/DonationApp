@@ -41,12 +41,28 @@ jobs:
           retention-days: 30
 
   deploy:
-    needs: test # Деплой только если тесты прошли!
+    needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm run build
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2
