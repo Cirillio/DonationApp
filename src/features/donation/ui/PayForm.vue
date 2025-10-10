@@ -4,11 +4,9 @@ import { computed, watch } from 'vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useCurrencyInput, CurrencyDisplay } from 'vue-currency-input'
-import { PAYMENT_AMOUNTS, DEFAULT_PAY_FORM } from '@/domain/payment/config'
-import { PAYMENT_TYPES } from '@/domain/payment/config'
-import { handleNumericInput } from '@/shared/lib/numeric-input'
+import { PAYMENT_AMOUNTS, DEFAULT_PAY_FORM, PAYMENT_METHODS } from '@/domain/payment/config'
 import { amountSchema, noteSchema, typeSchema } from '@/domain/payment/schema'
-import { PaySchema } from '@/domain/payment/types'
+import { PaymentFormValues } from '@/domain/payment/types'
 
 const { formattedValue, inputRef, numberValue, setValue } = useCurrencyInput({
   currency: 'RUB',
@@ -16,7 +14,7 @@ const { formattedValue, inputRef, numberValue, setValue } = useCurrencyInput({
   precision: 2,
 })
 
-const donorPay = useForm<PaySchema>({
+const donorPay = useForm<PaymentFormValues>({
   initialValues: DEFAULT_PAY_FORM,
   name: 'donationPayment',
 })
@@ -98,7 +96,7 @@ defineExpose({
         <FormControl>
           <div class="flex flex-col gap-2">
             <CheckBlock
-              v-for="p in PAYMENT_TYPES"
+              v-for="p in PAYMENT_METHODS"
               :key="p.type"
               :checked="p.type === value"
               :showCheckbox="false"

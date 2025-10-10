@@ -1,5 +1,5 @@
+import { CodeSelectorParams, PhoneSpec } from '@/domain/phone-input/types'
 import { ref, watch } from 'vue'
-import type { PhoneSpec, CodeSelectorParams } from '../model/types'
 
 const useCodeSelector = (params: CodeSelectorParams) => {
   const selectedSpec = ref<PhoneSpec>(

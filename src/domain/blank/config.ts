@@ -1,9 +1,9 @@
-import { BlankSchema } from './types'
+import { BlankFormValues } from './types'
 
-const DEFAULT_BLANK_FORM: BlankSchema = {
-  name: '',
-  phone: '',
-  birth: '',
+const DEFAULT_BLANK_FORM: BlankFormValues = {
+  name: undefined,
+  phone: undefined,
+  birth: undefined,
   isGroup: false,
 }
 

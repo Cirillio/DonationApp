@@ -5,7 +5,6 @@ const parseBirthDate = (val: string): Date | null => {
   const [day, month, year] = val.split('.').map(Number)
   const date = new Date(year, month - 1, day)
 
-  // Проверка что дата валидна
   if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
     return null
   }
@@ -48,6 +47,6 @@ const birthSchema = z
     return date >= hundredYearsAgo
   }, 'Возраст не может быть больше 100 лет.')
 
-const isGroupSchema = z.boolean().optional()
+const isGroupSchema = z.boolean()
 
 export { phoneSchema, nameSchema, birthSchema, isGroupSchema }

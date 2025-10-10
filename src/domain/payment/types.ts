@@ -1,17 +1,17 @@
-import { PAYMENT_TYPE_VALUES } from './config'
+export const PAYMENT_TYPES = ['sbp', 'bankcard'] as const
 
-export type PaymentType = (typeof PAYMENT_TYPE_VALUES)[number]
+export type PaymentFormValues = {
+  amount: number | undefined
+  type: PaymentType | undefined
+  note: string | undefined
+}
 
-export type Payment = {
+export type PaymentType = (typeof PAYMENT_TYPES)[number]
+
+export type PaymentMethod = {
   type: PaymentType
   name: string
   icon: string
-}
-
-export type PaySchema = {
-  amount: number | undefined
-  type: PaymentType | undefined
-  note?: string | undefined
 }
 
 export type PaymentAmount = {

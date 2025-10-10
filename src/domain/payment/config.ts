@@ -1,16 +1,14 @@
-import { Payment, PaymentAmount, PaySchema } from '@/domain/payment/types'
+import { PaymentMethod, PaymentAmount, PaymentFormValues } from '@/domain/payment/types'
 import sbp_icon from '@/shared/assets/icons/payment/SBP.svg'
 import bankcard_icon from '@/shared/assets/icons/payment/bankcard.svg'
 
-const DEFAULT_PAY_FORM: PaySchema = {
+const DEFAULT_PAY_FORM: PaymentFormValues = {
   amount: undefined,
   type: undefined,
   note: undefined,
 }
 
-const PAYMENT_TYPE_VALUES = ['sbp', 'bankcard'] as const
-
-const PAYMENT_TYPES: Payment[] = [
+const PAYMENT_METHODS: PaymentMethod[] = [
   {
     type: 'sbp',
     name: 'СБП',
@@ -52,11 +50,4 @@ const PAYMENT_AMOUNTS: PaymentAmount[] = [
 
 const PAYMENT_AMOUNTS_MIN = PAYMENT_AMOUNTS[0]
 
-export {
-  DEFAULT_PAY_FORM,
-  PAYMENT_TYPES,
-  PAYMENT_TYPE_VALUES,
-  PAYMENT_AMOUNTS,
-  PAYMENT_AMOUNTS_MIN,
-}
-export type PaymentAmounts = typeof PAYMENT_AMOUNTS
+export { DEFAULT_PAY_FORM, PAYMENT_METHODS, PAYMENT_AMOUNTS, PAYMENT_AMOUNTS_MIN }

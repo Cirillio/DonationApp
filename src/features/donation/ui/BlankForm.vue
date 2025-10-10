@@ -4,11 +4,11 @@ import { FormField } from '@/shared/ui/form'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/domain/blank/schema'
-import { BlankSchema } from '@/domain/blank/types'
+import { BlankFormValues } from '@/domain/blank/types'
 import { DEFAULT_BLANK_FORM } from '@/domain/blank/config'
-import { PHONE_SPECS, DEFAULT_PHONE_SPEC } from '@/features/phone-input/data/phone-specs'
 import { useCodeSelector } from '@/features/phone-input/composables/useCodeSelector'
 import parsePhoneNumber from 'libphonenumber-js'
+import { DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/domain/phone-input/config'
 
 const {
   selectedSpec,
@@ -19,7 +19,7 @@ const {
   phoneSpecs: PHONE_SPECS,
 })
 
-const donorBlank = useForm<BlankSchema>({
+const donorBlank = useForm<BlankFormValues>({
   initialValues: DEFAULT_BLANK_FORM,
   name: 'donationBlank',
 })

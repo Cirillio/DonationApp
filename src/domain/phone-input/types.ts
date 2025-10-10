@@ -5,7 +5,7 @@ export type CodeSelectorParams = {
 
 export type PhoneSpecId = 'RU' | 'TJ'
 
-export interface PhoneSpec {
+export type PhoneSpec = {
   id: PhoneSpecId
   icon: string
   name: string
