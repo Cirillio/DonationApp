@@ -6,6 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
+    "test": "playwright test",
+    "test:e2e": "playwright test",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report",
+    "test:ui": "playwright test --ui",
     "preview": "vite preview",
     "sa": "pnpm dlx shadcn-vue@latest add"
   },
