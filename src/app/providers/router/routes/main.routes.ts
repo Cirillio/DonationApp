@@ -3,33 +3,19 @@ import { mainNavigationLinks } from '@/domain/main-navigation/config'
 
 /**
  * Основные маршруты приложения (главные страницы с навигацией)
+ * Маршруты генерируются автоматически из конфигурации mainNavigationLinks
  */
-export const mainRoutes: RouteRecordRaw[] = [
-  {
-    path: mainNavigationLinks[0].url,
-    name: mainNavigationLinks[0].name,
-    component: () => import('@/pages/Donation/Page.vue'),
-    meta: {
-      title: mainNavigationLinks[0].title,
-      index: 0,
-    },
+const pageComponents: Record<string, () => Promise<any>> = {
+  donation: () => import('@/pages/Donation/Page.vue'),
+  stats: () => import('@/pages/Statistic/StatsView.vue'),
+  news: () => import('@/pages/News/NewsView.vue'),
+}
+
+export const mainRoutes: RouteRecordRaw[] = mainNavigationLinks.map((link) => ({
+  path: link.url,
+  name: link.name,
+  component: pageComponents[link.name],
+  meta: {
+    title: link.title,
   },
-  {
-    path: mainNavigationLinks[1].url,
-    name: mainNavigationLinks[1].name,
-    component: () => import('@/pages/Statistic/StatsView.vue'),
-    meta: {
-      title: mainNavigationLinks[1].title,
-      index: 1,
-    },
-  },
-  {
-    path: mainNavigationLinks[2].url,
-    name: mainNavigationLinks[2].name,
-    component: () => import('@/pages/News/NewsView.vue'),
-    meta: {
-      title: mainNavigationLinks[2].title,
-      index: 2,
-    },
-  },
-]
+}))

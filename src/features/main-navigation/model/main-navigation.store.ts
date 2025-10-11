@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia'
-import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import type { MainNavigationLink } from '@/domain/app/navigation/types'
 import { mainNavigationLinks } from '@/domain/main-navigation/config'
+import type { TransitionDirection } from '@/domain/app/page-slider/types'
 
 export const useMainNavigationStore = defineStore('mainNavigation', () => {
-  const route = useRoute()
+  const router = useRouter()
 
   // State
   const activeLink = ref<MainNavigationLink>()
+  const transitionDirection = ref<TransitionDirection>('slide-initial')
 
   // Getters
   const links = computed(() => {
@@ -41,24 +43,45 @@ export const useMainNavigationStore = defineStore('mainNavigation', () => {
   const canGoNext = computed(() => !!nextLink.value)
 
   // Actions
+  const getIndexByName = (name: string | undefined): number => {
+    if (!name) return -1
+    return mainNavigationLinks.findIndex((link) => link.name === name)
+  }
+
   const setActiveLink = (linkName: string) => {
     activeLink.value = mainNavigationLinks.find((link) => link.name === linkName)
   }
 
-  // Watch route changes
-  watch(
-    () => route.name,
-    (newName) => {
-      if (newName && typeof newName === 'string') {
-        setActiveLink(newName)
-      }
-    },
-    { immediate: true }
-  )
+  const setTransition = (toName: string | undefined, fromName: string | undefined) => {
+    // Если это первый переход
+    if (!fromName) {
+      transitionDirection.value = 'slide-initial'
+      return
+    }
+
+    const toIndex = getIndexByName(toName)
+    const fromIndex = getIndexByName(fromName)
+
+    // Если индексы найдены, определяем направление
+    if (toIndex !== -1 && fromIndex !== -1) {
+      transitionDirection.value = toIndex > fromIndex ? 'slide-down' : 'slide-up'
+    } else {
+      transitionDirection.value = 'slide-down'
+    }
+  }
+
+  const goNext = () => {
+    if (nextLink.value && canGoNext.value) router.push(nextLink.value.url)
+  }
+
+  const goPrev = () => {
+    if (prevLink.value && canGoPrev.value) router.push(prevLink.value.url)
+  }
 
   return {
     // State
     activeLink,
+    transitionDirection,
     // Getters
     links,
     activeIndex,
@@ -68,5 +91,8 @@ export const useMainNavigationStore = defineStore('mainNavigation', () => {
     canGoNext,
     // Actions
     setActiveLink,
+    setTransition,
+    goNext,
+    goPrev,
   }
 })

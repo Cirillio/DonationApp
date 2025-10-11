@@ -1,25 +1,23 @@
 import type { Router } from 'vue-router'
 import { APP_TITLE } from '@/app/shared/config/app-main'
-import { pageSliderObj } from '@/domain/app/page-slider/types'
+import { useMainNavigationStore } from '@/features/main-navigation'
 
 /**
  * Настройка navigation guards для роутера
  */
 export function setupGuards(router: Router) {
-  // Guard для определения направления анимации перехода
+  // Guard для обновления состояния навигации и направления анимации
   router.beforeEach((to, from, next) => {
-    const toIndex = to.meta.index as number | undefined
-    const fromIndex = from.meta.index as number | undefined
+    const mainNavigationStore = useMainNavigationStore()
 
-    // Если это первый переход (from.name === undefined), то 'initial'
-    if (!from.name) {
-      to.meta.transitionDirection = pageSliderObj['slide-initial']
-    } else if (toIndex !== undefined && fromIndex !== undefined) {
-      to.meta.transitionDirection =
-        toIndex > fromIndex ? pageSliderObj['slide-down'] : pageSliderObj['slide-up']
-    } else {
-      to.meta.transitionDirection = pageSliderObj['slide-down']
+    // Обновляем активную ссылку и направление перехода
+    if (to.name && typeof to.name === 'string') {
+      mainNavigationStore.setActiveLink(to.name)
     }
+    mainNavigationStore.setTransition(
+      to.name as string | undefined,
+      from.name as string | undefined
+    )
 
     next()
   })
