@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import AsideNav from './AsideNav.vue'
+import MainNavigation from './MainNavigation.vue'
 import AppLogo from '../AppLogo.vue'
 import { APP_TITLE } from '@/app/shared/config/app-main'
-import AsideSocials from './AsideSocials.vue'
+import Socials from './Socials.vue'
 import ThemeToggler from '@/features/app-theme/ui/ThemeToggler.vue'
 import RadiusToggler from '@/features/app-radius/ui/RadiusToggler.vue'
 </script>
@@ -18,9 +18,9 @@ import RadiusToggler from '@/features/app-radius/ui/RadiusToggler.vue'
       }}</span>
     </div>
     <Separator />
-    <AsideNav />
+    <MainNavigation />
     <Separator />
-    <AsideSocials />
+    <Socials />
 
     <Separator class="mt-auto" />
 

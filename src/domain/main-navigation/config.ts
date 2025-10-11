@@ -1,6 +1,6 @@
-import { NavLink } from '@/domain/app/navigation/types'
+import { MainNavigationLink } from '@/domain/app/navigation/types'
 
-export const navLinks = [
+export const mainNavigationLinks = [
   {
     name: 'donation',
     title: 'Пожертвования',
@@ -19,4 +19,4 @@ export const navLinks = [
     url: '/news',
     icon: 'f7--envelope',
   },
-] as NavLink[]
+] as MainNavigationLink[]
