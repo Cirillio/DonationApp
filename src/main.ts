@@ -7,7 +7,7 @@ import { appRadiusProvider } from './app/providers/appRadiusProvider'
 import VueTheMask from 'vue-the-mask'
 import router from './app/providers/router'
 import App from './app/App.vue'
-import '@/shared/styles/style.css'
+import '@/styles/style.css'
 
 const app = createApp(App)
 const pinia = createPinia()

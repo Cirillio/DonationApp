@@ -40,5 +40,5 @@ const route = useRoute()
 </template>
 
 <style>
-@import '@/shared/styles/page-slider.css';
+@import '@/styles/page-slider.css';
 </style>
