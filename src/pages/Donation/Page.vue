@@ -3,7 +3,7 @@ import DonationForm from '../../features/donation/ui/DonationForm.vue'
 import Body from './ui/Body.vue'
 </script>
 <template>
-  <div class="min-h-full flex relative overflow-hidden pb-8">
+  <div class="w-full min-h-full relative overflow-y-scroll pb-8">
     <div class="flex min-h-full w-full items-center">
       <Body>
         <template v-slot:body>

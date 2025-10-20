@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import AsideNavButton from './AsideNavButton.vue'
+import NavigationButton from './NavigationButton.vue'
 import { SOCIALS } from '@/app/shared/config/socials'
 </script>
 
@@ -11,7 +11,7 @@ import { SOCIALS } from '@/app/shared/config/socials'
     target="_blank"
     class="w-full"
   >
-    <AsideNavButton :class="[social.colorClass]" :active="true">
+    <NavigationButton :class="[social.colorClass]" :active="true">
       <template v-slot:leading>
         <Icon class="size-5" :class="[social.icon]" />
       </template>
@@ -19,6 +19,6 @@ import { SOCIALS } from '@/app/shared/config/socials'
       <template v-slot:label>
         <span class="max-lg:hidden">{{ social.label }}</span>
       </template>
-    </AsideNavButton>
+    </NavigationButton>
   </a>
 </template>

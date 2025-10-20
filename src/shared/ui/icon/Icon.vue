@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<IconProps>(), {
 
 <template>
   <div
-    class="w-fit h-fit rounded-full transition-colors duration-150"
+    class="w-fit h-fit rounded-full transition-all duration-150"
     :class="{
       'p-0': props.variant === 'default',
       'p-2 shadow-xs border border-transparent bg-card text-card-foreground':

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeMount, onBeforeUnmount, ref } from 'vue'
 import FormCard from '@/pages/Donation/ui/FormCard.vue'
 import BlankForm from '@/features/donation/ui/BlankForm.vue'
 import PayForm from '@/features/donation/ui/PayForm.vue'
@@ -18,6 +18,11 @@ const submit = async () => {
   dialogOpen.value = true
   debugResults.value = 'donation sends successfully.'
 }
+
+onBeforeMount(() => {
+  blankFormRef.value?.reset()
+  payFormRef.value?.reset()
+})
 
 onBeforeUnmount(() => {
   blankFormRef.value?.reset()

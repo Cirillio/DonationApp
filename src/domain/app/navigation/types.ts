@@ -1,4 +1,4 @@
-export type NavLink = {
+export type MainNavigationLink = {
   name: string
   title: string
   url: string
