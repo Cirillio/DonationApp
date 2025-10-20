@@ -1,6 +1,6 @@
 import { inject } from 'vue'
 import type { WritableComputedRef } from 'vue'
-import { BorderRadius } from '@/domain/app/app-radius/types'
+import { BorderRadius } from '@/lib/types'
 
 export function useAppRadius(): WritableComputedRef<BorderRadius> {
   const radiusConfig = inject<WritableComputedRef<BorderRadius>>('radiusConfig')

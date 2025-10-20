@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useColorMode, UseColorModeOptions } from '@vueuse/core'
-import type { AppTheme } from '@/domain/app/app-theme/types'
+import type { AppTheme } from '@/lib/types'
 
 export const useAppThemeStore = defineStore('appTheme', () => {
   const mode = useColorMode<AppTheme>({

@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { useAppRadius } from '@/app/composables/useAppRadius'
-import { RADIUS_TYPES } from '@/domain/app/app-radius/config'
-import { BORDER_RADIUS } from '@/domain/app/app-radius/config'
-import type { BorderRadius } from '@/domain/app/app-radius/types'
+import { RADIUS_TYPES } from '@/lib/constants'
+import { BORDER_RADIUS } from '@/lib/constants'
+import type { BorderRadius } from '@/lib/types'
 import { computed } from 'vue'
 
 const createAppRadiusStore = () => {

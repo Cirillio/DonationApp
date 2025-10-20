@@ -4,9 +4,9 @@ import { computed, watch } from 'vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useCurrencyInput, CurrencyDisplay } from 'vue-currency-input'
-import { PAYMENT_AMOUNTS, DEFAULT_PAY_FORM, PAYMENT_METHODS } from '@/domain/payment/config'
-import { amountSchema, noteSchema, typeSchema } from '@/domain/payment/schema'
-import { PaymentFormValues } from '@/domain/payment/types'
+import { PAYMENT_AMOUNTS, DEFAULT_PAY_FORM, PAYMENT_METHODS } from '@/lib/constants'
+import { amountSchema, noteSchema, typeSchema } from '@/lib/validations'
+import { PaymentFormValues } from '@/lib/types'
 
 const { formattedValue, inputRef, numberValue, setValue } = useCurrencyInput({
   currency: 'RUB',

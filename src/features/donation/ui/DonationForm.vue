@@ -3,7 +3,7 @@ import { computed, onBeforeMount, onBeforeUnmount, ref } from 'vue'
 import FormCard from '@/pages/Donation/ui/FormCard.vue'
 import BlankForm from '@/features/donation/ui/BlankForm.vue'
 import PayForm from '@/features/donation/ui/PayForm.vue'
-import { PAYMENT_AMOUNTS_MIN } from '@/domain/payment/config'
+import { PAYMENT_AMOUNTS_MIN } from '@/lib/constants'
 import Dialog from '@/shared/ui/dialog/Dialog.vue'
 
 const blankFormRef = ref<InstanceType<typeof BlankForm>>()

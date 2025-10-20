@@ -3,12 +3,12 @@ import { watch, computed } from 'vue'
 import { FormField } from '@/shared/ui/form'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/domain/blank/schema'
-import { BlankFormValues } from '@/domain/blank/types'
-import { DEFAULT_BLANK_FORM } from '@/domain/blank/config'
+import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/lib/validations'
+import { BlankFormValues } from '@/lib/types'
+import { DEFAULT_BLANK_FORM } from '@/lib/constants'
 import { useCodeSelector } from '@/features/phone-input/composables/useCodeSelector'
 import parsePhoneNumber from 'libphonenumber-js'
-import { DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/domain/phone-input/config'
+import { DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/lib/constants'
 
 const {
   selectedSpec,

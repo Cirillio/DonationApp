@@ -84,6 +84,5 @@ declare module 'vue' {
     TabsTrigger: typeof import('./src/shared/ui/tabs/TabsTrigger.vue')['default']
     Textarea: typeof import('./src/shared/ui/textarea/Textarea.vue')['default']
     TextSeparator: typeof import('./src/shared/ui/separator/TextSeparator.vue')['default']
-    ThemeToggler: typeof import('./src/shared/ui/theme/ThemeToggler.vue')['default']
   }
 }
