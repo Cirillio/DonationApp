@@ -6,17 +6,16 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/lib/validations'
 import { BlankFormValues } from '@/lib/types'
 import { DEFAULT_BLANK_FORM } from '@/lib/constants'
-import { useCodeSelector } from '@/features/phone-input/composables/useCodeSelector'
-import parsePhoneNumber from 'libphonenumber-js'
+import { usePhone } from '@/composables/usePhone'
 import { DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/lib/constants'
 
 const {
   selectedSpec,
   currentMask,
   selectById: selectPhoneCodeById,
-} = useCodeSelector({
+  parsePhoneFromClipboard,
+} = usePhone({
   defaultId: DEFAULT_PHONE_SPEC.id,
-  phoneSpecs: PHONE_SPECS,
 })
 
 const donorBlank = useForm<BlankFormValues>({
@@ -46,11 +45,9 @@ defineExpose({
 const onPastePhone = (e: ClipboardEvent) => {
   e.preventDefault()
   const pasted = e.clipboardData?.getData('text') || ''
-  const parsed = parsePhoneNumber(pasted, selectedSpec.value.id)
+  const parsed = parsePhoneFromClipboard(pasted)
   if (parsed) {
-    const formatted = parsed.formatInternational()
-    const phone = formatted.replace(selectedSpec.value.code, '')
-    donorBlank.setFieldValue('phone', phone)
+    donorBlank.setFieldValue('phone', parsed)
   }
 }
 </script>
