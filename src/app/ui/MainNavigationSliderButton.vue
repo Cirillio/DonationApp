@@ -9,21 +9,22 @@ defineProps<{
 </script>
 
 <template>
-  <div :class="['nav-button-wrapper', direction === 'up' ? 'pt-2' : 'pb-2']">
-    <Button
-      v-show="visible"
-      :key="label"
-      @click="navigate"
-      variant="outline"
-      size="lg"
-      :class="['nav-button', direction === 'up' ? 'nav-button-up' : 'nav-button-down']"
-    >
-      <Icon :class="['size-6', icon]" />
-      <div v-if="label">
-        {{ label }}
-      </div>
-    </Button>
-  </div>
+  <Transition name="fade-slide">
+    <div v-if="visible" :class="['nav-button-wrapper', direction === 'up' ? 'pt-2' : 'pb-2']">
+      <Button
+        :key="label"
+        @click="navigate"
+        variant="outline"
+        size="lg"
+        :class="['nav-button', direction === 'up' ? 'nav-button-up' : 'nav-button-down']"
+      >
+        <Icon :class="['size-6', icon]" />
+        <div v-if="label">
+          {{ label }}
+        </div>
+      </Button>
+    </div>
+  </Transition>
 </template>
 
 <style scoped>
@@ -76,5 +77,31 @@ defineProps<{
   transform: translateY(0.25rem);
   opacity: 0.8;
   scale: 0.98;
+}
+
+/* Fade-slide transition */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.fade-slide-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
 }
 </style>

@@ -62,12 +62,14 @@ export const useMainNavigationStore = defineStore('mainNavigation', () => {
     const toIndex = getIndexByName(toName)
     const fromIndex = getIndexByName(fromName)
 
-    // Если индексы найдены, определяем направление
-    if (toIndex !== -1 && fromIndex !== -1) {
-      transitionDirection.value = toIndex > fromIndex ? 'slide-down' : 'slide-up'
-    } else {
-      transitionDirection.value = 'slide-down'
+    // Если одна из страниц не главная (не в навигации), используем initial
+    if (toIndex === -1 || fromIndex === -1) {
+      transitionDirection.value = 'slide-initial'
+      return
     }
+
+    // Если обе страницы главные, определяем направление
+    transitionDirection.value = toIndex > fromIndex ? 'slide-down' : 'slide-up'
   }
 
   const goNext = () => {

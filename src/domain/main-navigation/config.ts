@@ -2,6 +2,12 @@ import { MainNavigationLink } from '@/domain/app/navigation/types'
 
 export const mainNavigationLinks = [
   {
+    name: 'home',
+    title: 'Главная',
+    url: '/',
+    icon: 'f7--house',
+  },
+  {
     name: 'donation',
     title: 'Пожертвования',
     url: '/donation',
