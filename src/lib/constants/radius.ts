@@ -1,4 +1,4 @@
-import { BorderRadius } from '@/domain/app/app-radius/types'
+import { BorderRadius } from '@/lib/types'
 
 export const BORDER_RADIUS = {
   none: '0rem',
@@ -12,3 +12,5 @@ export const BORDER_RADIUS = {
 } as const
 
 export const RADIUS_TYPES = Object.keys(BORDER_RADIUS) as BorderRadius[]
+
+export const DEFAULT_RADIUS: BorderRadius = 'md'

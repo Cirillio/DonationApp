@@ -1,12 +1,12 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
-import { appThemeProvider } from './app/providers/appThemeProvider'
-import { appRadiusProvider } from './app/providers/appRadiusProvider'
+import { appThemeProvider } from './providers/appThemeProvider'
+import { appRadiusProvider } from './providers/appRadiusProvider'
 
 import VueTheMask from 'vue-the-mask'
-import router from './app/providers/router'
-import App from './app/App.vue'
+import router from './router'
+import App from './App.vue'
 import '@/styles/style.css'
 
 const app = createApp(App)

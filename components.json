@@ -4,7 +4,7 @@
   "typescript": true,
   "tailwind": {
     "config": "",
-    "css": "src/shared/styles/style.css",
+    "css": "src/styles/style.css",
     "baseColor": "slate",
     "cssVariables": true,
     "prefix": ""
@@ -12,9 +12,9 @@
   "aliases": {
     "components": "@/components",
     "composables": "@/composables",
-    "utils": "@/shared/lib/utils",
-    "ui": "@/shared/ui",
-    "lib": "@/shared/lib"
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib"
   },
   "iconLibrary": "lucide"
 }

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onBeforeMount, onBeforeUnmount, ref } from 'vue'
-import FormCard from '@/pages/Donation/ui/FormCard.vue'
+import FormCard from '@/components/layout/FormCard.vue'
 import BlankForm from '@/components/forms/BlankForm.vue'
 import PayForm from '@/components/forms/PayForm.vue'
 import { PAYMENT_AMOUNTS_MIN } from '@/lib/constants'

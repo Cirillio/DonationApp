@@ -1,6 +1,6 @@
-import { PaymentMethod, PaymentAmount, PaymentFormValues } from '@/domain/payment/types'
-import sbp_icon from '@/shared/assets/icons/payment/SBP.svg'
-import bankcard_icon from '@/shared/assets/icons/payment/bankcard.svg'
+import { PaymentMethod, PaymentAmount, PaymentFormValues } from '@/lib/types'
+import sbp_icon from '@/assets/icons/payment/SBP.svg'
+import bankcard_icon from '@/assets/icons/payment/bankcard.svg'
 
 const DEFAULT_PAY_FORM: PaymentFormValues = {
   amount: undefined,

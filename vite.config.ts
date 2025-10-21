@@ -11,7 +11,7 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss(),
     Components({
-      dirs: ['src/shared/ui'],
+      dirs: ['src/components/ui'],
       dts: true,
     }),
   ],
