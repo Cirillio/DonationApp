@@ -12,7 +12,7 @@ export const useAppSettingsStore = defineStore('appSettings', () => {
   const mode = useColorMode<AppTheme>({
     emitAuto: true,
     disableTransition: false,
-    initialValue: 'dark',
+    initialValue: 'light',
   } as UseColorModeOptions<AppTheme>)
 
   function toggleTheme() {

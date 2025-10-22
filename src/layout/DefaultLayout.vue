@@ -1,11 +1,15 @@
 <script lang="ts" setup>
 import Header from '@/components/common/Header.vue'
+import Footer from '@/components/common/Footer.vue'
 import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <Header />
-  <main class="overflow-y-scroll w-full h-dvh flex">
-    <RouterView />
-  </main>
+  <div class="h-screen flex flex-col overflow-y-auto">
+    <Header />
+    <main>
+      <RouterView />
+    </main>
+    <Footer class="mt-auto" />
+  </div>
 </template>

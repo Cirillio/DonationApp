@@ -10,7 +10,7 @@ export const mainRoutes: RouteRecordRaw[] = [
   {
     path: '/donate',
     name: 'donation',
-    component: () => import('@/pages/DonationPage.vue'),
+    component: () => import('@/pages/donate/DonatePage.vue'),
     meta: { title: 'Пожертвование', icon: 'f7:heart' },
   },
   {

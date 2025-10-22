@@ -64,12 +64,36 @@ const onPastePhone = (e: ClipboardEvent) => {
     >
       <FormItem class="gap-1">
         <FormLabel class="label-required gap-0.5 text-lg">Телефон</FormLabel>
-        <div class="flex rounded-md shadow-xs *:text-lg">
-          <div
-            class="text-foreground !opacity-100 px-3 flex rounded-md rounded-r-none items-center border-r-0 border border-border"
-          >
-            {{ selectedSpec.code }}
-          </div>
+        <div class="flex gap-2 *:text-lg">
+          <DropdownMenu>
+            <DropdownMenuTrigger as-child>
+              <Button :variant="'outline'" class="gap-2 px-3">
+                {{ selectedSpec.code }}
+                <Icon class="f7--chevron-down size-4.5" />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              :align="'start'"
+              class="duration-75 shadow-xl ease-linear flex flex-col"
+            >
+              <DropdownMenuItem
+                v-for="spec in PHONE_SPECS"
+                :key="spec.id"
+                @select="selectPhoneCodeById(spec.id)"
+                class="cursor-pointer p-0"
+              >
+                <Button
+                  :variant="selectedSpec?.code === spec.code ? 'secondary' : 'outline'"
+                  class="w-full gap-2 rounded-none duration-300 border-0"
+                  size="lg"
+                >
+                  <span class="mr-auto">({{ spec.code }})</span>
+                  <span>{{ spec.name }}</span>
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <FormControl>
             <Input
@@ -82,34 +106,9 @@ const onPastePhone = (e: ClipboardEvent) => {
               name="phone"
               inputmode="tel"
               type="tel"
-              class="rounded-none shadow-none text-lg max-md:min-h-11"
+              class="shadow-none text-lg max-md:min-h-11"
             />
           </FormControl>
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <Button :variant="'outline'" class="rounded-l-none !shadow-none border-l-0 px-3">
-                <Icon class="f7--chevron-down size-4.5" />
-              </Button>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent :align="'end'" class="duration-75 ease-linear flex flex-col">
-              <DropdownMenuItem
-                v-for="spec in PHONE_SPECS"
-                :key="spec.id"
-                @select="selectPhoneCodeById(spec.id)"
-                class="cursor-pointer p-0"
-              >
-                <Button
-                  :variant="selectedSpec?.code === spec.code ? 'secondary' : 'outline'"
-                  class="w-full space-x-1 rounded-none duration-300 border-0"
-                  size="lg"
-                >
-                  <span>{{ spec.name }}</span>
-                  <span class="ml-auto">({{ spec.code }})</span>
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
         <AutoAnimated>
           <FormMessage class="max-md:!text-sm" />
