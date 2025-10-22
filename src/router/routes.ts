@@ -3,27 +3,27 @@ import type { RouteRecordRaw } from 'vue-router'
 export const mainRoutes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'donation',
-    component: () => import('@/pages/DonationPage.vue'),
-    meta: { title: 'Пожертвование' },
-  },
-  {
-    path: '/home',
     name: 'home',
     component: () => import('@/pages/HomePage.vue'),
-    meta: { title: 'Главная' },
+    meta: { title: 'Главная', icon: 'f7:house' },
+  },
+  {
+    path: '/donate',
+    name: 'donation',
+    component: () => import('@/pages/DonationPage.vue'),
+    meta: { title: 'Пожертвование', icon: 'f7:heart' },
   },
   {
     path: '/news',
     name: 'news',
     component: () => import('@/pages/NewsPage.vue'),
-    meta: { title: 'Новости' },
+    meta: { title: 'Новости', icon: 'f7:book' },
   },
   {
     path: '/statistic',
     name: 'statistic',
     component: () => import('@/pages/StatisticPage.vue'),
-    meta: { title: 'Статистика' },
+    meta: { title: 'Статистика', icon: 'f7:chart-pie' },
   },
 ]
 

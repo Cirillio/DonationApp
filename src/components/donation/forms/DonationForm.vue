@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { computed, onBeforeMount, onBeforeUnmount, ref } from 'vue'
-import FormCard from '@/components/layout/FormCard.vue'
-import BlankForm from '@/components/forms/BlankForm.vue'
-import PayForm from '@/components/forms/PayForm.vue'
+import FormCard from '@/components/donation/forms/FormCard.vue'
+import DonationBlank from './DonationBlank.vue'
+import DonationPay from './DonationPay.vue'
 import { PAYMENT_AMOUNTS_MIN } from '@/lib/constants'
 import Dialog from '@/components/ui/dialog/Dialog.vue'
 
-const blankFormRef = ref<InstanceType<typeof BlankForm>>()
-const payFormRef = ref<InstanceType<typeof PayForm>>()
+const blankFormRef = ref<InstanceType<typeof DonationBlank>>()
+const payFormRef = ref<InstanceType<typeof DonationPay>>()
 
 const isFormValid = computed(() => blankFormRef.value?.isValid && payFormRef.value?.isValid)
 
@@ -32,15 +32,16 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="flex flex-col gap-2 z-30">
-    <div class="flex max-md:flex-col gap-4">
+    <div class="flex max-lg:flex-col lg:gap-4">
       <FormCard
         title="Анкета"
         :icon="'f7--person'"
         :valid="blankFormRef?.isValid"
         description="Заполните обязательные поля"
+        class="max-lg:rounded-b-none"
       >
         <template v-slot:content>
-          <BlankForm ref="blankFormRef" />
+          <DonationBlank ref="blankFormRef" />
         </template>
 
         <template v-slot:footer>
@@ -53,9 +54,10 @@ onBeforeUnmount(() => {
         :icon="'f7--creditcard'"
         :valid="payFormRef?.isValid"
         :description="'Минимальная сумма: ' + PAYMENT_AMOUNTS_MIN.label + 'Р'"
+        class="max-lg:rounded-t-none max-lg:border-t-0"
       >
         <template v-slot:content>
-          <PayForm ref="payFormRef" />
+          <DonationPay ref="payFormRef" />
         </template>
 
         <template v-slot:footer>

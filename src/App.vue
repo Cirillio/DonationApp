@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import DefaultLayout from './layout/DefaultLayout.vue'
+import { useAppSettingsStore } from './stores/settings'
+
+const appSettings = useAppSettingsStore()
 </script>
 
 <template>
-  <div id="app">
-    <RouterView />
-  </div>
+  <DefaultLayout />
 </template>
