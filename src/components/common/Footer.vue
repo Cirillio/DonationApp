@@ -36,9 +36,16 @@
         <div>
           <h3 class="mb-4 text-sm font-semibold text-foreground">Контакты</h3>
           <ul class="space-y-2 text-sm text-muted-foreground">
-            <li v-for="contact in CONTACTS" :key="contact.label" class="flex items-center gap-2">
-              <Icon :class="[contact.icon, 'iconify size-5']" />
-              <span>{{ contact.label }}</span>
+            <li v-for="contact in CONTACTS" :key="contact.label">
+              <a
+                target="_blank"
+                :href="contact.url"
+                :type="contact.type"
+                class="flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+              >
+                <Icon :class="[contact.icon, 'iconify size-5']" />
+                <span>{{ contact.label }}</span>
+              </a>
             </li>
           </ul>
         </div>

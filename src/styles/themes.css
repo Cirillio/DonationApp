@@ -1,10 +1,10 @@
 :root {
   --radius: 0.75rem;
 
-  --background: oklch(0.9824 0.0013 286.38);
+  --background: oklch(0.9798 0.0045 78.3);
   --foreground: oklch(14.48% 0 260);
 
-  --primary: oklch(82% 0.208 151);
+  --primary: oklch(86.401% 0.2496 141.428);
   --primary-foreground: oklch(22.211% 0.05115 158.939);
 
   --secondary: oklch(0% 0 0);
@@ -16,7 +16,7 @@
   --popover: oklch(94% 0.02 255);
   --popover-foreground: oklch(14.48% 0 260);
 
-  --muted: oklch(82% 0.01 255);
+  --muted: oklch(71.276% 0.00178 66.763);
   --muted-foreground: oklch(62% 0 260);
 
   --ghost: oklch(100% 0 0 / 0);

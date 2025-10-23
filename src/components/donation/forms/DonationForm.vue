@@ -38,12 +38,12 @@ const steps = [
   {
     step: 1,
     title: 'Анкета',
-    description: 'Заполните обязательные поля',
+    icon: 'f7--person',
   },
   {
     step: 2,
     title: 'Оплата',
-    description: `Минимальная сумма: ${PAYMENT_AMOUNTS_MIN.label}Р`,
+    icon: 'f7--creditcard',
   },
 ]
 
@@ -68,58 +68,52 @@ const submit = async () => {
 <template>
   <section class="flex flex-col gap-24 z-30 w-full">
     <!-- Stepper -->
-    <Stepper v-model="currentStep" class="flex w-full items-center" :orientation="'horizontal'">
-      <StepperItem
-        v-for="(step, index) in steps"
-        :key="step.step"
-        v-slot="{ state }"
-        :step="step.step"
-        class="relative flex w-full items-center justify-center"
-      >
-        <StepperSeparator
-          v-if="index !== steps.length - 1"
-          class="absolute right-[calc(-50%+20px)] top-5 block h-0.5 w-[calc(100%-40px)] shrink-0 rounded-full bg-muted group-data-[state=completed]:bg-primary"
+    <div class="flex w-full px-12 items-center justify-center gap-4">
+      <template v-for="(step, index) in steps" :key="step.step">
+        <Stepper v-model="currentStep" class="contents" :orientation="'horizontal'">
+          <StepperItem v-slot="{ state }" :step="step.step" class="relative flex items-center">
+            <StepperTrigger as-child disabled class="disabled:opacity-100">
+              <Button
+                :variant="state === 'completed' || state === 'active' ? 'default' : 'outline'"
+                class="shrink-0 rounded-full size-14 pointer-events-none cursor-default transition-all"
+                :class="[
+                  state === 'completed' && 'bg-primary shadow-md',
+                  state === 'active' && 'border-primary border-2 shadow-sm',
+                ]"
+              >
+                <StepperIndicator
+                  class="flex items-center justify-center !bg-transparent border-0 ring-0"
+                >
+                  <span
+                    v-if="state === 'completed'"
+                    class="size-7 text-primary-foreground iconify f7--checkmark-alt"
+                  />
+                  <span v-else class="iconify size-7" :class="step.icon" />
+                </StepperIndicator>
+              </Button>
+            </StepperTrigger>
+
+            <StepperTitle
+              class="absolute top-full mt-2 left-1/2 -translate-x-1/2 text-sm font-semibold transition-colors text-center whitespace-nowrap"
+              :class="[
+                state === 'completed' || state === 'active'
+                  ? 'text-foreground'
+                  : 'text-muted-foreground',
+              ]"
+            >
+              {{ step.title }}
+            </StepperTitle>
+          </StepperItem>
+        </Stepper>
+
+        <!-- Separator between steps -->
+        <div
+          v-if="index < steps.length - 1"
+          class="h-[2px] w-full max-w-32 rounded-full bg-muted transition-all"
+          :class="currentStep > step.step && 'bg-primary'"
         />
-
-        <StepperTrigger as-child>
-          <Button
-            :variant="state === 'completed' || state === 'active' ? 'default' : 'outline'"
-            size="icon"
-            class="z-10 rounded-full shrink-0"
-            :class="[
-              'h-10 w-10',
-              state === 'completed' && 'bg-primary hover:bg-primary',
-              state === 'active' && 'border-primary',
-            ]"
-          >
-            <StepperIndicator class="flex items-center justify-center">
-              {{ step.step }}
-            </StepperIndicator>
-          </Button>
-        </StepperTrigger>
-
-        <div class="absolute top-12 flex flex-col items-center text-center">
-          <StepperTitle
-            :class="[
-              'text-sm font-medium',
-              state === 'completed' || state === 'active'
-                ? 'text-foreground'
-                : 'text-muted-foreground',
-            ]"
-          >
-            {{ step.title }}
-          </StepperTitle>
-          <StepperDescription
-            :class="[
-              'sr-only text-xs text-muted-foreground md:not-sr-only',
-              state === 'active' && 'text-foreground',
-            ]"
-          >
-            {{ step.description }}
-          </StepperDescription>
-        </div>
-      </StepperItem>
-    </Stepper>
+      </template>
+    </div>
 
     <!-- Form Content -->
     <div class="max-w-xl w-full mx-auto">

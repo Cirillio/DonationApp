@@ -53,7 +53,7 @@ const onPastePhone = (e: ClipboardEvent) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-6">
     <FormField
       name="phone"
       :rules="toTypedSchema(phoneSchema(() => selectedSpec.code || ''))"
@@ -63,7 +63,11 @@ const onPastePhone = (e: ClipboardEvent) => {
       v-slot="{ componentField }"
     >
       <FormItem class="gap-1">
-        <FormLabel class="label-required gap-0.5 text-lg">Телефон</FormLabel>
+        <FormLabel class="label-required gap-1 text-lg">
+          <span class="iconify f7--phone size-6"></span>
+          Телефон</FormLabel
+        >
+
         <div class="flex gap-2 *:text-lg">
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
@@ -125,7 +129,11 @@ const onPastePhone = (e: ClipboardEvent) => {
       v-slot="{ componentField }"
     >
       <FormItem class="gap-1">
-        <FormLabel class="label-optional gap-0.5 text-lg">Имя</FormLabel>
+        <FormLabel class="label-optional gap-1 text-lg">
+          <span class="iconify f7--person size-6"></span>
+
+          Имя</FormLabel
+        >
 
         <FormControl>
           <Input
@@ -154,7 +162,11 @@ const onPastePhone = (e: ClipboardEvent) => {
       :validate-on-blur="!donorBlank.isFieldDirty"
     >
       <FormItem class="gap-1">
-        <FormLabel class="label-required gap-0.5 text-lg">Дата рождения</FormLabel>
+        <FormLabel class="label-required gap-1 text-lg">
+          <span class="iconify f7--calendar-today size-6"></span>
+
+          Дата рождения</FormLabel
+        >
 
         <FormControl>
           <Input
