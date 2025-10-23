@@ -1,12 +1,17 @@
 <script lang="ts" setup>
 import { FormField } from '@/components/ui/form'
-import { computed, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useCurrencyInput, CurrencyDisplay } from 'vue-currency-input'
 import { PAYMENT_AMOUNTS, DEFAULT_PAY_FORM, PAYMENT_METHODS } from '@/lib/constants'
 import { amountSchema, noteSchema, typeSchema } from '@/lib/validations'
 import { PaymentFormValues } from '@/lib/types'
+import { useDonationStore } from '@/stores/donation'
+import { storeToRefs } from 'pinia'
+
+const donationStore = useDonationStore()
+const { paymentForm } = storeToRefs(donationStore)
 
 const { formattedValue, inputRef, numberValue, setValue } = useCurrencyInput({
   currency: 'RUB',
@@ -15,7 +20,7 @@ const { formattedValue, inputRef, numberValue, setValue } = useCurrencyInput({
 })
 
 const donorPay = useForm<PaymentFormValues>({
-  initialValues: DEFAULT_PAY_FORM,
+  initialValues: paymentForm.value,
   name: 'donationPayment',
 })
 
@@ -32,11 +37,30 @@ watch(
   }
 )
 
+onMounted(() => {
+  console.log(numberValue.value, donorPay.values.amount)
+
+  formattedValue.value = donorPay.values.amount
+    ? donorPay.values.amount.toString().replace('.', ',')
+    : null
+
+  console.log(numberValue.value, donorPay.values.amount)
+})
+
+// Sync form values to store
+watch(
+  () => donorPay.values,
+  (values) => {
+    donationStore.updatePaymentForm(values)
+  },
+  { deep: true }
+)
+
 const selectAmount = (amount: number) => {
   donorPay.setFieldValue('amount', amount)
 }
 
-const isAmountSelected = (amount: number) => numberValue.value === amount
+const isAmountSelected = (amount: number) => donorPay.values.amount === amount
 
 const getPaymentAmountButtonVariant = (amountValue: number): 'secondary' | 'outline' =>
   isAmountSelected(amountValue) ? 'secondary' : 'outline'

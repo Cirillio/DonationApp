@@ -21,11 +21,14 @@ import FormCard from '@/components/donation/forms/FormCard.vue'
 import DonationBlank from '../views/DonationBlank.vue'
 import DonationPay from '../views/DonationPay.vue'
 import { PAYMENT_AMOUNTS_MIN } from '@/lib/constants'
+import { useDonationStore } from '@/stores/donation'
+import { storeToRefs } from 'pinia'
+
+const donationStore = useDonationStore()
+const { currentStep } = storeToRefs(donationStore)
 
 const blankFormRef = ref<InstanceType<typeof DonationBlank>>()
 const payFormRef = ref<InstanceType<typeof DonationPay>>()
-
-const currentStep = ref(1)
 
 const isStep1Valid = computed(() => blankFormRef.value?.isValid ?? false)
 const isStep2Valid = computed(() => payFormRef.value?.isValid ?? false)
@@ -49,19 +52,22 @@ const steps = [
 
 const nextStep = () => {
   if (currentStep.value < steps.length && isStep1Valid.value) {
-    currentStep.value++
+    donationStore.nextStep()
   }
 }
 
 const prevStep = () => {
   if (currentStep.value > 1) {
-    currentStep.value--
+    donationStore.prevStep()
   }
 }
 
 const submit = async () => {
   dialogOpen.value = true
-  debugResults.value = 'donation sends successfully.'
+  debugResults.value = {
+    blank: donationStore.blankForm,
+    payment: donationStore.paymentForm,
+  }
 }
 </script>
 

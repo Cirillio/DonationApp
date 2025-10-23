@@ -8,6 +8,11 @@ import { BlankFormValues } from '@/lib/types'
 import { DEFAULT_BLANK_FORM } from '@/lib/constants'
 import { usePhone } from '@/composables/usePhone'
 import { DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/lib/constants'
+import { useDonationStore } from '@/stores/donation'
+import { storeToRefs } from 'pinia'
+
+const donationStore = useDonationStore()
+const { blankForm } = storeToRefs(donationStore)
 
 const {
   selectedSpec,
@@ -15,11 +20,11 @@ const {
   selectById: selectPhoneCodeById,
   parsePhoneFromClipboard,
 } = usePhone({
-  defaultId: DEFAULT_PHONE_SPEC.id,
+  defaultId: blankForm.value.phoneCountry || DEFAULT_PHONE_SPEC.id,
 })
 
 const donorBlank = useForm<BlankFormValues>({
-  initialValues: DEFAULT_BLANK_FORM,
+  initialValues: blankForm.value,
   name: 'donationBlank',
 })
 
@@ -32,9 +37,19 @@ const resetPhoneField = () => {
   })
 }
 
-watch(selectedSpec, () => resetPhoneField(), {
-  immediate: true,
+watch(selectedSpec, (spec) => {
+  // Update phoneCountry in form when country code changes
+  donorBlank.setFieldValue('phoneCountry', spec.id)
+  resetPhoneField()
 })
+
+watch(
+  () => donorBlank.values,
+  (values) => {
+    donationStore.updateBlankForm(values)
+  },
+  { deep: true }
+)
 
 defineExpose({
   isValid: computed(() => donorBlank.meta.value.valid),
