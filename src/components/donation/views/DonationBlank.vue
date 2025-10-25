@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { watch } from 'vue'
 import { FormField } from '@/components/ui/form'
-import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
+import type { FormContext } from 'vee-validate'
 import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/lib/validations'
 import { BlankFormValues } from '@/lib/types'
 import { DEFAULT_BLANK_FORM } from '@/lib/constants'
@@ -10,6 +10,10 @@ import { usePhone } from '@/composables/usePhone'
 import { DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/lib/constants'
 import { useDonationStore } from '@/stores/donation'
 import { storeToRefs } from 'pinia'
+
+const donorBlank = defineModel<FormContext<BlankFormValues, BlankFormValues>>({
+  required: true,
+})
 
 const donationStore = useDonationStore()
 const { blankForm } = storeToRefs(donationStore)
@@ -23,16 +27,11 @@ const {
   defaultId: blankForm.value.phoneCountry || DEFAULT_PHONE_SPEC.id,
 })
 
-const donorBlank = useForm<BlankFormValues>({
-  initialValues: blankForm.value,
-  name: 'donationBlank',
-})
-
 const resetPhoneField = () => {
-  donorBlank.resetField('phone', {
+  donorBlank.value.resetField('phone', {
     value: DEFAULT_BLANK_FORM.phone,
   })
-  donorBlank.validateField('phone', {
+  donorBlank.value.validateField('phone', {
     mode: 'silent',
   })
 }
@@ -42,25 +41,25 @@ const onPastePhone = (e: ClipboardEvent) => {
   const pasted = e.clipboardData?.getData('text') || ''
   const parsed = parsePhoneFromClipboard(pasted)
   if (parsed) {
-    donorBlank.setFieldValue('phone', parsed)
+    donorBlank.value.setFieldValue('phone', parsed)
   }
 }
 
 watch(selectedSpec, (spec) => {
-  donorBlank.setFieldValue('phoneCountry', spec.id)
+  donorBlank.value.setFieldValue('phoneCountry', spec.id)
   resetPhoneField()
 })
 
-watch(
-  () => donorBlank.values,
-  (values) => {
-    donationStore.updateBlankForm(values)
-  },
-  { deep: true }
-)
+// watch(
+//   () => donorBlank.values,
+//   (values) => {
+//     donationStore.updateBlankForm(values)
+//   },
+//   { deep: true }
+// )
 
 watch(
-  () => donorBlank.meta.value.valid,
+  () => donorBlank.value.meta.value.valid,
   (valid) => {
     donationStore.setStepValidity(1, valid)
   },

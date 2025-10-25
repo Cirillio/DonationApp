@@ -11,14 +11,27 @@ import FormCard from '@/components/donation/forms/FormCard.vue'
 import DonationBlank from '../views/DonationBlank.vue'
 import DonationPay from '../views/DonationPay.vue'
 import DonationResult from '../views/DonationResult.vue'
-import { PAYMENT_AMOUNTS_MIN } from '@/lib/constants'
+import { DEFAULT_BLANK_FORM, PAYMENT_AMOUNTS_MIN } from '@/lib/constants'
 import { DONATE_STEPS } from '@/lib/constants'
 import { useDonationStore } from '@/stores/donation'
 import { storeToRefs } from 'pinia'
+import { useForm } from 'vee-validate'
+import { BlankFormValues } from '@/lib/types'
+import { watch } from 'vue'
 
 const donationStore = useDonationStore()
 const { isCurrentStep, nextStep, prevStep } = donationStore
 const { currentStep, stepsValidity } = storeToRefs(donationStore)
+
+const donorBlank = useForm<BlankFormValues>({
+  initialValues: { ...DEFAULT_BLANK_FORM },
+  name: 'donationBlank',
+  keepValuesOnUnmount: true,
+})
+
+watch(donorBlank.values, (values) => {
+  console.log({ ...values })
+})
 
 const submit = async () => {
   // Go to result step immediately (without payment result)
@@ -115,7 +128,7 @@ const submit = async () => {
         class="w-full"
       >
         <template v-slot:content>
-          <DonationBlank />
+          <DonationBlank v-model="donorBlank" />
         </template>
         <template v-slot:footer>
           <Button @click="nextStep" :disabled="!stepsValidity[1]" class="w-full py-2">

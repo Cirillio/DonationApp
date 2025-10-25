@@ -13,21 +13,20 @@ import {
 import { DonationStatus } from '@/lib/types/donate'
 
 export const useDonationStore = defineStore('donation', () => {
-  // Forms data
+  //#region forms data
   const blankForm = ref<BlankFormValues>({ ...DEFAULT_BLANK_FORM })
   const paymentForm = ref<PaymentFormValues>({ ...DEFAULT_PAY_FORM })
   const paymentResult = ref<{ success: boolean; paymentId?: string } | null>(null)
 
-  // Form updates
   function updateBlankForm(values: Partial<BlankFormValues>) {
     blankForm.value = { ...blankForm.value, ...values }
   }
-
   function updatePaymentForm(values: Partial<PaymentFormValues>) {
     paymentForm.value = { ...paymentForm.value, ...values }
   }
+  //#endregion
 
-  // Stepper
+  //#region stepper
   const currentStep = ref<number>(1)
   const currentStatus = computed<DonationStatus>(() => STEP_TO_STATUS[currentStep.value])
   const stepsValidity = ref<Record<number, boolean>>({
@@ -100,8 +99,9 @@ export const useDonationStore = defineStore('donation', () => {
       }
     }
   }
+  //#endregion
 
-  // Payment
+  //#region payment
   function finish(result?: { success: boolean; paymentId?: string }) {
     if (result) {
       paymentResult.value = result
@@ -112,6 +112,8 @@ export const useDonationStore = defineStore('donation', () => {
   function setPaymentResult(result: { success: boolean; paymentId?: string }) {
     paymentResult.value = result
   }
+
+  //#endregion
 
   // Reset
   function resetForm() {
@@ -126,6 +128,7 @@ export const useDonationStore = defineStore('donation', () => {
     }
   }
 
+  //#region return
   return {
     // State
     currentStep,
@@ -151,4 +154,5 @@ export const useDonationStore = defineStore('donation', () => {
     setPaymentResult,
     resetForm,
   }
+  //#endregion
 })

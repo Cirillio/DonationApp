@@ -13,6 +13,7 @@ import { useRoute, useRouter } from 'vue-router'
 import DonationForm from '@/components/donation/forms/DonationForm.vue'
 import { useDonationStore } from '@/stores/donation'
 import { usePageLeaveConfirmation } from '@/composables/usePageLeaveConfirm'
+import { useDonationRedirect } from '@/composables/useDonationRedirect'
 
 const route = useRoute()
 const router = useRouter()
@@ -26,13 +27,20 @@ const onCloseDialog = (open: boolean) => {
   }
 }
 
-// Initialize step from query param on mount
+const { checkAndRedirect } = useDonationRedirect()
+
 onMounted(() => {
   const status = route.query.status as DonationStatus
+
+  checkAndRedirect(status)
+
   const initStatusResult = donationStore.initStatus(status)
   if (!initStatusResult.success && initStatusResult.query) {
     router.replace({
-      query: initStatusResult.query,
+      path: '/donate',
+      query: {
+        ...initStatusResult.query,
+      },
     })
   }
 })
@@ -45,23 +53,6 @@ watch(
       router.replace({
         query: { ...route.query, status: newStatus },
       })
-    }
-  }
-)
-
-// Sync query param to currentStatus
-watch(
-  () => route.query.status,
-  (newStatus) => {
-    if (
-      newStatus &&
-      typeof newStatus === 'string' &&
-      ['blank', 'payment', 'result'].includes(newStatus)
-    ) {
-      const status = newStatus as DonationStatus
-      if (donationStore.currentStatus !== status) {
-        donationStore.setStepByStatus(status)
-      }
     }
   }
 )

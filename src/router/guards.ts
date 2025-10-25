@@ -1,7 +1,5 @@
 import type { Router } from 'vue-router'
-
 import { APP_TITLE } from '@/lib/constants'
-// import { useMainNavigationStore } from '@/stores/navigation'
 
 export function setupGuards(router: Router) {
   // Guard для установки title страницы
