@@ -1,19 +1,6 @@
 import { z } from 'zod'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
-const parseBirthDate = (val: string): Date | null => {
-  const [day, month, year] = val.split('.').map(Number)
-  const date = new Date(year, month - 1, day)
-
-  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
-    return null
-  }
-
-  return date
-}
-
-const dateRegex = /^\d{2}\.\d{2}\.\d{4}$/
-
 const phoneSchema = (getPhoneCode: () => string) =>
   z
     .string('Пожалуйста, укажите номер телефона.')
@@ -29,23 +16,42 @@ const nameSchema = z
   .regex(/^[\p{L}\s-]*$/u, 'Имя может содержать только буквы, пробелы и тире.')
   .optional()
 
-const birthSchema = z
-  .string()
-  .nonempty('Пожалуйста, заполните дату рождения.')
-  .regex(dateRegex, 'Неверный формат даты (дд.мм.гггг)')
-  .refine((val) => parseBirthDate(val) !== null, 'Такой даты не существует.')
-  .refine((val) => {
-    const date = parseBirthDate(val)!
-    const eighteenYearsAgo = new Date()
-    eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18)
-    return date <= eighteenYearsAgo
-  }, 'Вам должно быть не менее 18 лет.')
-  .refine((val) => {
-    const date = parseBirthDate(val)!
-    const hundredYearsAgo = new Date()
-    hundredYearsAgo.setFullYear(hundredYearsAgo.getFullYear() - 100)
-    return date >= hundredYearsAgo
-  }, 'Возраст не может быть больше 100 лет.')
+const birthSchema = z.preprocess(
+  (val) => {
+    // Если null/undefined, возвращаем undefined для ошибки required
+    if (val === null || val === undefined) return undefined
+    // Если уже Date объект, возвращаем как есть
+    if (val instanceof Date) return val
+    // Если строка в формате YYYY-MM-DD, преобразуем в Date
+    if (typeof val === 'string' && val) return new Date(val)
+    return undefined
+  },
+  z
+    .date({
+      message: 'Пожалуйста, заполните дату рождения.',
+    })
+    .refine((date) => {
+      const today = new Date()
+      const age = today.getFullYear() - date.getFullYear()
+      const monthDiff = today.getMonth() - date.getMonth()
+      const dayDiff = today.getDate() - date.getDate()
+
+      // Если месяц рождения ещё не наступил или наступил, но день рождения ещё не был
+      const actualAge = monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age
+
+      return actualAge >= 18
+    }, 'Вам должно быть не менее 18 лет.')
+    .refine((date) => {
+      const today = new Date()
+      const age = today.getFullYear() - date.getFullYear()
+      const monthDiff = today.getMonth() - date.getMonth()
+      const dayDiff = today.getDate() - date.getDate()
+
+      const actualAge = monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age
+
+      return actualAge <= 100
+    }, 'Возраст не может быть больше 100 лет.')
+)
 
 const isGroupSchema = z.boolean()
 

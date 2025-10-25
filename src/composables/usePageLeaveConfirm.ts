@@ -12,19 +12,20 @@ export function usePageLeaveConfirmation() {
 
   // Проверяем есть ли несохранённые данные
   const hasUnsavedData = computed(() => {
-    const { blankForm, paymentForm, currentStep, paymentResult } = donationStore
+    const { formData, currentStep, paymentResult } = donationStore
 
     // Если платёж уже прошёл успешно - данные "сохранены"
     if (paymentResult?.success) return false
 
     // Проверяем заполненные поля в форме анкеты
-    const hasBlankData = Object.entries(blankForm).some(([key, value]) => {
+    const hasBlankData = Object.entries(formData.blank).some(([key, value]) => {
       if (key === 'phoneCountry' || key === 'isGroup') return false
-      return value !== undefined && value !== '' && value !== false
+      if (value === '') return false
+      return value !== undefined && value !== false
     })
 
     // Проверяем заполненные поля в форме оплаты
-    const hasPaymentData = Object.entries(paymentForm).some(([key, value]) => {
+    const hasPaymentData = Object.entries(formData.payment).some(([key, value]) => {
       if (key === 'note') return false
       return value !== undefined && value !== '' && value !== 0
     })

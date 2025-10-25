@@ -10,7 +10,7 @@ import {
 import { DonationStatus } from '@/lib/types/donate'
 import { watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import DonationForm from '@/components/donation/forms/DonationForm.vue'
+import DonateLayout from '@/components/donation/DonateLayout.vue'
 import { useDonationStore } from '@/stores/donation'
 import { usePageLeaveConfirmation } from '@/composables/usePageLeaveConfirm'
 import { useDonationRedirect } from '@/composables/useDonationRedirect'
@@ -56,6 +56,23 @@ watch(
     }
   }
 )
+
+// Sync query param to currentStatus
+watch(
+  () => route.query.status,
+  (newStatus) => {
+    if (
+      newStatus &&
+      typeof newStatus === 'string' &&
+      ['blank', 'payment', 'result'].includes(newStatus)
+    ) {
+      const status = newStatus as DonationStatus
+      if (donationStore.currentStatus !== status) {
+        donationStore.setStepByStatus(status)
+      }
+    }
+  }
+)
 </script>
 <template>
   <Dialog :open="showConfirmDialog" @update:open="onCloseDialog">
@@ -87,9 +104,9 @@ watch(
     </DialogContent>
   </Dialog>
 
-  <div class="container min-h-screen mx-auto px-4 py-8 md:py-16">
-    <div class="mx-auto flex flex-col gap-4 max-w-4xl">
-      <div class="mb-12 text-center">
+  <div class="container min-h-screen mx-auto py-8 md:py-16">
+    <div class="mx-auto flex flex-col gap-4 w-full sm:max-w-4xl">
+      <div class="mb-12 text-center max-sm:px-4">
         <h1 class="mb-4 text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
           Поддержите наш посёлок
         </h1>
@@ -98,9 +115,9 @@ watch(
         </p>
       </div>
 
-      <DonationForm />
+      <DonateLayout />
 
-      <div class="mt-12 grid gap-6 md:grid-cols-3">
+      <div class="mt-12 grid gap-6 md:grid-cols-3 px-4">
         <div class="rounded-lg bg-card p-6 text-center shadow-sm">
           <div class="mb-2 text-3xl font-bold text-primary">100%</div>
           <p class="text-sm text-muted-foreground">Прозрачность использования средств</p>

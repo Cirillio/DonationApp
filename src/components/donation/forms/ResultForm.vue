@@ -54,8 +54,11 @@ const handleGoHome = () => {
 <template>
   <div class="flex flex-col items-center justify-center gap-6 pt-6 text-center">
     <!-- Loading State -->
-    <div v-if="isLoading" class="flex size-24 items-center justify-center rounded-full bg-muted">
-      <span class="iconify f7--arrow-2-circlepath size-16 text-muted-foreground animate-spin" />
+    <div
+      v-if="isLoading"
+      class="flex size-24 items-center justify-center rounded-full bg-card animate-pulse"
+    >
+      <span class="iconify f7--arrow-2-circlepath size-16 text-secondary animate-spin" />
     </div>
 
     <!-- Success Icon -->
