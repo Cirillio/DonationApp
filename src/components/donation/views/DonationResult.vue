@@ -1,24 +1,54 @@
 <script lang="ts" setup>
-import { computed, onBeforeUnmount } from 'vue'
+/**
+ * DonationResult - Final step showing payment result
+ *
+ * Displays:
+ * - Loading state while payment processes
+ * - Success message with donation details
+ * - Action buttons (make another donation or go home)
+ *
+ * Note: Does NOT auto-reset on unmount anymore.
+ * Reset only happens via explicit user action ("Сделать ещё одно пожертвование").
+ */
+import { computed } from 'vue'
 import { useDonationStore } from '@/stores/donation'
 import { storeToRefs } from 'pinia'
 import { Button } from '@/components/ui/button'
 
 const donationStore = useDonationStore()
-const { paymentResult } = storeToRefs(donationStore)
+const { paymentResult, formData } = storeToRefs(donationStore)
 
+/**
+ * Check if payment is still processing
+ * True when paymentResult hasn't been set yet (shows loading spinner)
+ */
 const isLoading = computed(() => !paymentResult.value)
+
+/**
+ * Check if payment succeeded
+ * Used to show success UI vs error UI
+ */
 const isSuccess = computed(() => paymentResult.value?.success ?? false)
 
+/**
+ * Reset form and start new donation flow
+ *
+ * Called when user clicks "Сделать ещё одно пожертвование".
+ * Clears all data and returns to step 1 (blank form).
+ */
 const handleNewDonation = () => {
   donationStore.resetForm()
 }
 
+/**
+ * Navigate to home page
+ *
+ * Uses full page reload to ensure clean state.
+ * Could be replaced with router.push('/') if needed.
+ */
 const handleGoHome = () => {
   window.location.href = '/'
 }
-
-onBeforeUnmount(() => donationStore.resetForm())
 </script>
 
 <template>
@@ -61,15 +91,15 @@ onBeforeUnmount(() => donationStore.resetForm())
         </div>
         <div class="flex justify-between">
           <span class="text-muted-foreground">Сумма:</span>
-          <span class="font-semibold">{{ donationStore.paymentForm.amount }} ₽</span>
+          <span class="font-semibold">{{ formData.payment.amount }} ₽</span>
         </div>
-        <div v-if="donationStore.blankForm.name" class="flex justify-between">
+        <div v-if="formData.blank.name" class="flex justify-between">
           <span class="text-muted-foreground">Имя:</span>
-          <span class="font-medium">{{ donationStore.blankForm.name }}</span>
+          <span class="font-medium">{{ formData.blank.name }}</span>
         </div>
-        <div v-if="donationStore.paymentForm.note" class="flex justify-between">
+        <div v-if="formData.payment.note" class="flex justify-between">
           <span class="text-muted-foreground">Комментарий:</span>
-          <span class="font-medium">{{ donationStore.paymentForm.note }}</span>
+          <span class="font-medium">{{ formData.payment.note }}</span>
         </div>
       </div>
     </div>

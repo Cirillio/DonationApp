@@ -1,72 +1,151 @@
 <script lang="ts" setup>
-import { watch } from 'vue'
+/**
+ * DonationBlank - Step 1: Personal Information Form
+ *
+ * Collects basic donor information:
+ * - Phone number with country code selection (RU/TJ)
+ * - Name (optional)
+ * - Birth date (required, age validation 18-100)
+ * - Group donation checkbox
+ *
+ * Form Synchronization:
+ * - Uses vee-validate for validation
+ * - Syncs with donation store via watchers (two-way binding)
+ * - No keepValuesOnUnmount - store handles persistence
+ *
+ * Special Features:
+ * - Phone number paste detection and parsing
+ * - Country-specific phone validation and masking
+ * - Auto-reset phone field when country changes
+ */
+import { watch, onUnmounted } from 'vue'
 import { FormField } from '@/components/ui/form'
 import { toTypedSchema } from '@vee-validate/zod'
-import type { FormContext } from 'vee-validate'
 import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/lib/validations'
-import { BlankFormValues } from '@/lib/types'
-import { DEFAULT_BLANK_FORM } from '@/lib/constants'
 import { usePhone } from '@/composables/usePhone'
-import { DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/lib/constants'
+import { DEFAULT_BLANK_FORM, DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/lib/constants'
 import { useDonationStore } from '@/stores/donation'
-import { storeToRefs } from 'pinia'
-
-const donorBlank = defineModel<FormContext<BlankFormValues, BlankFormValues>>({
-  required: true,
-})
+import { useForm } from 'vee-validate'
+import { BlankFormValues } from '@/lib/types'
 
 const donationStore = useDonationStore()
-const { blankForm } = storeToRefs(donationStore)
 
+/**
+ * Initialize form with values from store
+ *
+ * keepValuesOnUnmount is false because we handle persistence manually:
+ * - Store is the single source of truth
+ * - Form watches sync values back to store
+ * - On mount, form initializes from store values
+ * - On unmount, values already in store, no action needed
+ */
+const blankForm = useForm<BlankFormValues>({
+  name: 'blank',
+  initialValues: donationStore.formData.blank,
+  keepValuesOnUnmount: false,
+})
+
+/**
+ * Two-way sync: form values -> store
+ * Watch form values and update store when they change
+ */
+const stopWatchValues = watch(
+  () => blankForm.values,
+  (newValues) => {
+    donationStore.updateFormValues('blank', newValues)
+  },
+  { deep: true }
+)
+
+/**
+ * Two-way sync: form meta -> store
+ * Watch form meta (validation state) and update store
+ */
+const stopWatchMeta = watch(
+  () => blankForm.meta.value,
+  (newMeta) => {
+    donationStore.syncFormMeta('blank', {
+      valid: newMeta.valid,
+      dirty: newMeta.dirty,
+      touched: newMeta.touched,
+    })
+  },
+  { deep: true, immediate: true }
+)
+
+/**
+ * Phone input helper composable
+ * Provides country selection, masking, and clipboard parsing
+ */
 const {
   selectedSpec,
   currentMask,
   selectById: selectPhoneCodeById,
   parsePhoneFromClipboard,
 } = usePhone({
-  defaultId: blankForm.value.phoneCountry || DEFAULT_PHONE_SPEC.id,
+  defaultId: blankForm.values.phoneCountry || DEFAULT_PHONE_SPEC.id,
 })
 
+/**
+ * Reset phone field when country changes
+ *
+ * Clears phone input and resets validation state silently
+ * (doesn't show error message immediately).
+ */
 const resetPhoneField = () => {
-  donorBlank.value.resetField('phone', {
+  blankForm.resetField('phone', {
     value: DEFAULT_BLANK_FORM.phone,
   })
-  donorBlank.value.validateField('phone', {
+  blankForm.validateField('phone', {
     mode: 'silent',
   })
 }
 
+/**
+ * Handle phone paste from clipboard
+ *
+ * Parses international format phone numbers (e.g., +79001234567)
+ * and extracts just the number part for the input field.
+ *
+ * @param e - Clipboard paste event
+ */
 const onPastePhone = (e: ClipboardEvent) => {
   e.preventDefault()
   const pasted = e.clipboardData?.getData('text') || ''
   const parsed = parsePhoneFromClipboard(pasted)
   if (parsed) {
-    donorBlank.value.setFieldValue('phone', parsed)
+    blankForm.setFieldValue('phone', parsed)
   }
 }
 
-watch(selectedSpec, (spec) => {
-  donorBlank.value.setFieldValue('phoneCountry', spec.id)
+/**
+ * Watch for country code changes
+ *
+ * When user selects different country, update phoneCountry field
+ * and reset phone input since format requirements changed.
+ */
+const stopPhoneSpecWatch = watch(selectedSpec, (spec) => {
+  blankForm.setFieldValue('phoneCountry', spec.id)
   resetPhoneField()
 })
 
-// watch(
-//   () => donorBlank.values,
-//   (values) => {
-//     donationStore.updateBlankForm(values)
-//   },
-//   { deep: true }
-// )
-
-watch(
-  () => donorBlank.value.meta.value.valid,
-  (valid) => {
-    donationStore.setStepValidity(1, valid)
-  },
-  {
-    immediate: true,
-  }
-)
+/**
+ * Cleanup all watchers on unmount
+ *
+ * Critical for preventing memory leaks!
+ * Stops all watch functions that were set up:
+ * - stopWatchValues: form values -> store sync
+ * - stopWatchMeta: form meta -> store sync
+ * - stopPhoneSpecWatch: country code change handler
+ *
+ * Without cleanup, watchers would continue running even after
+ * component is destroyed, causing memory leaks and unexpected updates.
+ */
+onUnmounted(() => {
+  stopWatchValues()
+  stopWatchMeta()
+  stopPhoneSpecWatch()
+})
 </script>
 
 <template>
@@ -76,7 +155,7 @@ watch(
       :rules="toTypedSchema(phoneSchema(() => selectedSpec.code || ''))"
       :validate-on-input="false"
       :validate-on-model-update="false"
-      :validate-on-blur="!donorBlank.isFieldDirty"
+      :validate-on-blur="!blankForm.isFieldDirty"
       v-slot="{ componentField }"
     >
       <FormItem class="gap-1">
@@ -141,7 +220,7 @@ watch(
       :rules="toTypedSchema(nameSchema)"
       :validate-on-input="false"
       :validate-on-model-update="false"
-      :validate-on-blur="!donorBlank.isFieldDirty"
+      :validate-on-blur="!blankForm.isFieldDirty"
       v-slot="{ componentField }"
     >
       <FormItem class="gap-1">
@@ -177,7 +256,7 @@ watch(
       v-slot="{ componentField }"
       :rules="toTypedSchema(birthSchema)"
       :validate-on-input="false"
-      :validate-on-blur="!donorBlank.isFieldDirty"
+      :validate-on-blur="!blankForm.isFieldDirty"
     >
       <FormItem class="gap-1">
         <FormLabel class="label-required gap-1 text-lg">

@@ -1,4 +1,18 @@
 <script lang="ts" setup>
+/**
+ * DonationForm - Main donation wizard component
+ *
+ * Orchestrates the 3-step donation process:
+ * 1. Анкета (Personal info) - DonationBlank
+ * 2. Оплата (Payment) - DonationPay
+ * 3. Результат (Result) - DonationResult
+ *
+ * Features:
+ * - Visual stepper showing progress
+ * - Validation-gated navigation (can't proceed with invalid form)
+ * - Responsive layout with proper back/forward navigation
+ * - Lifecycle management (no cleanup needed - forms handle themselves)
+ */
 import {
   Stepper,
   StepperIndicator,
@@ -11,28 +25,28 @@ import FormCard from '@/components/donation/forms/FormCard.vue'
 import DonationBlank from '../views/DonationBlank.vue'
 import DonationPay from '../views/DonationPay.vue'
 import DonationResult from '../views/DonationResult.vue'
-import { DEFAULT_BLANK_FORM, PAYMENT_AMOUNTS_MIN } from '@/lib/constants'
+import { PAYMENT_AMOUNTS_MIN } from '@/lib/constants'
 import { DONATE_STEPS } from '@/lib/constants'
 import { useDonationStore } from '@/stores/donation'
 import { storeToRefs } from 'pinia'
-import { useForm } from 'vee-validate'
-import { BlankFormValues } from '@/lib/types'
-import { watch } from 'vue'
 
 const donationStore = useDonationStore()
 const { isCurrentStep, nextStep, prevStep } = donationStore
 const { currentStep, stepsValidity } = storeToRefs(donationStore)
 
-const donorBlank = useForm<BlankFormValues>({
-  initialValues: { ...DEFAULT_BLANK_FORM },
-  name: 'donationBlank',
-  keepValuesOnUnmount: true,
-})
-
-watch(donorBlank.values, (values) => {
-  console.log({ ...values })
-})
-
+/**
+ * Submit payment and process donation
+ *
+ * In production: This would make API call to payment provider
+ * Current behavior: Simulates async payment processing with 2s delay
+ *
+ * Flow:
+ * 1. Call finish() to move to result step immediately
+ * 2. Show loading state while "processing"
+ * 3. Set payment result after delay to show success/failure
+ *
+ * TODO: Replace setTimeout with actual payment API integration
+ */
 const submit = async () => {
   // Go to result step immediately (without payment result)
   donationStore.finish()
@@ -128,7 +142,7 @@ const submit = async () => {
         class="w-full"
       >
         <template v-slot:content>
-          <DonationBlank v-model="donorBlank" />
+          <DonationBlank />
         </template>
         <template v-slot:footer>
           <Button @click="nextStep" :disabled="!stepsValidity[1]" class="w-full py-2">
