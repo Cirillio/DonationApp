@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { FormField } from '@/components/ui/form'
-import { computed, onMounted, watch } from 'vue'
+import { watch } from 'vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useCurrencyInput, CurrencyDisplay } from 'vue-currency-input'
-import { PAYMENT_AMOUNTS, DEFAULT_PAY_FORM, PAYMENT_METHODS } from '@/lib/constants'
+import { PAYMENT_AMOUNTS, PAYMENT_METHODS } from '@/lib/constants'
 import { amountSchema, noteSchema, typeSchema } from '@/lib/validations'
 import { PaymentFormValues } from '@/lib/types'
 import { useDonationStore } from '@/stores/donation'
@@ -24,6 +24,15 @@ const donorPay = useForm<PaymentFormValues>({
   name: 'donationPayment',
 })
 
+const selectAmount = (amount: number) => {
+  donorPay.setFieldValue('amount', amount)
+}
+
+const isAmountSelected = (amount: number) => donorPay.values.amount === amount
+
+const getPaymentAmountButtonVariant = (amountValue: number): 'secondary' | 'outline' =>
+  isAmountSelected(amountValue) ? 'secondary' : 'outline'
+
 watch(numberValue, (value) => {
   donorPay.setFieldValue('amount', value ?? 0, false)
 })
@@ -37,17 +46,6 @@ watch(
   }
 )
 
-onMounted(() => {
-  console.log(numberValue.value, donorPay.values.amount)
-
-  formattedValue.value = donorPay.values.amount
-    ? donorPay.values.amount.toString().replace('.', ',')
-    : null
-
-  console.log(numberValue.value, donorPay.values.amount)
-})
-
-// Sync form values to store
 watch(
   () => donorPay.values,
   (values) => {
@@ -56,20 +54,15 @@ watch(
   { deep: true }
 )
 
-const selectAmount = (amount: number) => {
-  donorPay.setFieldValue('amount', amount)
-}
-
-const isAmountSelected = (amount: number) => donorPay.values.amount === amount
-
-const getPaymentAmountButtonVariant = (amountValue: number): 'secondary' | 'outline' =>
-  isAmountSelected(amountValue) ? 'secondary' : 'outline'
-
-defineExpose({
-  isValid: computed(() => donorPay.meta.value.valid),
-  values: computed(() => donorPay.values),
-  reset: () => donorPay.resetForm({ values: DEFAULT_PAY_FORM }),
-})
+watch(
+  () => donorPay.meta.value.valid,
+  (valid) => {
+    donationStore.setStepValidity(2, valid)
+  },
+  {
+    immediate: true,
+  }
+)
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { watch, computed } from 'vue'
+import { watch } from 'vue'
 import { FormField } from '@/components/ui/form'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -37,8 +37,16 @@ const resetPhoneField = () => {
   })
 }
 
+const onPastePhone = (e: ClipboardEvent) => {
+  e.preventDefault()
+  const pasted = e.clipboardData?.getData('text') || ''
+  const parsed = parsePhoneFromClipboard(pasted)
+  if (parsed) {
+    donorBlank.setFieldValue('phone', parsed)
+  }
+}
+
 watch(selectedSpec, (spec) => {
-  // Update phoneCountry in form when country code changes
   donorBlank.setFieldValue('phoneCountry', spec.id)
   resetPhoneField()
 })
@@ -51,20 +59,15 @@ watch(
   { deep: true }
 )
 
-defineExpose({
-  isValid: computed(() => donorBlank.meta.value.valid),
-  values: computed(() => donorBlank.values),
-  reset: () => donorBlank.resetForm({ values: DEFAULT_BLANK_FORM }),
-})
-
-const onPastePhone = (e: ClipboardEvent) => {
-  e.preventDefault()
-  const pasted = e.clipboardData?.getData('text') || ''
-  const parsed = parsePhoneFromClipboard(pasted)
-  if (parsed) {
-    donorBlank.setFieldValue('phone', parsed)
+watch(
+  () => donorBlank.meta.value.valid,
+  (valid) => {
+    donationStore.setStepValidity(1, valid)
+  },
+  {
+    immediate: true,
   }
-}
+)
 </script>
 
 <template>
@@ -94,7 +97,7 @@ const onPastePhone = (e: ClipboardEvent) => {
 
             <DropdownMenuContent
               :align="'start'"
-              class="duration-75 shadow-xl ease-linear flex flex-col"
+              class="duration-150 shadow-lg shadow-primary/15 bg-card/70 backdrop-blur-xs gap-2 p-2 ease-linear flex flex-col"
             >
               <DropdownMenuItem
                 v-for="spec in PHONE_SPECS"
@@ -103,12 +106,11 @@ const onPastePhone = (e: ClipboardEvent) => {
                 class="cursor-pointer p-0"
               >
                 <Button
-                  :variant="selectedSpec?.code === spec.code ? 'secondary' : 'outline'"
-                  class="w-full gap-2 rounded-none duration-300 border-0"
-                  size="lg"
+                  :variant="selectedSpec?.code === spec.code ? 'default' : 'link'"
+                  class="w-full text-start max-sm:text-lg grid grid-cols-3 gap-2 duration-700"
                 >
-                  <span class="mr-auto">({{ spec.code }})</span>
-                  <span>{{ spec.name }}</span>
+                  <span>({{ spec.code }})</span>
+                  <span class="col-span-2">{{ spec.name }}</span>
                 </Button>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -165,7 +167,9 @@ const onPastePhone = (e: ClipboardEvent) => {
         <AutoAnimated>
           <FormMessage class="text-base" />
         </AutoAnimated>
-        <FormDescription class="text-base">Оставьте пустым для анонимности</FormDescription>
+        <FormDescription class="text-base max-md:!text-sm"
+          >Оставьте пустым для анонимности</FormDescription
+        >
       </FormItem>
     </FormField>
 

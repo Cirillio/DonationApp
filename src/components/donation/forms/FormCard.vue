@@ -1,7 +1,5 @@
 <template>
-  <Card
-    class="flex flex-col gap-6 border-0 !py-6 shadow-lg hover:shadow-accent/15 transition-shadow"
-  >
+  <Card class="flex flex-col gap-6 border-0 !py-6 shadow-lg">
     <CardHeader
       class="flex gap-2 md:gap-3 max-md:my-4 items-center max-md:flex-col max-md:justify-center"
     >
@@ -11,7 +9,7 @@
       </div>
     </CardHeader>
 
-    <Separator class="bg-accent/50" />
+    <Separator class="bg-foreground/50" />
 
     <CardContent class="px-6">
       <slot name="content" />
