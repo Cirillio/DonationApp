@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
 import { DonationStatus } from '@/lib/types/donate'
 import { watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -14,12 +15,48 @@ import DonateLayout from '@/components/donation/DonateLayout.vue'
 import { useDonationStore } from '@/stores/donation'
 import { usePageLeaveConfirmation } from '@/composables/usePageLeaveConfirm'
 import { useDonationRedirect } from '@/composables/useDonationRedirect'
+import { DEFAULT_BLANK_FORM, DEFAULT_PAY_FORM } from '@/lib/constants'
+import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/lib/validations/blank'
+import { amountSchema, typeSchema, noteSchema } from '@/lib/validations/payment'
+import { getPhoneSpec } from '@/lib/utils'
+import { z } from 'zod'
 
 const route = useRoute()
 const router = useRouter()
 const donationStore = useDonationStore()
 
-const { showConfirmDialog, confirmLeave, cancelLeave } = usePageLeaveConfirmation()
+// Создаем объектные схемы из готовых field схем
+const blankFormSchema = z.object({
+  phone: phoneSchema(() => getPhoneSpec(donationStore.formData.blank.phoneCountry).code || ''),
+  phoneCountry: z.string(),
+  name: nameSchema,
+  birth: birthSchema,
+  isGroup: isGroupSchema,
+})
+
+const paymentFormSchema = z.object({
+  amount: amountSchema,
+  type: typeSchema,
+  note: noteSchema,
+})
+
+const { showConfirmDialog, confirmLeave, cancelLeave } = usePageLeaveConfirmation({
+  forms: [
+    {
+      data: () => donationStore.formData.blank,
+      defaults: DEFAULT_BLANK_FORM,
+      schema: blankFormSchema,
+      ignoreFields: ['phoneCountry', 'isGroup'],
+    },
+    {
+      data: () => donationStore.formData.payment,
+      defaults: DEFAULT_PAY_FORM,
+      schema: paymentFormSchema,
+    },
+  ],
+  shouldPrevent: () => donationStore.currentStep < 3 && !donationStore.paymentResult?.success,
+  onConfirm: () => donationStore.resetForm(),
+})
 
 const onCloseDialog = (open: boolean) => {
   if (!open) {
