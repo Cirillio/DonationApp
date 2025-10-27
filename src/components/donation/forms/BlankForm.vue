@@ -1,23 +1,4 @@
 <script lang="ts" setup>
-/**
- * DonationBlank - Step 1: Personal Information Form
- *
- * Collects basic donor information:
- * - Phone number with country code selection (RU/TJ)
- * - Name (optional)
- * - Birth date (required, age validation 18-100)
- * - Group donation checkbox
- *
- * Form Management:
- * - Direct v-model binding to store.formData.blank
- * - No vee-validate, no watchers, no complexity
- * - Validation happens on submit via store.validateBlank()
- *
- * Special Features:
- * - Phone number paste detection and parsing
- * - Country-specific phone validation and masking
- * - Auto-reset phone field when country changes
- */
 import { computed } from 'vue'
 import { usePhone } from '@/composables/usePhone'
 import { DEFAULT_BLANK_FORM, DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/lib/constants'
@@ -50,7 +31,7 @@ const {
 
 const resetPhoneField = () => {
   form.value.phone = DEFAULT_BLANK_FORM.phone
-  donationStore.clearFieldError('blank', 'phone')
+  donationStore.clearFieldError('blank', '')
 }
 
 const onPastePhone = (e: ClipboardEvent) => {

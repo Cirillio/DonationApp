@@ -1,49 +1,26 @@
 <script lang="ts" setup>
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import DonateLayout from '@/components/donation/DonateLayout.vue'
+import LeaveConfirm from '@/components/common/LeaveConfirm.vue'
 import { useDonationStore } from '@/stores/donation'
 import { usePageLeaveConfirmation } from '@/composables/usePageLeaveConfirm'
-import { useDonationRedirect } from '@/composables/useDonationRedirect'
 import { DEFAULT_BLANK_FORM, DEFAULT_PAY_FORM } from '@/lib/constants'
-import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/lib/validations/blank'
-import { amountSchema, typeSchema, noteSchema } from '@/lib/validations/payment'
+import { blankFormSchema, paymentFormSchema } from '@/lib/validations'
+
 import { getPhoneSpec } from '@/lib/utils'
-import { z } from 'zod'
 
 const route = useRoute()
 const donationStore = useDonationStore()
-
-// Создаем объектные схемы из готовых field схем
-const blankFormSchema = z.object({
-  phone: phoneSchema(() => getPhoneSpec(donationStore.formData.blank.phoneCountry).code || ''),
-  phoneCountry: z.string(),
-  name: nameSchema,
-  birth: birthSchema,
-  isGroup: isGroupSchema,
-})
-
-const paymentFormSchema = z.object({
-  amount: amountSchema,
-  type: typeSchema,
-  note: noteSchema,
-})
 
 const { showConfirmDialog, confirmLeave, cancelLeave } = usePageLeaveConfirmation({
   forms: [
     {
       data: () => donationStore.formData.blank,
       defaults: DEFAULT_BLANK_FORM,
-      schema: blankFormSchema,
+      schema: blankFormSchema({
+        getPhone: () => getPhoneSpec(donationStore.formData.blank.phoneCountry).code || '',
+      }),
       ignoreFields: ['phoneCountry', 'isGroup'],
     },
     {
@@ -62,43 +39,21 @@ const onCloseDialog = (open: boolean) => {
   }
 }
 
-const { checkPaymentToken } = useDonationRedirect()
-
 onMounted(() => {
   // Проверяем наличие платежного токена в URL
   const paymentToken = route.query['payment-token'] as string | null
-  checkPaymentToken(paymentToken)
+  donationStore.checkPaymentToken(paymentToken)
 })
 </script>
 <template>
-  <Dialog :open="showConfirmDialog" @update:open="onCloseDialog">
-    <DialogContent @escape-key-down="cancelLeave" class="sm:max-w-md dark:border-accent/50">
-      <DialogHeader class="text-center space-y-4">
-        <div class="mx-auto w-fit relative">
-          <div class="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center">
-            <span class="iconify f7--doc-text size-8 text-destructive"></span>
-          </div>
-          <span
-            class="absolute -top-1 -right-1 iconify f7--exclamationmark-circle-fill size-6 text-destructive rounded-full"
-          ></span>
-        </div>
-
-        <div class="space-y-2">
-          <DialogTitle class="text-xl">Вы уверены, что хотите выйти?</DialogTitle>
-          <DialogDescription class="text-muted-foreground">
-            Все введённые данные будут утеряны.
-          </DialogDescription>
-        </div>
-      </DialogHeader>
-
-      <DialogFooter class="flex-col-reverse sm:flex-row gap-2 mt-6">
-        <Button variant="outline" @click="cancelLeave" class="w-full sm:flex-1"> Остаться </Button>
-        <Button variant="destructive" @click="confirmLeave" class="w-full sm:flex-1">
-          Выйти
-        </Button>
-      </DialogFooter>
-    </DialogContent>
-  </Dialog>
+  <LeaveConfirm
+    :open="showConfirmDialog"
+    :onClose="() => onCloseDialog(false)"
+    :onConfirm="confirmLeave"
+    :onCancel="cancelLeave"
+    title="Вы уверены, что хотите выйти?"
+    description="Все введённые данные будут утеряны."
+  />
 
   <div class="container min-h-screen mx-auto py-8 md:py-16">
     <div class="mx-auto flex flex-col gap-4 w-full sm:max-w-4xl">

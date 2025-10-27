@@ -1,14 +1,12 @@
 <script lang="ts" setup>
-import { computed, onUnmounted } from 'vue'
 import { Button } from '@/components/ui/button'
-import FormCard from '@/components/donation/FormCard.vue'
-import BlankForm from './forms/BlankForm.vue'
-import PaymentForm from './forms/PaymentForm.vue'
-import ResultForm from './forms/ResultForm.vue'
+import { computed, onUnmounted } from 'vue'
 import { PAYMENT_AMOUNTS_MIN } from '@/lib/constants'
 import { useDonationStore } from '@/stores/donation'
 import { storeToRefs } from 'pinia'
 import DonateStepper from './DonateStepper.vue'
+import FormCard from './FormCard.vue'
+import { BlankForm, PaymentForm, ResultForm } from './forms'
 
 const donationStore = useDonationStore()
 const { isCurrentStep, nextStep, prevStep } = donationStore

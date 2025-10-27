@@ -5,7 +5,6 @@ import { reactiveOmit } from '@vueuse/core'
 import { X } from 'lucide-vue-next'
 import { DialogClose, DialogContent, DialogPortal, useForwardPropsEmits } from 'reka-ui'
 import { cn } from '@/lib/utils'
-import DialogOverlay from './DialogOverlay.vue'
 
 const props = defineProps<
   DialogContentProps & { class?: HTMLAttributes['class']; showClose?: boolean }
@@ -19,7 +18,6 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
 <template>
   <DialogPortal>
-    <DialogOverlay />
     <DialogContent
       data-slot="dialog-content"
       v-bind="forwarded"

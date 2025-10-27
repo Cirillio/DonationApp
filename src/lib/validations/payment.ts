@@ -9,4 +9,10 @@ const typeSchema = z.enum(PAYMENT_TYPES, 'Пожалуйста, укажите �
 
 const noteSchema = z.string().trim().max(200, 'Максимум 200 символов.').optional()
 
-export { amountSchema, typeSchema, noteSchema }
+const paymentFormSchema = z.object({
+  amount: amountSchema,
+  type: typeSchema,
+  note: noteSchema,
+})
+
+export { amountSchema, typeSchema, noteSchema, paymentFormSchema }

@@ -55,4 +55,13 @@ const birthSchema = z.preprocess(
 
 const isGroupSchema = z.boolean()
 
-export { phoneSchema, nameSchema, birthSchema, isGroupSchema }
+const blankFormSchema = (config: { getPhone: () => string }) =>
+  z.object({
+    phone: phoneSchema(config.getPhone),
+    phoneCountry: z.string(),
+    name: nameSchema,
+    birth: birthSchema,
+    isGroup: isGroupSchema,
+  })
+
+export { phoneSchema, nameSchema, birthSchema, isGroupSchema, blankFormSchema }

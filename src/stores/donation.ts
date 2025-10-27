@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed, ComputedRef, reactive } from 'vue'
-import type { BlankFormValues, PaymentFormValues } from '@/lib/types'
+import type { BlankFormValues, PaymentFormValues, DonationStatus } from '@/lib/types'
 import {
   MAX_STEPS,
   STATUS_TO_STEP,
@@ -9,10 +9,8 @@ import {
   DEFAULT_PAY_FORM,
 } from '@/lib/constants'
 import { getPhoneSpec } from '@/lib/utils'
-import { DonationStatus } from '@/lib/types/donate'
-import { z, type ZodError } from 'zod'
-import { phoneSchema, nameSchema, birthSchema, isGroupSchema } from '@/lib/validations/blank'
-import { amountSchema, typeSchema, noteSchema } from '@/lib/validations/payment'
+import { type ZodError } from 'zod'
+import { blankFormSchema, paymentFormSchema } from '@/lib/validations'
 
 function formatZodErrors(error: ZodError): Record<string, string> {
   const formatted: Record<string, string> = {}
@@ -35,18 +33,10 @@ export const useDonationStore = defineStore('donation', () => {
   })
 
   const formSchemas = reactive({
-    blank: z.object({
-      phone: phoneSchema(() => getPhoneSpec(formData.blank.phoneCountry).code || ''),
-      phoneCountry: z.string(),
-      name: nameSchema,
-      birth: birthSchema,
-      isGroup: isGroupSchema,
+    blank: blankFormSchema({
+      getPhone: () => getPhoneSpec(formData.blank.phoneCountry).code || '',
     }),
-    payment: z.object({
-      amount: amountSchema,
-      type: typeSchema,
-      note: noteSchema,
-    }),
+    payment: paymentFormSchema,
   })
 
   const fieldErrors = reactive<{
@@ -90,7 +80,7 @@ export const useDonationStore = defineStore('donation', () => {
     }
   }
 
-  const clearFieldError = (formName: 'blank' | 'payment', fieldName: string) => {
+  const clearFieldError = (formName: keyof typeof formSchemas, fieldName: string) => {
     delete fieldErrors[formName][fieldName]
   }
 
@@ -136,6 +126,20 @@ export const useDonationStore = defineStore('donation', () => {
     currentStep.value = 3
   }
 
+  /**
+   * Проверяет наличие платежного токена и переходит на страницу результата
+   * @param paymentToken - токен платежа из URL параметров
+   */
+  const checkPaymentToken = (paymentToken: string | null) => {
+    if (paymentToken) {
+      // Переходим на шаг с результатом
+      goToStep(3)
+
+      // TODO: В будущем здесь будет запрос на сервер для получения данных платежа
+      // const paymentData = await fetchPaymentByToken(paymentToken)
+      // donationStore.setPaymentResult(paymentData)
+    }
+  }
   function setPaymentResult(result: { success: boolean; paymentId?: string }) {
     paymentResult.value = result
     if (result.success) {
@@ -174,6 +178,7 @@ export const useDonationStore = defineStore('donation', () => {
     prevStep,
     goToStep,
     finish,
+    checkPaymentToken,
     setPaymentResult,
     resetForm,
   }
