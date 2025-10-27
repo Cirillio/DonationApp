@@ -28,9 +28,12 @@ export class DonationPage {
   readonly blankFormCard: Locator
   readonly paymentFormCard: Locator
 
-  // Dialog
+  // Dialogs
   readonly successDialog: Locator
   readonly dialogCloseButton: Locator
+  readonly leaveConfirmDialog: Locator
+  readonly leaveConfirmStayButton: Locator
+  readonly leaveConfirmLeaveButton: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -52,16 +55,23 @@ export class DonationPage {
     this.blankFormCard = page.locator('section').filter({ hasText: 'Анкета' })
     this.paymentFormCard = page.locator('section').filter({ hasText: 'Оплата' })
 
-    // Dialog
+    // Dialogs
     this.successDialog = page.locator('[role="dialog"]')
     this.dialogCloseButton = page.getByRole('button', { name: 'Закрыть' })
+
+    // Leave Confirmation Dialog
+    this.leaveConfirmDialog = page
+      .locator('[role="dialog"]')
+      .filter({ hasText: 'Вы уверены, что хотите выйти?' })
+    this.leaveConfirmStayButton = page.getByRole('button', { name: 'Остаться' })
+    this.leaveConfirmLeaveButton = page.getByRole('button', { name: 'Выйти' })
   }
 
   /**
    * Navigate to donation page
    */
   async goto() {
-    await this.page.goto('/')
+    await this.page.goto('/donate')
   }
 
   /**
