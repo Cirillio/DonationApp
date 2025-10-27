@@ -26,8 +26,6 @@ export const DONATE_STEPS: {
   },
 ] as const
 
-export const START_STATUS = DONATE_STEPS[0].status
-
 export const MAX_STEPS = DONATE_STEPS.length
 
 export const STEP_TO_STATUS: Record<number, DonationStatus> = {
@@ -41,5 +39,3 @@ export const STATUS_TO_STEP: Record<DonationStatus, number> = {
   payment: 2,
   result: 3,
 } as const
-
-export const DONATION_STATUSES: DonationStatus[] = Object.values(STEP_TO_STATUS)

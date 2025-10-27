@@ -1,32 +1,25 @@
-import { useToast } from '@/components/ui/toast'
 import { useDonationStore } from '@/stores/donation'
-import { useRouter } from 'vue-router'
-import { START_STATUS } from '@/lib/constants'
-import { DonationStatus } from '@/lib/types/donate'
 
+/**
+ * Композабл для обработки редиректов на странице доната
+ */
 export function useDonationRedirect() {
   const donationStore = useDonationStore()
-  const router = useRouter()
-  const { toast } = useToast()
 
-  const checkAndRedirect = (currentStatus: DonationStatus) => {
-    // Если на payment, но анкета не заполнена
-    if (currentStatus === 'payment' && !donationStore.stepsValidity[1]) {
-      toast({
-        title: 'Сначала заполните анкету',
-        description: 'Для перехода к оплате необходимо заполнить обязательные поля',
-        variant: 'destructive',
-      })
+  /**
+   * Проверяет наличие платежного токена и переходит на страницу результата
+   * @param paymentToken - токен платежа из URL параметров
+   */
+  const checkPaymentToken = (paymentToken: string | null) => {
+    if (paymentToken) {
+      // Переходим на шаг с результатом
+      donationStore.goToStep(3)
 
-      router.replace({
-        path: '/donate',
-        query: { status: START_STATUS },
-      })
-      return false
+      // TODO: В будущем здесь будет запрос на сервер для получения данных платежа
+      // const paymentData = await fetchPaymentByToken(paymentToken)
+      // donationStore.setPaymentResult(paymentData)
     }
-
-    return true
   }
 
-  return { checkAndRedirect }
+  return { checkPaymentToken }
 }

@@ -8,9 +8,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { DonationStatus } from '@/lib/types/donate'
-import { watch, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import DonateLayout from '@/components/donation/DonateLayout.vue'
 import { useDonationStore } from '@/stores/donation'
 import { usePageLeaveConfirmation } from '@/composables/usePageLeaveConfirm'
@@ -22,7 +21,6 @@ import { getPhoneSpec } from '@/lib/utils'
 import { z } from 'zod'
 
 const route = useRoute()
-const router = useRouter()
 const donationStore = useDonationStore()
 
 // Создаем объектные схемы из готовых field схем
@@ -64,52 +62,13 @@ const onCloseDialog = (open: boolean) => {
   }
 }
 
-const { checkAndRedirect } = useDonationRedirect()
+const { checkPaymentToken } = useDonationRedirect()
 
 onMounted(() => {
-  const status = route.query.status as DonationStatus
-
-  checkAndRedirect(status)
-
-  const initStatusResult = donationStore.initStatus(status)
-  if (!initStatusResult.success && initStatusResult.query) {
-    router.replace({
-      path: '/donate',
-      query: {
-        ...initStatusResult.query,
-      },
-    })
-  }
+  // Проверяем наличие платежного токена в URL
+  const paymentToken = route.query['payment-token'] as string | null
+  checkPaymentToken(paymentToken)
 })
-
-// Sync currentStatus to query param
-watch(
-  () => donationStore.currentStatus,
-  (newStatus) => {
-    if (route.query.status !== newStatus) {
-      router.replace({
-        query: { ...route.query, status: newStatus },
-      })
-    }
-  }
-)
-
-// Sync query param to currentStatus
-watch(
-  () => route.query.status,
-  (newStatus) => {
-    if (
-      newStatus &&
-      typeof newStatus === 'string' &&
-      ['blank', 'payment', 'result'].includes(newStatus)
-    ) {
-      const status = newStatus as DonationStatus
-      if (donationStore.currentStatus !== status) {
-        donationStore.setStepByStatus(status)
-      }
-    }
-  }
-)
 </script>
 <template>
   <Dialog :open="showConfirmDialog" @update:open="onCloseDialog">

@@ -2,9 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed, ComputedRef, reactive } from 'vue'
 import type { BlankFormValues, PaymentFormValues } from '@/lib/types'
 import {
-  DONATION_STATUSES,
   MAX_STEPS,
-  START_STATUS,
   STATUS_TO_STEP,
   STEP_TO_STATUS,
   DEFAULT_BLANK_FORM,
@@ -131,45 +129,6 @@ export const useDonationStore = defineStore('donation', () => {
     }
   }
 
-  function setStepByStatus(status: DonationStatus) {
-    const step = STATUS_TO_STEP[status]
-    if (step) {
-      goToStep(step)
-    }
-  }
-
-  const initStatus = (
-    query: DonationStatus | null | undefined
-  ): {
-    success: boolean
-    query?: {
-      status: DonationStatus
-    }
-  } => {
-    if (!query) {
-      return {
-        success: false,
-        query: {
-          status: START_STATUS,
-        },
-      }
-    }
-
-    if (DONATION_STATUSES.includes(query)) {
-      setStepByStatus(query)
-      return {
-        success: true,
-      }
-    } else {
-      return {
-        success: false,
-        query: {
-          status: START_STATUS,
-        },
-      }
-    }
-  }
-
   function finish(result?: { success: boolean; paymentId?: string }) {
     if (result) {
       paymentResult.value = result
@@ -214,8 +173,6 @@ export const useDonationStore = defineStore('donation', () => {
     nextStep,
     prevStep,
     goToStep,
-    setStepByStatus,
-    initStatus,
     finish,
     setPaymentResult,
     resetForm,
