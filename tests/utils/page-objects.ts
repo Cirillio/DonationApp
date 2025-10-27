@@ -39,10 +39,10 @@ export class DonationPage {
     this.page = page
 
     // Blank Form Locators
-    this.phoneInput = page.getByLabel('Телефон')
+    this.phoneInput = page.getByPlaceholder('(###) ###-##-##')
     this.phoneCodeDropdown = page.locator('button:has(.f7--chevron-down)')
-    this.nameInput = page.getByLabel('Имя')
-    this.birthInput = page.getByLabel('Дата рождения')
+    this.nameInput = page.getByPlaceholder('Хотя бы 3 символа')
+    this.birthInput = page.locator('input[type="text"]').nth(2) // Third text input (after phone and name)
     // isGroupCheckbox is actually a Button (CheckBlock component), not a checkbox
     this.isGroupCheckbox = page.getByRole('button').filter({ hasText: 'От лица группы' })
 
@@ -72,6 +72,8 @@ export class DonationPage {
    */
   async goto() {
     await this.page.goto('/donate')
+    // Wait for form to be ready
+    await this.phoneInput.waitFor({ state: 'visible' })
   }
 
   /**
@@ -231,14 +233,23 @@ export class NavigationPage {
 
   async gotoNews() {
     // Use navigation role to avoid footer links
-    await this.page.getByRole('navigation').getByRole('link', { name: /новости/i }).click()
+    await this.page
+      .getByRole('navigation')
+      .getByRole('link', { name: /новости/i })
+      .click()
   }
 
   async gotoStats() {
-    await this.page.getByRole('navigation').getByRole('link', { name: /статистика/i }).click()
+    await this.page
+      .getByRole('navigation')
+      .getByRole('link', { name: /статистика/i })
+      .click()
   }
 
   async gotoDonation() {
-    await this.page.getByRole('navigation').getByRole('link', { name: /пожертвование/i }).click()
+    await this.page
+      .getByRole('navigation')
+      .getByRole('link', { name: /пожертвование/i })
+      .click()
   }
 }
