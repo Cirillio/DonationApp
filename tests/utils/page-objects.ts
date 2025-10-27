@@ -230,14 +230,15 @@ export class NavigationPage {
   }
 
   async gotoNews() {
-    await this.page.getByRole('link', { name: /новости/i }).click()
+    // Use navigation role to avoid footer links
+    await this.page.getByRole('navigation').getByRole('link', { name: /новости/i }).click()
   }
 
   async gotoStats() {
-    await this.page.getByRole('link', { name: /статистика/i }).click()
+    await this.page.getByRole('navigation').getByRole('link', { name: /статистика/i }).click()
   }
 
   async gotoDonation() {
-    await this.page.getByRole('link', { name: /пожертвование/i }).click()
+    await this.page.getByRole('navigation').getByRole('link', { name: /пожертвование/i }).click()
   }
 }

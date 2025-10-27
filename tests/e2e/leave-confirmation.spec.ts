@@ -22,7 +22,10 @@ test.describe('Leave Confirmation', () => {
       await donationPage.fillPhone('9001234567')
 
       // Try to navigate away
-      await page.getByRole('link', { name: /главная/i }).click()
+      await page
+        .getByRole('navigation')
+        .getByRole('link', { name: /главная/i })
+        .click()
 
       // Dialog should appear
       await expect(donationPage.leaveConfirmDialog).toBeVisible()
@@ -57,7 +60,10 @@ test.describe('Leave Confirmation', () => {
       await donationPage.selectPaymentMethod('sbp')
 
       // Try to navigate away
-      await page.getByRole('link', { name: /главная/i }).click()
+      await page
+        .getByRole('navigation')
+        .getByRole('link', { name: /главная/i })
+        .click()
 
       // Dialog should appear
       await expect(donationPage.leaveConfirmDialog).toBeVisible()
@@ -93,7 +99,7 @@ test.describe('Leave Confirmation', () => {
       // Don't fill anything
 
       // Navigate away
-      await page.getByRole('link', { name: /новости/i }).click()
+      await navigationPage.gotoNews()
 
       // Dialog should NOT appear
       await expect(donationPage.leaveConfirmDialog).not.toBeVisible()
