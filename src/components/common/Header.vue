@@ -1,6 +1,9 @@
 <template>
   <header
-    class="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/80"
+    class="top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/80"
+    :class="[
+      route.path === '/' ? 'relative dark:border-primary/50 light:!bg-background' : 'sticky',
+    ]"
   >
     <div class="container mx-auto flex h-16 items-center justify-between px-4">
       <RouterLink

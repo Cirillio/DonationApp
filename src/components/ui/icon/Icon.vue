@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 type IconProps = {
-  variant?: 'default' | 'fill' | 'outline' | 'ghost' | 'secondary' | 'primary'
+  variant?: 'default' | 'fill' | 'outline' | 'outline-primary' | 'ghost' | 'secondary' | 'primary'
 }
 
 defineOptions({
@@ -19,12 +19,14 @@ const props = withDefaults(defineProps<IconProps>(), {
       'p-0': props.variant === 'default',
       'p-2 shadow-xs border border-transparent bg-card text-card-foreground':
         props.variant === 'fill',
-      'p-2 shadow-xs border border-border text-muted-foreground': props.variant === 'outline',
+      'p-2 shadow-xs border border-border bg-input/25 text-foreground': props.variant === 'outline',
+      'p-2 shadow-xs border border-primary bg-primary/10 text-primary':
+        props.variant === 'outline-primary',
       'p-2 shadow-xs border border-transparent bg-primary text-primary-foreground':
         props.variant === 'primary',
       'p-2 shadow-xs border border-transparent bg-secondary text-secondary-foreground':
         props.variant === 'secondary',
-      'p-2 shadow-xs border border-transparent bg-border/25 text-card-foreground':
+      'p-2 shadow-xs border border-transparent bg-muted/50 light:bg-muted/5 text-muted-foreground':
         props.variant === 'ghost',
     }"
   >
