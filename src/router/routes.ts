@@ -31,7 +31,7 @@ export const systemRoutes: RouteRecordRaw[] = [
   {
     path: '/settings',
     name: 'settings',
-    component: () => import('@/pages/settings-page.vue'),
+    component: () => import('@/pages/SettingsPage.vue'),
     meta: { title: 'Настройки', icon: 'f7--gear' },
   },
   {

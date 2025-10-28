@@ -33,9 +33,6 @@ const modelValue = useVModel(props, 'modelValue', emits, {
         'file:text-foreground placeholder:text-muted-foreground',
         'selection:bg-primary selection:text-primary-foreground',
 
-        // ховер/фокус
-        'focus-visible:ring-accent focus-visible:border-transparent focus-visible:ring-[2px] ',
-
         // file input
         'file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium',
 

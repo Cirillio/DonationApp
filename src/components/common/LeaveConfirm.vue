@@ -25,7 +25,7 @@
         <Button
           variant="outline"
           @click="onConfirm"
-          class="w-full border-destructive text-destructive-foreground hover:text-destructive-foreground/80 bg-destructive/10 hover:bg-destructive/20 sm:flex-1"
+          class="w-full border-destructive text-destructive hover:text-destructive bg-destructive/10 hover:bg-destructive/20 sm:flex-1"
         >
           Выйти
         </Button>

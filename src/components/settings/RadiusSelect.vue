@@ -1,27 +1,30 @@
 <template>
   <div class="flex gap-2 w-full" role="group" aria-label="Выбор радиуса скругления">
-    <SelectButton
+    <CheckBlock
       v-for="_radius in [...RADIUS_TYPES].reverse()"
       :key="_radius"
-      :selected="_radius === radius"
-      :on-select="() => setRadius(_radius)"
+      :checked="_radius === radius"
+      :show-checkbox="false"
+      @on-check="() => setRadius(_radius)"
       :aria-label="`Радиус ${_radius}${_radius === radius ? ' (выбран)' : ''}`"
-      class="flex-col flex-2/9 py-3"
+      class="w-full min-w-60 flex-1 text-foreground min-h-14 flex-col py-3"
     >
-      <div
-        class="h-8 w-10 border"
-        :class="[
-          BORDER_RADIUS_CSS_CLASSES[_radius],
-          _radius === radius ? 'bg-card/75' : 'bg-background',
-        ]"
-      ></div>
-      {{ _radius }}
-    </SelectButton>
+      <template #content>
+        <div
+          class="h-8 w-10 border border-primary/50"
+          :class="[
+            BORDER_RADIUS_CSS_CLASSES[_radius],
+            _radius === radius ? 'bg-card/75' : 'bg-background',
+          ]"
+        ></div>
+        {{ _radius }}
+      </template>
+    </CheckBlock>
   </div>
 </template>
 
 <script lang="ts" setup>
-import SelectButton from './SelectButton.vue'
+import CheckBlock from '../ui/checkblock/CheckBlock.vue'
 import { RADIUS_TYPES, BORDER_RADIUS_CSS_CLASSES } from '@/lib/constants'
 import { useAppSettingsStore } from '@/stores/settings'
 import { storeToRefs } from 'pinia'

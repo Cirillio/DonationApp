@@ -7,6 +7,7 @@
         <Button variant="default">Default</Button>
         <Button variant="accent">Accent</Button>
         <Button variant="outline">Outline</Button>
+        <Button variant="outline-primary">Outline Primary</Button>
         <Button variant="secondary">Secondary</Button>
         <Button variant="ghost">Ghost</Button>
         <Button variant="destructive">Destructive</Button>
@@ -50,6 +51,7 @@
             <Badge variant="secondary">Secondary</Badge>
             <Badge variant="destructive">Destructive</Badge>
             <Badge variant="outline">Outline</Badge>
+            <Badge variant="outline-primary">Outline Primary</Badge>
           </CardContent>
         </Card>
       </div>

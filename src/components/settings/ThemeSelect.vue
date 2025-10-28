@@ -1,20 +1,24 @@
 <template>
   <div class="flex gap-2" role="group" aria-label="Выбор темы оформления">
-    <SelectButton
+    <CheckBlock
       v-for="theme in APP_THEME"
       :key="theme.label"
-      :selected="theme.mode === mode"
-      :on-select="() => toggleTheme(theme.mode)"
+      :checked="theme.mode === mode"
+      :show-checkbox="false"
+      @on-check="() => toggleTheme(theme.mode)"
       :aria-label="`${theme.label} тема${theme.mode === mode ? ' (выбрана)' : ''}`"
+      class="w-full flex-1 text-foreground min-h-14"
     >
-      <Icon :class="[theme.icon, 'size-6']" />
-      {{ theme.label }}
-    </SelectButton>
+      <template #content>
+        <Icon :class="[theme.icon, 'size-6']" />
+        {{ theme.label }}
+      </template>
+    </CheckBlock>
   </div>
 </template>
 
 <script lang="ts" setup>
-import SelectButton from './SelectButton.vue'
+import CheckBlock from '../ui/checkblock/CheckBlock.vue'
 import { Icon } from '@/components/ui/icon'
 import { useAppSettingsStore } from '@/stores/settings'
 import { storeToRefs } from 'pinia'

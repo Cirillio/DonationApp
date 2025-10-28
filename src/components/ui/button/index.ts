@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 export { default as Button } from './Button.vue'
 
 export const buttonVariants = cva(
-  "flex duration-150 ease-in-out w-fit cursor-pointer shadow-xs items-center justify-center whitespace-nowrap rounded-md  font-medium transition-all touch-manipulation disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "flex duration-150 ease-in-out w-fit cursor-pointer shadow-xs items-center justify-center whitespace-nowrap rounded-md  font-medium transition-all touch-manipulation disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
@@ -14,12 +14,16 @@ export const buttonVariants = cva(
           'bg-destructive border border-destructive/10 text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive/20',
 
         outline:
-          'bg-card border border-border text-foreground hover:bg-input active:bg-input hover:text-foreground',
+          'bg-input/25 border border-border text-foreground hover:bg-input/50 active:bg-input/75 hover:text-foreground',
+
+        'outline-primary':
+          'bg-primary/10 border border-primary text-primary hover:bg-primary/20 active:bg-primary/20 focus-visible:ring-primary/20',
 
         secondary:
           'bg-secondary border border-secondary/10 text-secondary-foreground hover:bg-secondary/90 active:bg-secondary/90 focus-visible:ring-secondary/20',
 
-        ghost: 'bg-input/50 border border-transparent text-foreground hover:bg-input ',
+        ghost:
+          'bg-muted/10 light:bg-muted/25 border border-transparent text-foreground light:hover:bg-muted/50 light:active:bg-muted/60 hover:bg-muted/40 active:bg-muted/50 focus-visible:bg-muted/30',
 
         link: 'bg-transparent text-foreground hover:text-primary !shadow-none',
 

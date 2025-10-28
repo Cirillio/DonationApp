@@ -5,6 +5,7 @@ import { DEFAULT_BLANK_FORM, DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/lib/const
 import { useDonationStore } from '@/stores/donation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { Icon } from '@/components/ui/icon'
 import {
   DropdownMenu,
@@ -73,7 +74,10 @@ const birthDateString = computed({
   <div class="flex flex-col gap-6">
     <!-- Phone Field -->
     <div class="flex flex-col gap-1">
-      <label class="label-required gap-1 text-lg flex items-center font-medium text-foreground">
+      <label
+        class="label-required gap-1 text-lg flex items-center font-medium text-foreground"
+        :class="[errors.phone && '!text-destructive']"
+      >
         <span class="iconify f7--phone size-6"></span>
         Телефон
       </label>
@@ -89,20 +93,25 @@ const birthDateString = computed({
 
           <DropdownMenuContent
             :align="'start'"
-            class="duration-150 shadow-lg shadow-primary/15 bg-card/70 backdrop-blur-xs gap-2 p-2 ease-linear flex flex-col"
+            class="duration-150 shadow-lg bg-card gap-1.5 p-1 ease-linear flex flex-col min-w-[220px]"
           >
             <DropdownMenuItem
               v-for="spec in PHONE_SPECS"
               :key="spec.id"
               @select="onCountryChange(spec.id)"
-              class="cursor-pointer p-0"
+              class="cursor-pointer p-0 rounded-md"
             >
               <Button
-                :variant="selectedSpec?.code === spec.code ? 'default' : 'link'"
-                class="w-full text-start max-sm:text-lg grid grid-cols-3 gap-2 duration-700"
+                :variant="selectedSpec?.code === spec.code ? 'outline' : 'text'"
+                class="w-full justify-start gap-3 md:gap-2 px-2 py-2 h-auto"
               >
-                <span>({{ spec.code }})</span>
-                <span class="col-span-2">{{ spec.name }}</span>
+                <Badge
+                  :variant="selectedSpec?.code === spec.code ? 'outline-primary' : 'outline'"
+                  class="font-mono font-semibold min-w-[3.5rem] h-7 md:h-6 justify-center max-md:text-base"
+                >
+                  {{ spec.code }}
+                </Badge>
+                <span class="max-md:text-lg">{{ spec.name }}</span>
               </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -131,7 +140,10 @@ const birthDateString = computed({
 
     <!-- Name Field -->
     <div class="flex flex-col gap-1">
-      <label class="label-optional gap-1 text-lg flex items-center font-medium text-foreground">
+      <label
+        class="label-optional gap-1 text-lg flex items-center font-medium text-foreground"
+        :class="[errors.name && '!text-destructive']"
+      >
         <span class="iconify f7--person size-6"></span>
         Имя
       </label>
@@ -156,7 +168,10 @@ const birthDateString = computed({
 
     <!-- Birth Date Field -->
     <div class="flex flex-col gap-1">
-      <label class="label-required gap-1 text-lg flex items-center font-medium text-foreground">
+      <label
+        class="label-required gap-1 text-lg flex items-center font-medium text-foreground"
+        :class="[errors.birth && '!text-destructive']"
+      >
         <span class="iconify f7--calendar-today size-6"></span>
         Дата рождения
       </label>
@@ -178,7 +193,7 @@ const birthDateString = computed({
 
     <!-- Group Checkbox -->
     <div class="flex flex-col gap-1">
-      <CheckBlock v-model="form.isGroup" class="w-full min-h-12" :size="'default'">
+      <CheckBlock v-model="form.isGroup" class="w-full text-foreground min-h-12" :size="'default'">
         <template v-slot:content>
           <Icon class="f7--person-2 size-7" />
           <span class="text-lg font-normal">От лица группы</span>

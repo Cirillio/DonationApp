@@ -47,8 +47,8 @@ const selectAmount = (amount: number) => {
 
 const isAmountSelected = (amount: number) => form.value.amount === amount
 
-const getPaymentAmountButtonVariant = (amountValue: number): 'secondary' | 'outline' =>
-  isAmountSelected(amountValue) ? 'secondary' : 'outline'
+const getPaymentAmountButtonVariant = (amountValue: number): 'outline-primary' | 'outline' =>
+  isAmountSelected(amountValue) ? 'outline-primary' : 'outline'
 
 const clearNumberValueWatch = watch(numberValue, (value) => {
   form.value.amount = value ?? 0
@@ -97,7 +97,7 @@ onUnmounted(() => {
           v-for="amount in PAYMENT_AMOUNTS"
           :key="amount.label"
           :variant="getPaymentAmountButtonVariant(amount.value)"
-          class="py-4 text-lg px-9 max-sm:flex-1"
+          class="py-4 text-lg text-foreground px-9 max-sm:flex-1"
           @click="selectAmount(amount.value)"
         >
           {{ amount.label }}
@@ -147,7 +147,7 @@ onUnmounted(() => {
           :checked="p.type === form.type"
           :showCheckbox="false"
           @onCheck="(check: boolean) => selectPaymentType(check ? p.type : undefined)"
-          class="w-full flex-1 min-h-14"
+          class="w-full flex-1 text-foreground min-h-14"
         >
           <template #content>
             <div class="flex w-full text-lg justify-center font-normal gap-3 items-center">

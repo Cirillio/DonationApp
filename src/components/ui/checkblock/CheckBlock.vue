@@ -35,7 +35,7 @@ const check = computed({
   <Button
     @click="check = !check"
     class="group gap-2"
-    :variant="check ? 'secondary' : 'outline'"
+    :variant="check ? 'outline-primary' : 'outline'"
     type="button"
   >
     <slot name="content"></slot>
@@ -43,7 +43,8 @@ const check = computed({
     <Checkbox
       v-if="showCheckbox"
       :model-value="check"
-      class="cursor-pointer group-hover:bg-card size-6 border-border rounded-[var(--radius)] transition-all bg-none ml-auto"
+      class="cursor-pointer border-0 ring group-hover:bg-card size-6 rounded-[var(--radius)] transition-all bg-none ml-auto"
+      :class="[check ? 'ring-primary' : 'ring-border']"
     />
   </Button>
 </template>
