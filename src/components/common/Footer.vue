@@ -68,7 +68,7 @@
 
       <!-- Bottom Bar -->
       <div class="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-        <p>&copy; {{ currentYear }} Наш Посёлок. Все права защищены.</p>
+        <p>&copy; {{ currentYear }} Фонд Чилгази. Все права защищены.</p>
       </div>
     </div>
   </footer>

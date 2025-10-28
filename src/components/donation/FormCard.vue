@@ -1,6 +1,13 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 
 const props = defineProps<{
@@ -13,9 +20,7 @@ const props = defineProps<{
 
 const completedStepsCount = computed(() => {
   if (!props.stepsValidity) return 0
-  return Object.entries(props.stepsValidity)
-    .filter(([_, isValid]) => isValid)
-    .length
+  return Object.entries(props.stepsValidity).filter(([_, isValid]) => isValid).length
 })
 
 const progressPercentage = computed(() => {
@@ -26,7 +31,7 @@ const progressPercentage = computed(() => {
 
 <template>
   <Card
-    class="flex flex-col w-full gap-6 border-0 !py-6 shadow-none sm:shadow-lg !bg-transparent sm:!bg-card"
+    class="flex flex-col w-full rounded-md gap-6 border-0 !py-6 shadow-none sm:shadow-lg !bg-transparent sm:!bg-card"
   >
     <CardHeader
       class="flex gap-2 !px-4 sm:!px-6 md:gap-3 max-md:my-4 items-center max-md:flex-col max-md:justify-center"

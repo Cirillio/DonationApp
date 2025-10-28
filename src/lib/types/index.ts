@@ -1,6 +1,5 @@
 export * from './blank'
 export * from './payment'
 export * from './phone'
-export * from './theme'
-export * from './radius'
+export * from './settings'
 export * from './donate'

@@ -29,6 +29,12 @@ export const mainRoutes: RouteRecordRaw[] = [
 
 export const systemRoutes: RouteRecordRaw[] = [
   {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('@/pages/settings-page.vue'),
+    meta: { title: 'Настройки', icon: 'f7--gear' },
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/pages/NotFoundPage.vue'),
