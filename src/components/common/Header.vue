@@ -1,8 +1,6 @@
 <template>
-  <header
-    class="relative w-full border-b border-border bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/80"
-  >
-    <div class="container mx-auto flex h-16 items-center justify-between px-4">
+  <header class="relative z-10 w-full bg-background/80 supports-[backdrop-filter]:bg-background/80">
+    <div class="container mx-auto flex shadow-sm h-[56px] items-center justify-between px-4">
       <RouterLink
         to="/"
         class="flex items-center gap-2 font-bold text-foreground transition-colors hover:text-primary"

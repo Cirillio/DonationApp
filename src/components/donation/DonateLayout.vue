@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
         :current-step="currentStep"
         :total-steps="3"
         :steps-validity="stepsValidity"
-        class="w-full hover:shadow-black/15 hover:shadow-lg dark:hover:shadow-black/25 border-0 transition-shadow shadow-md"
+        class="w-full hover:md:shadow-black/15 hover:md:shadow-lg dark:md:hover:shadow-black/25 border-0 transition-shadow md:shadow-md"
       >
         <template #content>
           <Transition :name="transitionName" mode="out-in">
@@ -123,7 +123,7 @@ onBeforeUnmount(() => {
               v-if="isCurrentStep('blank')"
               key="blank-btn"
               @click="goToPayment"
-              class="w-full py-2"
+              class="w-full py-3 md:py-2"
             >
               Продолжить
             </Button>
@@ -134,13 +134,17 @@ onBeforeUnmount(() => {
               key="payment-btns"
               class="flex max-sm:flex-col-reverse w-full gap-2"
             >
-              <Button @click="prevStep" variant="secondary" class="flex-1/3 max-sm:w-full py-2">
+              <Button
+                @click="prevStep"
+                variant="outline"
+                class="flex-1/3 max-sm:w-full py-3 md:py-2"
+              >
                 Назад
               </Button>
 
               <Button
                 @click="submit"
-                class="flex-2/3 py-2 max-sm:w-full max-sm:text-lg shadow-md shadow-accent/15 hover:shadow-accent/35 transition-all"
+                class="flex-2/3 py-3 md:py-2 max-sm:w-full max-sm:text-lg shadow-md shadow-accent/15 hover:shadow-accent/35 transition-all"
                 variant="accent"
               >
                 Пожертвовать

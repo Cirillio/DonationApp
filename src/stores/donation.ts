@@ -82,7 +82,6 @@ export const useDonationStore = defineStore('donation', () => {
     payment: { ...DEFAULT_PAY_FORM },
   })
 
-  // Схемы валидации - не храним в reactive, так как Zod схемы не должны быть проксированы
   const getBlankSchema = () =>
     blankFormSchema({
       getPhone: () => getPhoneSpec(formData.blank.phoneCountry).code || '',
@@ -90,7 +89,6 @@ export const useDonationStore = defineStore('donation', () => {
 
   const getPaymentSchema = () => paymentFormSchema
 
-  // Для совместимости с существующим кодом создаем объект с геттерами
   const formSchemas = {
     get blank() {
       return getBlankSchema()
@@ -222,14 +220,11 @@ export const useDonationStore = defineStore('donation', () => {
     paymentCompleted.value = false
   }
 
-  // Computed свойства для проверки заполненности форм (для подтверждения ухода)
   const hasUnsavedBlankForm = computed(() => {
-    return hasFormChanges(
-      formData.blank,
-      DEFAULT_BLANK_FORM,
-      formSchemas.blank,
-      ['phoneCountry', 'isGroup'] // Игнорируем служебные поля
-    )
+    return hasFormChanges(formData.blank, DEFAULT_BLANK_FORM, formSchemas.blank, [
+      'phoneCountry',
+      'isGroup',
+    ])
   })
 
   const hasUnsavedPaymentForm = computed(() => {
@@ -266,7 +261,6 @@ export const useDonationStore = defineStore('donation', () => {
     checkPaymentToken,
     setPaymentResult,
     resetForm,
-    // Новые computed для проверки заполненности
     hasUnsavedBlankForm,
     hasUnsavedPaymentForm,
     hasUnsavedData,
