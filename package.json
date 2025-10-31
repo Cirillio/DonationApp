@@ -1,18 +1,52 @@
 {
   "name": "donationapp",
+  "description": "Современное приложение для приема пожертвований на Vue 3 с полной типизацией и валидацией форм",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.1",
   "type": "module",
+  "author": {
+    "name": "Cirillio"
+  },
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vue3",
+    "typescript",
+    "donation",
+    "form",
+    "validation",
+    "zod",
+    "tailwindcss",
+    "shadcn-vue",
+    "pinia",
+    "vite",
+    "playwright"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cirillio/DonationApp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Cirillio/DonationApp/issues"
+  },
+  "homepage": "https://github.com/Cirillio/DonationApp#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=10.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "vue-tsc --noEmit",
     "test": "playwright test",
     "test:e2e": "playwright test",
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
     "test:ui": "playwright test --ui",
-    "preview": "vite preview",
-    "sa": "pnpm dlx shadcn-vue@latest add"
+    "sa": "pnpm dlx shadcn-vue@latest add",
+    "clean": "rm -rf dist node_modules/.vite",
+    "prebuild": "pnpm type-check"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",

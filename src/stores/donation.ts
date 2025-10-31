@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed, ComputedRef, reactive } from 'vue'
+import { ref, computed, ComputedRef, reactive, toRaw } from 'vue'
 import type { BlankFormValues, PaymentFormValues, DonationStatus } from '@/lib/types'
 import {
   MAX_STEPS,
@@ -9,8 +9,58 @@ import {
   DEFAULT_PAY_FORM,
 } from '@/lib/constants'
 import { getPhoneSpec } from '@/lib/utils'
-import { type ZodError } from 'zod'
+import { type ZodError, z } from 'zod'
 import { blankFormSchema, paymentFormSchema } from '@/lib/validations'
+
+/**
+ * Нормализует значение для сравнения (пустая строка = undefined = null)
+ */
+function normalizeValue(value: unknown): unknown {
+  return value === '' || value === null ? undefined : value
+}
+
+/**
+ * Извлекает список optional полей из Zod схемы
+ */
+function getOptionalKeys(schema: z.ZodObject<any>): string[] {
+  // Используем toRaw чтобы получить реальную схему без прокси
+  const rawSchema = toRaw(schema)
+  const shape = rawSchema.shape
+  const optionalKeys: string[] = []
+
+  for (const [key, fieldSchema] of Object.entries(shape)) {
+    // Используем toRaw для каждого поля схемы
+    const rawFieldSchema = toRaw(fieldSchema)
+    if (rawFieldSchema instanceof z.ZodOptional) {
+      optionalKeys.push(key)
+    }
+  }
+
+  return optionalKeys
+}
+
+/**
+ * Проверяет, есть ли изменения в форме по сравнению с дефолтными значениями
+ */
+function hasFormChanges<T extends Record<string, unknown>>(
+  formData: T,
+  defaultData: T,
+  schema: z.ZodObject<any>,
+  additionalIgnoreKeys: string[] = []
+): boolean {
+  const optionalKeys = getOptionalKeys(schema)
+  const ignoreKeys = [...optionalKeys, ...additionalIgnoreKeys]
+
+  return Object.entries(formData).some(([key, value]) => {
+    if (ignoreKeys.includes(key)) return false
+
+    const defaultValue = defaultData[key as keyof T]
+    const normalizedValue = normalizeValue(value)
+    const normalizedDefault = normalizeValue(defaultValue)
+
+    return normalizedValue !== normalizedDefault
+  })
+}
 
 function formatZodErrors(error: ZodError): Record<string, string> {
   const formatted: Record<string, string> = {}
@@ -32,12 +82,23 @@ export const useDonationStore = defineStore('donation', () => {
     payment: { ...DEFAULT_PAY_FORM },
   })
 
-  const formSchemas = reactive({
-    blank: blankFormSchema({
+  // Схемы валидации - не храним в reactive, так как Zod схемы не должны быть проксированы
+  const getBlankSchema = () =>
+    blankFormSchema({
       getPhone: () => getPhoneSpec(formData.blank.phoneCountry).code || '',
-    }),
-    payment: paymentFormSchema,
-  })
+    })
+
+  const getPaymentSchema = () => paymentFormSchema
+
+  // Для совместимости с существующим кодом создаем объект с геттерами
+  const formSchemas = {
+    get blank() {
+      return getBlankSchema()
+    },
+    get payment() {
+      return getPaymentSchema()
+    },
+  }
 
   const fieldErrors = reactive<{
     blank: Record<string, string>
@@ -161,6 +222,30 @@ export const useDonationStore = defineStore('donation', () => {
     paymentCompleted.value = false
   }
 
+  // Computed свойства для проверки заполненности форм (для подтверждения ухода)
+  const hasUnsavedBlankForm = computed(() => {
+    return hasFormChanges(
+      formData.blank,
+      DEFAULT_BLANK_FORM,
+      formSchemas.blank,
+      ['phoneCountry', 'isGroup'] // Игнорируем служебные поля
+    )
+  })
+
+  const hasUnsavedPaymentForm = computed(() => {
+    return hasFormChanges(formData.payment, DEFAULT_PAY_FORM, formSchemas.payment)
+  })
+
+  // Общее computed свойство - есть ли несохраненные данные
+  const hasUnsavedData = computed(() => {
+    // Не проверяем на шаге результата или если платеж успешен
+    if (currentStep.value >= 3 || paymentResult.value?.success) {
+      return false
+    }
+
+    return hasUnsavedBlankForm.value || hasUnsavedPaymentForm.value
+  })
+
   return {
     formData,
     fieldErrors,
@@ -181,5 +266,9 @@ export const useDonationStore = defineStore('donation', () => {
     checkPaymentToken,
     setPaymentResult,
     resetForm,
+    // Новые computed для проверки заполненности
+    hasUnsavedBlankForm,
+    hasUnsavedPaymentForm,
+    hasUnsavedData,
   }
 })

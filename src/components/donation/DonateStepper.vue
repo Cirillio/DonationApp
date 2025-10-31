@@ -36,7 +36,7 @@ const { currentStep, stepsValidity } = storeToRefs(donationStore)
             ]"
           >
             <Button
-              :variant="state === 'completed' || state === 'active' ? 'outline' : 'outline'"
+              :variant="state === 'completed' || state === 'active' ? 'default' : 'outline'"
               class="shrink-0 rounded-full size-14 pointer-events-none cursor-default transition-all"
             >
               <StepperIndicator

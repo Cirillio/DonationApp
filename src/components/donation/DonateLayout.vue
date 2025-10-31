@@ -1,12 +1,15 @@
 <script lang="ts" setup>
 import { Button } from '@/components/ui/button'
-import { computed, onUnmounted } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, watch } from 'vue'
 import { PAYMENT_AMOUNTS_MIN } from '@/lib/constants'
 import { useDonationStore } from '@/stores/donation'
 import { storeToRefs } from 'pinia'
+import { useTemplateRef } from 'vue'
+import { useScrollToElement } from '@/composables/useScrollToElement'
 import DonateStepper from './DonateStepper.vue'
 import FormCard from './FormCard.vue'
 import { BlankForm, PaymentForm, ResultForm } from './forms'
+import { useRoute } from 'vue-router'
 
 const donationStore = useDonationStore()
 const { isCurrentStep, nextStep, prevStep } = donationStore
@@ -18,6 +21,8 @@ const goToPayment = () => {
     nextStep()
   }
 }
+
+const route = useRoute()
 
 const submit = () => {
   if (!donationStore.validateForm('payment')) {
@@ -56,6 +61,36 @@ const transitionName = computed(() => {
   }
   return transitionDirection.value === 'forward' ? 'slide-left' : 'slide-right'
 })
+
+const formCard = useTemplateRef<HTMLElement>('formRefEl')
+const { scrollTo } = useScrollToElement({
+  behavior: 'smooth',
+  mobileBreakpoint: 768,
+  mobileOffset: 100,
+})
+
+watch(currentStep, () => {
+  nextTick(() => {
+    if (formCard.value) {
+      scrollTo(formCard.value)
+    }
+  })
+})
+
+let scrollTimeout: NodeJS.Timeout | null = null
+
+onMounted(() => {
+  scrollTimeout = setTimeout(() => {
+    if (route.query.telegramApp === 'true') {
+      scrollTo(formCard.value)
+    }
+  }, 50)
+})
+onBeforeUnmount(() => {
+  if (scrollTimeout) {
+    clearTimeout(scrollTimeout)
+  }
+})
 </script>
 
 <template>
@@ -64,14 +99,14 @@ const transitionName = computed(() => {
     <DonateStepper />
 
     <!-- Single Form Card -->
-    <div class="sm:max-w-xl w-full mx-auto">
+    <div ref="formRefEl" class="sm:max-w-xl w-full mx-auto">
       <FormCard
         :title="cardTitle"
         :description="cardDescription"
         :current-step="currentStep"
         :total-steps="3"
         :steps-validity="stepsValidity"
-        class="w-full"
+        class="w-full hover:shadow-black/15 hover:shadow-lg dark:hover:shadow-black/25 border-0 transition-shadow shadow-md"
       >
         <template #content>
           <Transition :name="transitionName" mode="out-in">

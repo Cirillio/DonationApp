@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<IconProps>(), {
         props.variant === 'primary',
       'p-2 shadow-xs border border-transparent bg-secondary text-secondary-foreground':
         props.variant === 'secondary',
-      'p-2 shadow-xs border border-transparent bg-muted/50 light:bg-muted/5 text-muted-foreground':
+      'p-2 shadow-xs border border-transparent bg-muted/10 dark:bg-muted/20  text-muted-foreground':
         props.variant === 'ghost',
     }"
   >

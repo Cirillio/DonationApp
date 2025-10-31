@@ -82,10 +82,13 @@ const birthDateString = computed({
         Телефон
       </label>
 
-      <div class="flex gap-2 *:text-lg">
+      <div class="flex rounded-md overflow-hidden shadow-xs *:text-lg">
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button :variant="'outline'" class="gap-2 px-3">
+            <Button
+              :variant="'outline'"
+              class="gap-2 !bg-card shadow-none rounded-r-none border-r-0 px-3"
+            >
               {{ selectedSpec.code }}
               <Icon class="f7--chevron-down size-4.5" />
             </Button>
@@ -127,7 +130,7 @@ const birthDateString = computed({
           inputmode="tel"
           type="tel"
           :aria-invalid="!!errors.phone"
-          class="text-lg max-md:min-h-11"
+          class="text-lg max-md:min-h-11 rounded-l-none shadow-none"
         />
       </div>
 

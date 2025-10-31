@@ -1,16 +1,23 @@
 <script lang="ts" setup>
-import { TEST_DATA } from '@/lib/constants'
-import StatisticCard from '@/components/StatisticCard.vue'
+import { Icon } from '@/components/ui/icon'
+import { Button } from '@/components/ui/button'
+import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <div class="w-full min-h-full grid grid-cols-3 gap-4 px-20 py-12">
-    <statistic-card
-      v-for="stat in TEST_DATA"
-      :key="stat.label"
-      :label="stat.label"
-      :img="stat.img"
-      :quantity="stat.quantity"
-    />
+  <div class="flex min-h-[60vh] items-center justify-center px-4 py-24">
+    <div class="flex flex-col items-center justify-center gap-6 text-center max-w-md">
+      <Icon class="f7--chart-pie size-20 text-muted-foreground/50" />
+      <div class="space-y-2">
+        <h1 class="text-3xl font-bold">Страница в разработке</h1>
+        <p class="text-muted-foreground">
+          Раздел статистики находится в разработке. Скоро здесь появится информация о пожертвованиях
+          и проектах.
+        </p>
+      </div>
+      <Button as-child variant="default">
+        <RouterLink to="/">Вернуться на главную</RouterLink>
+      </Button>
+    </div>
   </div>
 </template>

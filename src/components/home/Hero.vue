@@ -1,15 +1,15 @@
 <template>
   <!-- Hero Section -->
   <section class="relative overflow-hidden home-page">
-    <div class="w-full backdrop-blur-xs bg-secondary/25 dark:bg-background/75">
-      <div class="container mx-auto px-4 py-24 sm:py-16 md:py-20 lg:py-32">
+    <div class="w-full backdrop-blur-xs bg-secondary/50 dark:bg-background/75">
+      <div class="container mx-auto px-4 py-24 sm:py-16 md:py-20 lg:py-32 h-full">
         <div
-          class="flex flex-col justify-center gap-12 sm:gap-12 lg:gap-20 min-h-[500px] sm:min-h-[600px] lg:min-h-[700px]"
+          class="flex flex-col justify-center md:justify-between gap-12 sm:gap-12 lg:gap-20 min-h-[500px] sm:min-h-[600px] lg:min-h-full"
         >
           <!-- Верхний блок: Заголовки и кнопки - прижат влево -->
-          <div class="flex flex-col gap-6 sm:gap-6 md:gap-8 max-w-2xl">
+          <div class="flex flex-col max-md:items-center gap-6 sm:gap-6 md:gap-8 max-w-4xl">
             <div
-              class="space-y-2.5 sm:space-y-3 md:space-y-4 max-sm:flex max-sm:flex-col max-sm:text-center gap-2 max-sm:items-center"
+              class="space-y-2.5 sm:space-y-3 md:space-y-4 max-md:flex max-md:flex-col max-md:text-center gap-2 max-md:items-center"
             >
               <Badge
                 variant="outline-primary"
@@ -19,7 +19,7 @@
                 Вместе мы сильнее
               </Badge>
               <h1
-                class="light:text-secondary-foreground text-shadow-sm text-4xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight"
+                class="light:text-secondary-foreground text-shadow-sm text-4xl sm:text-3xl md:text-4xl lg:text-6xl 2xl:text-8xl font-bold leading-none"
               >
                 Поддержите развитие нашего посёлка
               </h1>
@@ -29,17 +29,16 @@
               <Button
                 as-child
                 size="lg"
-                class="shadow-lg hover:shadow-xl transition-shadow w-full sm:w-auto"
+                class="shadow-lg text-xl py-2.5 px-6 hover:shadow-xl transition-shadow w-full sm:w-auto"
               >
                 <RouterLink to="/donate">Поддержать проект</RouterLink>
               </Button>
               <Button
                 as-child
-                variant="secondary"
                 size="lg"
-                class="shadow-md opacity-90 hover:opacity-100 hover:shadow-lg transition-shadow w-full sm:w-auto"
+                class="stats-button shadow-md text-xl py-2.5 px-6 w-full sm:w-auto"
               >
-                <RouterLink to="/statistics">Статистика</RouterLink>
+                <RouterLink to="/statistic">Статистика</RouterLink>
               </Button>
             </div>
           </div>
@@ -55,7 +54,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full lg:max-w-3xl">
               <StatsCard value="1234" description="Активных участников" icon="f7--person" />
-              <StatsCard value="2.4М ₽" description="Собрано средств" icon="f7--money-rubl" />
+              <StatsCard value="780 000" description="Собрано средств" icon="f7--money-rubl" />
               <StatsCard value="18" description="Завершённых проектов" icon="f7--doc-checkmark" />
             </div>
           </div>
@@ -86,5 +85,41 @@ import StatsCard from './StatsCard.vue'
   .home-page {
     min-height: auto;
   }
+}
+
+.stats-button {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  opacity: 0.9;
+  transition: all 0.2s ease-in-out;
+}
+
+.stats-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+}
+
+.stats-button:active {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0.98);
+}
+
+.stats-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.dark .stats-button {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark .stats-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 </style>

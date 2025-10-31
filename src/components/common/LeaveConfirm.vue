@@ -20,12 +20,14 @@
         </div>
       </DialogHeader>
 
-      <DialogFooter class="flex-col-reverse sm:flex-row gap-2 mt-6">
-        <Button @click="onCancel" class="w-full sm:flex-1"> Остаться </Button>
+      <DialogFooter class="flex-col sm:flex-row gap-2 mt-6">
+        <Button @click="onCancel" class="w-full max-md:py-2 max-md:text-lg sm:flex-1">
+          Остаться
+        </Button>
         <Button
           variant="outline"
           @click="onConfirm"
-          class="w-full border-destructive text-destructive hover:text-destructive bg-destructive/10 hover:bg-destructive/20 sm:flex-1"
+          class="w-full max-md:py-2 max-md:text-lg border-destructive text-destructive hover:text-destructive bg-destructive/10 hover:bg-destructive/20 sm:flex-1"
         >
           Выйти
         </Button>
