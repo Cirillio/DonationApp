@@ -9,7 +9,6 @@ import {
   getWebSiteStructuredData,
 } from '@/composables/useStructuredData'
 
-// Добавляем structured data для главной страницы
 useStructuredData({
   '@context': 'https://schema.org',
   '@graph': [getOrganizationStructuredData(), getWebSiteStructuredData()],
@@ -21,6 +20,10 @@ useStructuredData({
     <HeroSection />
     <Separator class="bg-primary !h-1" />
     <WhySupportSection />
+
+    <!-- TODO: Add latest news section -->
+    <!-- <LatestNewsSection /> -->
+
     <CTASection />
     <Separator class="bg-primary !h-1" />
   </div>

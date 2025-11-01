@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
-
+import { defineAsyncComponent } from 'vue'
+import { DonationPageSkeleton } from '@/components/skeletons'
 export const mainRoutes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -14,7 +15,12 @@ export const mainRoutes: RouteRecordRaw[] = [
   {
     path: '/donate',
     name: 'donation',
-    component: () => import('@/pages/DonatePage.vue'),
+    component: defineAsyncComponent({
+      loader: () => import('@/pages/DonatePage.vue'),
+      loadingComponent: DonationPageSkeleton,
+      delay: 0,
+      timeout: 10000,
+    }),
     meta: {
       title: 'Пожертвование',
       icon: 'f7--heart',

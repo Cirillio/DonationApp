@@ -13,6 +13,7 @@ playwright/.cache/
 
 # AI
 .ai
+CLAUDE.md
 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
@@ -147,6 +148,63 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
 
-./.vscode
-./.codesandbox
+# IDE - JetBrains (WebStorm, IntelliJ IDEA)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# IDE - Vim
+*.swp
+*.swo
+*~
+
+# IDE - Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# CodeSandbox
+.codesandbox
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# TypeScript incremental compilation cache
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Auto-generated files
+components.d.ts
+auto-imports.d.ts
+
+# Vite cache
+node_modules/.vite/
+.vite/
+
+# Local development
+.local/
+*.local

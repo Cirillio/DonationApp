@@ -18,11 +18,9 @@ const { showConfirmDialog, confirmLeave, cancelLeave } = usePageLeaveConfirmatio
   onConfirm: () => donationStore.resetForm(),
 })
 
-// Добавляем structured data для страницы пожертвований
 useStructuredData(getDonateActionStructuredData())
 
 onMounted(() => {
-  // Проверяем наличие платежного токена в URL
   const paymentToken = route.query['payment-token'] as string | null
   donationStore.checkPaymentToken(paymentToken)
 })
