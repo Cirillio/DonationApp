@@ -8,13 +8,13 @@ import { setupGuards } from './guards'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  scrollBehavior(to, _, savedPosition) {
+  scrollBehavior(__, _, savedPosition) {
     if (savedPosition) {
       return savedPosition
     }
 
     // Определяем offset для главной или других страниц
-    const scrollTop = to.path === '/' ? 57 : 0
+    const scrollTop = 56
 
     return new Promise((resolve) => {
       setTimeout(() => {
