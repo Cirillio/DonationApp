@@ -7,6 +7,7 @@ import LeaveConfirm from '@/components/common/LeaveConfirm.vue'
 import { useDonationStore } from '@/stores/donation'
 import { usePageLeaveConfirmation } from '@/composables/usePageLeaveConfirm'
 import Icon from '@/components/ui/icon/Icon.vue'
+import { useStructuredData, getDonateActionStructuredData } from '@/composables/useStructuredData'
 
 const route = useRoute()
 const donationStore = useDonationStore()
@@ -16,6 +17,9 @@ const { showConfirmDialog, confirmLeave, cancelLeave } = usePageLeaveConfirmatio
   hasUnsavedData,
   onConfirm: () => donationStore.resetForm(),
 })
+
+// Добавляем structured data для страницы пожертвований
+useStructuredData(getDonateActionStructuredData())
 
 onMounted(() => {
   // Проверяем наличие платежного токена в URL

@@ -10,6 +10,10 @@ export function setupGuards(router: Router) {
     const description = to.meta.description as string | undefined
     const fullTitle = title ? `${title} | ${APP_TITLE}` : APP_TITLE
 
+    // Получаем базовый URL приложения
+    const baseUrl = window.location.origin
+    const ogImageUrl = `${baseUrl}/og-image.jpg`
+
     setMetaTags({
       title: fullTitle,
       description: description || `Фонд Чилгази - ${title || 'Поддержите развитие нашего посёлка'}`,
@@ -17,8 +21,7 @@ export function setupGuards(router: Router) {
       ogDescription:
         description || `Фонд Чилгази - ${title || 'Поддержите развитие нашего посёлка'}`,
       ogUrl: window.location.href,
-      // Можно добавить ogImage когда будет готово
-      // ogImage: 'https://example.com/og-image.jpg',
+      ogImage: ogImageUrl,
     })
   })
 }

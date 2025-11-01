@@ -1,0 +1,25 @@
+# robots.txt для Фонд Чилгази
+# Разрешаем индексацию всего сайта
+
+User-agent: *
+Allow: /
+
+# Запрещаем индексацию служебных директорий (если будут)
+Disallow: /api/
+Disallow: /_redirects
+
+# Sitemap
+Sitemap: https://chilgazi.org/sitemap.xml
+
+# Специфичные правила для популярных ботов
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Частота сканирования (опционально)
+# Crawl-delay: 1
