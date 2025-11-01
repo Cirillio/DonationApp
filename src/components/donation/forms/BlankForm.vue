@@ -96,7 +96,7 @@ const birthDateString = computed({
 
           <DropdownMenuContent
             :align="'start'"
-            class="duration-150 shadow-lg bg-card gap-1.5 p-1 ease-linear flex flex-col min-w-[220px]"
+            class="duration-150 shadow-muted dark:shadow-black/50 shadow-md bg-card gap-1.5 p-1 ease-linear flex flex-col min-w-[220px]"
           >
             <DropdownMenuItem
               v-for="spec in PHONE_SPECS"
@@ -105,12 +105,13 @@ const birthDateString = computed({
               class="cursor-pointer p-0 rounded-md"
             >
               <Button
-                :variant="selectedSpec?.code === spec.code ? 'outline' : 'text'"
-                class="w-full justify-start gap-3 md:gap-2 px-2 py-2 h-auto"
+                variant="text"
+                :class="[selectedSpec?.code === spec.code ? '!text-primary' : '']"
+                class="w-full hover:!bg-border/5 dark:hover:!bg-muted/50 text-base justify-start gap-3 md:gap-2 px-2 py-1.5 h-auto"
               >
                 <Badge
                   :variant="selectedSpec?.code === spec.code ? 'outline-primary' : 'outline'"
-                  class="font-mono font-semibold min-w-[3.5rem] h-7 md:h-6 justify-center max-md:text-base"
+                  class="font-mono font-semibold min-w-[3.5rem] h-7 md:h-5 justify-center max-md:text-base"
                 >
                   {{ spec.code }}
                 </Badge>

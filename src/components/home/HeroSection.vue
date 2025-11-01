@@ -9,6 +9,7 @@
           <!-- Верхний блок: Заголовки и кнопки - прижат влево -->
           <div class="flex flex-col max-md:items-center gap-6 sm:gap-6 md:gap-8 max-w-4xl">
             <div
+              ref="headerRef"
               class="space-y-2.5 sm:space-y-3 md:space-y-4 max-md:flex max-md:flex-col max-md:text-center gap-2 max-md:items-center"
             >
               <Badge
@@ -25,7 +26,7 @@
               </h1>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-3 md:gap-4">
+            <div ref="buttonsRef" class="flex flex-col sm:flex-row gap-2.5 sm:gap-3 md:gap-4">
               <Button
                 as-child
                 size="lg"
@@ -44,7 +45,7 @@
           </div>
 
           <!-- Нижний блок: Описание и карточки - прижат вправо -->
-          <div class="flex flex-col gap-5 sm:gap-6 lg:gap-8 lg:items-end">
+          <div ref="descriptionRef" class="flex flex-col gap-5 sm:gap-6 lg:gap-8 lg:items-end">
             <p
               class="text-sm max-sm:text-center sm:text-base light:text-secondary-foreground/75 md:text-lg text-foreground/80 leading-relaxed max-w-2xl lg:text-right"
             >
@@ -52,7 +53,10 @@
               создавать комфортную среду для всех жителей.
             </p>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full lg:max-w-3xl">
+            <div
+              ref="statsRef"
+              class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full lg:max-w-3xl"
+            >
               <StatsCard value="1234" description="Активных участников" icon="f7--person" />
               <StatsCard value="780 000" description="Собрано средств" icon="f7--money-rubl" />
               <StatsCard value="18" description="Завершённых проектов" icon="f7--doc-checkmark" />
@@ -69,6 +73,18 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Icon } from '@/components/ui/icon'
 import StatsCard from './StatsCard.vue'
+import { useScrollReveal } from '@/composables/useScrollReveal'
+
+const { createStaggerRevealRef, createRevealRef } = useScrollReveal({
+  threshold: 0.1,
+  duration: 250,
+  rootMargin: '-70px',
+})
+
+const { elementRef: headerRef } = createRevealRef()
+const { elementRef: buttonsRef } = createRevealRef()
+const { elementRef: descriptionRef } = createRevealRef()
+const { containerRef: statsRef } = createStaggerRevealRef()
 </script>
 
 <style scoped>

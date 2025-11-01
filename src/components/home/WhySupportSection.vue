@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Icon } from '@/components/ui/icon'
+import { useScrollReveal } from '@/composables/useScrollReveal'
 
 interface SupportReason {
   icon: string
@@ -26,13 +27,23 @@ const reasons: SupportReason[] = [
     description: 'Реальные улучшения, которые видны каждому жителю посёлка.',
   },
 ]
+
+const { createRevealRef, createStaggerRevealRef } = useScrollReveal({
+  rootMargin: '-50px',
+  threshold: 0.1,
+  duration: 600,
+  staggerDelay: 100,
+})
+
+const { elementRef: headerRef } = createRevealRef()
+const { containerRef: cardsContainerRef } = createStaggerRevealRef()
 </script>
 
 <template>
   <section class="w-full py-16 md:py-20 lg:py-24 bg-background/25">
     <div class="container mx-auto px-4">
       <!-- Header Section -->
-      <div class="text-center mb-12 md:mb-16 space-y-4">
+      <div ref="headerRef" class="text-center mb-12 md:mb-16 space-y-4">
         <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
           Почему стоит поддержать нас?
         </h2>
@@ -42,7 +53,7 @@ const reasons: SupportReason[] = [
       </div>
 
       <!-- Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+      <div ref="cardsContainerRef" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         <Card
           v-for="(reason, index) in reasons"
           :key="index"

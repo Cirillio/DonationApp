@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Hero from '@/components/home/Hero.vue'
+import HeroSection from '@/components/home/HeroSection.vue'
 import WhySupportSection from '@/components/home/WhySupportSection.vue'
 import CTASection from '@/components/home/CTASection.vue'
 import { Separator } from '@/components/ui/separator'
@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator'
 
 <template>
   <div class="min-h-full w-full">
-    <Hero />
+    <HeroSection />
     <Separator class="bg-primary !h-1" />
     <WhySupportSection />
     <CTASection />

@@ -1,9 +1,34 @@
+/**
+ * Композабл для работы с телефонными номерами
+ *
+ * @description
+ * Управляет форматами телефонных номеров для различных стран,
+ * парсит номера из буфера обмена и предоставляет маски для ввода.
+ *
+ * @example
+ * const { selectedSpec, currentMask, selectById, parsePhoneFromClipboard } = usePhone({
+ *   defaultId: 'RU'
+ * })
+ *
+ * // Получить текущую маску
+ * const mask = currentMask.value
+ *
+ * // Переключить формат
+ * selectById('KZ')
+ *
+ * // Парсить номер из буфера обмена
+ * const parsedNumber = parsePhoneFromClipboard('+7 999 999 99 99')
+ */
 import { ref, computed, watch } from 'vue'
 import { PHONE_SPECS, DEFAULT_PHONE_SPEC } from '@/lib/constants'
 import type { PhoneSpec } from '@/lib/types'
 import parsePhoneNumber from 'libphonenumber-js'
 
 export interface UsePhoneOptions {
+  /**
+   * ID формата телефона по умолчанию
+   * @default значение DEFAULT_PHONE_SPEC.id
+   */
   defaultId?: string
 }
 

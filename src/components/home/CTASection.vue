@@ -1,12 +1,22 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
+import { useScrollReveal } from '@/composables/useScrollReveal'
+
+const { createRevealRef } = useScrollReveal({
+  rootMargin: '-50px',
+  threshold: 0.1,
+  duration: 600,
+})
+
+const { elementRef: containerRef } = createRevealRef()
 </script>
 
 <template>
   <section class="w-full py-16 md:py-20 lg:py-24 bg-card">
     <div class="container mx-auto px-4">
       <div
+        ref="containerRef"
         class="flex flex-col items-center justify-center text-center space-y-6 max-w-2xl mx-auto"
       >
         <!-- Heading -->
