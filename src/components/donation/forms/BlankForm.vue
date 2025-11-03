@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import CheckBlock from '@/components/ui/checkblock/CheckBlock.vue'
 import { AutoAnimated } from '@/components/ui/auto-animated'
+import DateInput from '@/components/common/DateInput.vue'
 
 const donationStore = useDonationStore()
 
@@ -74,10 +75,8 @@ const birthDateString = computed({
   <div class="flex flex-col gap-6">
     <!-- Phone Field -->
     <div class="flex flex-col gap-1">
-      <label
-        class="label-required gap-1 text-lg flex items-center font-medium text-foreground"
-        :class="[errors.phone && '!text-destructive']"
-      >
+      <label class="label-required gap-1 text-lg flex items-center font-medium text-foreground"
+        :class="[errors.phone && '!text-destructive']">
         <span class="iconify f7--phone size-6"></span>
         Телефон
       </label>
@@ -85,34 +84,20 @@ const birthDateString = computed({
       <div class="flex rounded-md overflow-hidden shadow-xs *:text-lg">
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button
-              :variant="'outline'"
-              class="gap-2 !bg-card shadow-none rounded-r-none border-r-0 px-3"
-            >
+            <Button :variant="'outline'" class="gap-2 !bg-card shadow-none rounded-r-none border-r-0 px-3">
               {{ selectedSpec.code }}
               <Icon class="f7--chevron-down size-4.5" />
             </Button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent
-            :align="'start'"
-            class="duration-150 shadow-muted dark:shadow-black/50 shadow-md bg-card gap-1.5 p-1 ease-linear flex flex-col min-w-[220px]"
-          >
-            <DropdownMenuItem
-              v-for="spec in PHONE_SPECS"
-              :key="spec.id"
-              @select="onCountryChange(spec.id)"
-              class="cursor-pointer p-0 rounded-md"
-            >
-              <Button
-                variant="text"
-                :class="[selectedSpec?.code === spec.code ? '!text-primary' : '']"
-                class="w-full hover:!bg-border/5 dark:hover:!bg-muted/50 text-base justify-start gap-3 md:gap-2 px-2 py-1.5 h-auto"
-              >
-                <Badge
-                  :variant="selectedSpec?.code === spec.code ? 'outline-primary' : 'outline'"
-                  class="font-mono font-semibold min-w-[3.5rem] h-7 md:h-5 justify-center max-md:text-base"
-                >
+          <DropdownMenuContent :align="'start'"
+            class="duration-150 shadow-muted dark:shadow-black/50 shadow-md bg-card gap-1.5 p-1 ease-linear flex flex-col min-w-[220px]">
+            <DropdownMenuItem v-for="spec in PHONE_SPECS" :key="spec.id" @select="onCountryChange(spec.id)"
+              class="cursor-pointer p-0 rounded-md">
+              <Button variant="text" :class="[selectedSpec?.code === spec.code ? '!text-primary' : '']"
+                class="w-full hover:!bg-border/5 dark:hover:!bg-muted/50 text-base justify-start gap-3 md:gap-2 px-2 py-1.5 h-auto">
+                <Badge :variant="selectedSpec?.code === spec.code ? 'outline-primary' : 'outline'"
+                  class="font-mono font-semibold min-w-[3.5rem] h-7 md:h-5 justify-center max-md:text-base">
                   {{ spec.code }}
                 </Badge>
                 <span class="max-md:text-lg">{{ spec.name }}</span>
@@ -121,18 +106,9 @@ const birthDateString = computed({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Input
-          v-model="form.phone"
-          @paste="onPastePhone"
-          @input="donationStore.clearFieldError('blank', 'phone')"
-          :placeholder="selectedSpec.mask"
-          v-mask="currentMask"
-          name="phone"
-          inputmode="tel"
-          type="tel"
-          :aria-invalid="!!errors.phone"
-          class="text-lg max-md:min-h-11 rounded-l-none shadow-none"
-        />
+        <Input v-model="form.phone" @paste="onPastePhone" @input="donationStore.clearFieldError('blank', 'phone')"
+          :placeholder="selectedSpec.mask" v-mask="currentMask" name="phone" inputmode="tel" type="tel"
+          :aria-invalid="!!errors.phone" class="text-lg max-md:min-h-11 rounded-l-none shadow-none" />
       </div>
 
       <AutoAnimated>
@@ -144,23 +120,14 @@ const birthDateString = computed({
 
     <!-- Name Field -->
     <div class="flex flex-col gap-1">
-      <label
-        class="label-optional gap-1 text-lg flex items-center font-medium text-foreground"
-        :class="[errors.name && '!text-destructive']"
-      >
+      <label class="label-optional gap-1 text-lg flex items-center font-medium text-foreground"
+        :class="[errors.name && '!text-destructive']">
         <span class="iconify f7--person size-6"></span>
         Имя
       </label>
 
-      <Input
-        v-model="form.name"
-        @input="donationStore.clearFieldError('blank', 'name')"
-        placeholder="Хотя бы 3 символа"
-        type="text"
-        :aria-invalid="!!errors.name"
-        class="max-md:min-h-11 text-lg"
-        name="name"
-      />
+      <Input v-model="form.name" @input="donationStore.clearFieldError('blank', 'name')" placeholder="Хотя бы 3 символа"
+        type="text" :aria-invalid="!!errors.name" class="max-md:min-h-11 text-lg" name="name" />
 
       <AutoAnimated>
         <p v-if="errors.name" class="text-destructive text-base">
@@ -172,21 +139,15 @@ const birthDateString = computed({
 
     <!-- Birth Date Field -->
     <div class="flex flex-col gap-1">
-      <label
-        class="label-required gap-1 text-lg flex items-center font-medium text-foreground"
-        :class="[errors.birth && '!text-destructive']"
-      >
+      <label class="label-required gap-1 text-lg flex items-center font-medium text-foreground"
+        :class="[errors.birth && '!text-destructive']">
         <span class="iconify f7--calendar-today size-6"></span>
         Дата рождения
       </label>
 
-      <Input
-        v-model="birthDateString"
-        type="date"
-        name="birth"
-        :aria-invalid="!!errors.birth"
-        class="max-md:min-h-11 text-lg"
-      />
+      <DateInput v-model="form.birth" :aria-invalid="!!errors.birth"
+      @input="donationStore.clearFieldError('blank', 'birth')"
+      class="max-md:min-h-11 text-lg" />
 
       <AutoAnimated>
         <p v-if="errors.birth" class="text-destructive text-sm">
@@ -194,6 +155,7 @@ const birthDateString = computed({
         </p>
       </AutoAnimated>
     </div>
+
 
     <!-- Group Checkbox -->
     <div class="flex flex-col gap-1">

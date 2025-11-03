@@ -1,7 +1,7 @@
 <template>
   <Dialog :open="open" @update:open="onClose">
     <DialogOverlay class="backdrop-blur-md bg-black/35" />
-    <DialogContent @escape-key-down="onCancel" class="sm:max-w-md shadow-sm border-0">
+    <DialogContent @escape-key-down="onCancel" class="sm:max-w-md shadow-sm border-0 ring-2 ring-primary/50">
       <DialogHeader class="text-center space-y-4">
         <div class="mx-auto w-fit relative">
           <div class="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center">

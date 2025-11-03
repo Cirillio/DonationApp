@@ -1,32 +1,32 @@
 <template>
-  <footer class="bg-muted/20 light:bg-secondary">
+  <footer class="bg-card border-t border-border">
     <div class="container mx-auto px-4 py-12">
       <div class="grid gap-8 md:grid-cols-4">
         <!-- Brand -->
         <div class="md:col-span-1">
           <RouterLink
             to="/"
-            class="flex items-center gap-2 font-bold text-foreground light:text-secondary-foreground transition-colors hover:text-primary light:hover:text-primary"
+            class="flex items-center gap-2 font-bold text-foreground transition-colors hover:text-primary"
           >
             <AppLogo class="size-8" />
             <span class="text-lg">Фонд Чилгази</span>
           </RouterLink>
 
-          <p class="text-pretty text-sm text-muted-foreground light:text-secondary-foreground/80">
+          <p class="text-pretty text-sm text-muted-foreground">
             Вместе делаем наш посёлок лучше. Каждое пожертвование идёт на благо нашего сообщества.
           </p>
         </div>
 
         <!-- Quick Links -->
         <div>
-          <h3 class="mb-4 text-sm font-semibold text-foreground light:text-secondary-foreground">
+          <h3 class="mb-4 text-sm font-semibold text-foreground">
             Навигация
           </h3>
           <ul class="space-y-2 text-sm">
             <li v-for="link in mainRoutes" :key="link.path">
               <RouterLink
                 :to="link.path"
-                class="text-muted-foreground light:text-secondary-foreground/80 transition-colors hover:text-primary light:hover:text-primary"
+                class="text-muted-foreground transition-colors hover:text-primary"
               >
                 {{ link.meta?.title }}
               </RouterLink>
@@ -36,7 +36,7 @@
 
         <!-- Contact -->
         <div>
-          <h3 class="mb-4 text-sm font-semibold text-foreground light:text-secondary-foreground">
+          <h3 class="mb-4 text-sm font-semibold text-foreground">
             Контакты
           </h3>
           <ul class="space-y-2 text-sm">
@@ -45,7 +45,7 @@
                 target="_blank"
                 :href="contact.url"
                 :type="contact.type"
-                class="flex items-center gap-2 text-muted-foreground light:text-secondary-foreground/80 transition-colors hover:text-primary light:hover:text-primary"
+                class="flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
               >
                 <Icon :class="[contact.icon, 'iconify size-5']" />
                 <span>{{ contact.label }}</span>
@@ -56,14 +56,14 @@
 
         <!-- Info -->
         <div>
-          <h3 class="mb-4 text-sm font-semibold text-foreground light:text-secondary-foreground">
+          <h3 class="mb-4 text-sm font-semibold text-foreground">
             Информация
           </h3>
           <ul class="space-y-2 text-sm">
             <li v-for="link in infoLinks" :key="link.href">
               <RouterLink
                 :to="link.href"
-                class="text-muted-foreground light:text-secondary-foreground/80 transition-colors hover:text-primary light:hover:text-primary"
+                class="text-muted-foreground transition-colors hover:text-primary"
               >
                 {{ link.label }}
               </RouterLink>
@@ -74,7 +74,7 @@
 
       <!-- Bottom Bar -->
       <div
-        class="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground light:text-secondary-foreground/70"
+        class="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground"
       >
         <p>&copy; {{ currentYear }} Фонд Чилгази. Все права защищены.</p>
       </div>

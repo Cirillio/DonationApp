@@ -13,7 +13,7 @@ defineProps<StatsCardProps>()
 
 <template>
   <Card
-    class="group dark:bg-secondary-foreground/25 hover:dark:bg-secondary-foreground/50 bg-card/10 hover:bg-card/25 hover:shadow-xl active:shadow-xl shadow-lg backdrop-blur-xl border-primary/10 active:bg-card/25 dark:active:bg-secondary-foreground/50 hover:border-primary active:border-primary transition-all"
+    class="group dark:bg-secondary-foreground/10 hover:dark:bg-secondary-foreground/25 bg-card/10 hover:bg-card/15 hover:shadow-xl active:shadow-xl shadow-lg backdrop-blur-xl border-primary/10 active:bg-card/25 dark:active:bg-secondary-foreground/50 hover:border-primary/50 active:border-primary/50 transition-all"
   >
     <CardHeader class="pb-3">
       <div class="flex items-center justify-between">
@@ -24,7 +24,7 @@ defineProps<StatsCardProps>()
           variant="ghost"
           :class="[
             icon,
-            'size-6 md:size-7  shadow-md text-primary/75 group-hover:text-primary group-active:text-primary',
+            'size-6 md:size-7 transition-all shadow-md text-primary/75 group-hover:text-primary group-active:text-primary',
           ]"
         />
       </div>

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from './routes'
 import { setupGuards } from './guards'
+import { SCROLL_TOP } from '@/lib/constants'
 
 /**
  * Создание и настройка роутера приложения
@@ -13,16 +14,14 @@ const router = createRouter({
       return savedPosition
     }
 
-    // Определяем offset для главной или других страниц
-    const scrollTop = 56
 
     return new Promise((resolve) => {
       setTimeout(() => {
         window.scrollTo({
-          top: scrollTop,
+          top: SCROLL_TOP,
           behavior: 'smooth',
         })
-        resolve({ top: scrollTop, behavior: 'smooth' })
+        resolve({ top: SCROLL_TOP, behavior: 'smooth' })
       }, 25)
     })
   },

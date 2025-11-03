@@ -23,7 +23,7 @@ export const buttonVariants = cva(
           'bg-secondary border border-secondary/10 text-secondary-foreground hover:bg-secondary/90 active:bg-secondary/90 focus-visible:ring-secondary/20',
 
         ghost:
-          'bg-muted/10 light:bg-muted/25 border border-transparent text-foreground light:hover:bg-muted/50 light:active:bg-muted/60 hover:bg-muted/40 active:bg-muted/50 focus-visible:bg-muted/30',
+          'bg-muted/20 dark:bg-muted/30 border border-transparent text-foreground hover:bg-muted/50 dark:hover:bg-muted/50 active:bg-muted/60 dark:active:bg-muted/65 focus-visible:bg-muted/30 dark:focus-visible:bg-muted/40',
 
         link: 'bg-transparent text-foreground hover:text-primary !shadow-none',
 

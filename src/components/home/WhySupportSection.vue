@@ -57,7 +57,7 @@ const { containerRef: cardsContainerRef } = createStaggerRevealRef()
         <Card
           v-for="(reason, index) in reasons"
           :key="index"
-          class="group hover:shadow-md shadow-sm transition-all duration-300 border-0 bg-card/80 hover:bg-card active:bg-card"
+          class="group shadow-sm border-0 bg-card"
         >
           <CardHeader class="space-y-4 pb-4">
             <Icon

@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
         :current-step="currentStep"
         :total-steps="3"
         :steps-validity="stepsValidity"
-        class="w-full hover:md:shadow-black/15 hover:md:shadow-lg dark:md:hover:shadow-black/25 border-0 transition-shadow md:shadow-md"
+        class="w-full"
       >
         <template #content>
           <Transition :name="transitionName" mode="out-in">

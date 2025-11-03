@@ -26,3 +26,32 @@
     @apply bg-background text-foreground;
   }
 }
+
+.dotted-background {
+  position: relative;
+  background-color: var(--color-background);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in oklch, var(--color-primary) 25%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 64px 64px;
+    pointer-events: none;
+    animation: pulse-bg 3s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse-bg {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

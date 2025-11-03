@@ -35,7 +35,7 @@ onMounted(() => {
     description="Все введённые данные будут утеряны."
   />
 
-  <div class="donate-page">
+  <div class="dotted-background">
     <div class="container min-h-screen mx-auto py-8 md:py-16">
       <div class="mx-auto flex flex-col gap-4 w-full sm:max-w-4xl">
         <div class="mb-12 text-center max-sm:px-4 items-center flex flex-col">
@@ -53,16 +53,31 @@ onMounted(() => {
         <DonateLayout />
 
         <div class="mt-12 grid gap-6 md:grid-cols-3 px-4">
-          <div class="rounded-lg bg-card p-6 text-center shadow-sm">
+          <div
+            class="rounded-lg ring-2 ring-primary/50 bg-card p-6 text-center items-center justify-start flex flex-col gap-2 shadow-sm"
+          >
+            <div class="aspect-square bg-primary/15 p-1.5 rounded-lg mb-2">
+              <Icon class="f7--square-favorites-alt size-8 text-primary" />
+            </div>
             <div class="mb-2 text-3xl font-bold text-primary">100%</div>
             <p class="text-sm text-muted-foreground">Прозрачность использования средств</p>
           </div>
-          <div class="rounded-lg bg-card p-6 text-center shadow-sm">
+          <div
+            class="rounded-lg ring-2 ring-primary/50 bg-card p-6 text-center items-center justify-start flex flex-col gap-2 shadow-sm"
+          >
+            <div class="aspect-square bg-primary/15 mb-2 p-1.5 rounded-lg">
+              <Icon class="f7--shield size-8 text-primary" />
+            </div>
             <div class="mb-2 text-3xl font-bold text-primary">24/7</div>
             <p class="text-sm text-muted-foreground">Безопасные платежи</p>
           </div>
-          <div class="rounded-lg bg-card p-6 text-center shadow-sm">
-            <div class="mb-2 text-3xl font-bold text-primary">1000+</div>
+          <div
+            class="rounded-lg ring-2 ring-primary/50 bg-card p-6 text-center items-center justify-start flex flex-col gap-2 shadow-sm"
+          >
+            <div class="aspect-square bg-primary/15 mb-2 p-1.5 rounded-lg">
+              <Icon class="f7--person-2 size-8 text-primary" />
+            </div>
+            <div class="text-3xl font-bold text-primary">1000+</div>
             <p class="text-sm text-muted-foreground">Благодарных жителей</p>
           </div>
         </div>
@@ -70,34 +85,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.donate-page {
-  position: relative;
-  background-color: var(--color-background);
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(
-      circle,
-      color-mix(in oklch, var(--color-primary) 15%, transparent) 1px,
-      transparent 1px
-    );
-    background-size: 64px 64px;
-    pointer-events: none;
-    animation: pulse-bg 3s ease-in-out infinite;
-  }
-}
-
-@keyframes pulse-bg {
-  0%,
-  100% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-</style>

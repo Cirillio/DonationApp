@@ -30,17 +30,16 @@
               <Button
                 as-child
                 size="lg"
-                class="shadow-lg text-xl py-2.5 px-6 hover:shadow-xl transition-shadow w-full sm:w-auto"
+                class="shadow-md text-xl py-2.5 px-6  transition-shadow w-full sm:w-auto"
               >
                 <RouterLink to="/donate">Поддержать проект</RouterLink>
               </Button>
-              <Button
+              <button
                 as-child
-                size="lg"
-                class="stats-button shadow-md text-xl py-2.5 px-6 w-full sm:w-auto"
+                class="shadow-md active:opacity-90 hover:opacity-90 text-xl bg-white/20 rounded-md  transition-all duration-50 text-white py-2.5 px-6 w-full sm:w-auto"
               >
                 <RouterLink to="/statistic">Статистика</RouterLink>
-              </Button>
+              </button>
             </div>
           </div>
 
@@ -75,9 +74,10 @@ import { Icon } from '@/components/ui/icon'
 import StatsCard from './StatsCard.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 
+
 const { createStaggerRevealRef, createRevealRef } = useScrollReveal({
   threshold: 0.1,
-  duration: 250,
+  duration: 150,
   rootMargin: '-70px',
 })
 
