@@ -1,7 +1,41 @@
 <template>
   <!-- Hero Section -->
   <section class="relative overflow-hidden home-page">
-    <div class="w-full backdrop-blur-xs bg-secondary/50 dark:bg-background/75">
+    <!-- Оптимизированное фоновое изображение -->
+    <picture class="hero-background">
+      <source
+        srcset="
+          /img/optimized/hero-800.avif   800w,
+          /img/optimized/hero-1280.avif 1280w,
+          /img/optimized/hero-1920.avif 1920w
+        "
+        type="image/avif"
+        sizes="100vw"
+      />
+      <source
+        srcset="
+          /img/optimized/hero-800.webp   800w,
+          /img/optimized/hero-1280.webp 1280w,
+          /img/optimized/hero-1920.webp 1920w
+        "
+        type="image/webp"
+        sizes="100vw"
+      />
+      <img
+        src="/img/optimized/hero-1920.jpg"
+        srcset="
+          /img/optimized/hero-800.jpg   800w,
+          /img/optimized/hero-1280.jpg 1280w,
+          /img/optimized/hero-1920.jpg 1920w
+        "
+        sizes="100vw"
+        alt="Поддержите развитие нашего посёлка"
+        fetchpriority="high"
+        class="hero-image"
+      />
+    </picture>
+
+    <div class="w-full backdrop-blur-xs bg-secondary/50 dark:bg-background/75 relative z-10">
       <div class="container mx-auto px-4 py-24 sm:py-16 md:py-20 lg:py-32 h-full">
         <div
           class="flex flex-col justify-center md:justify-between gap-12 sm:gap-12 lg:gap-20 min-h-[500px] sm:min-h-[600px] lg:min-h-full"
@@ -89,12 +123,22 @@ const { containerRef: statsRef } = createStaggerRevealRef()
 
 <style scoped>
 .home-page {
-  background-image: url('/img/hero.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  position: relative;
   min-height: 100vh;
   display: flex;
+}
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 @media (max-width: 1024px) {
@@ -103,39 +147,4 @@ const { containerRef: statsRef } = createStaggerRevealRef()
   }
 }
 
-.stats-button {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  opacity: 0.9;
-  transition: all 0.2s ease-in-out;
-}
-
-.stats-button:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.4);
-  opacity: 1;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-}
-
-.stats-button:active {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(0.98);
-}
-
-.stats-button:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 2px;
-}
-
-.dark .stats-button {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.dark .stats-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
-}
 </style>

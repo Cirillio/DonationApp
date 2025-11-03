@@ -17,7 +17,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
             <div class="flex flex-col max-md:items-center gap-6 sm:gap-6 md:gap-8 max-w-4xl">
               <div class="space-y-2.5 sm:space-y-3 md:space-y-4 max-md:flex max-md:flex-col max-md:items-center">
                 <Skeleton class="h-7 w-48 sm:w-56 rounded-full" />
-                <Skeleton class="h-12 sm:h-16 md:h-20 lg:h-24 2xl:h-32 w-full max-w-4xl" />
+                <Skeleton class="h-12 sm:h-16 md:h-20 lg:h-24 2xl:h-64 w-full max-w-4xl" />
               </div>
 
               <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-3 md:gap-4">
@@ -111,7 +111,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
 
 <style scoped>
 .home-page-skeleton {
-  background-image: url('/img/hero.jpg');
+  background-image: url('/img/optimized/hero-1920.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

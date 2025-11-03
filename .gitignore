@@ -208,3 +208,6 @@ node_modules/.vite/
 # Local development
 .local/
 *.local
+
+# Image optimization - оригиналы изображений (большие файлы)
+public/img/original/
