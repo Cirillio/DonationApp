@@ -111,10 +111,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
 
 <style scoped>
 .home-page-skeleton {
-  background-image: url('/img/optimized/hero-1920.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: linear-gradient(135deg, hsl(var(--secondary) / 0.3) 0%, hsl(var(--background)) 100%);
   min-height: 100vh;
   display: flex;
 }

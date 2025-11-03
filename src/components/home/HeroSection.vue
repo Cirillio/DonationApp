@@ -32,6 +32,8 @@
         alt="Поддержите развитие нашего посёлка"
         fetchpriority="high"
         class="hero-image"
+        :class="{ 'hero-image-loaded': imageLoaded }"
+        @load="imageLoaded = true"
       />
     </picture>
 
@@ -102,12 +104,14 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Icon } from '@/components/ui/icon'
 import StatsCard from './StatsCard.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 
+const imageLoaded = ref(false)
 
 const { createStaggerRevealRef, createRevealRef } = useScrollReveal({
   threshold: 0.1,
@@ -139,6 +143,12 @@ const { containerRef: statsRef } = createStaggerRevealRef()
   height: 100%;
   object-fit: cover;
   object-position: center;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.hero-image-loaded {
+  opacity: 1;
 }
 
 @media (max-width: 1024px) {
