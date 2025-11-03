@@ -31,7 +31,7 @@ const reasons: SupportReason[] = [
 const { createRevealRef, createStaggerRevealRef } = useScrollReveal({
   rootMargin: '-50px',
   threshold: 0.1,
-  duration: 600,
+  duration: 750,
   staggerDelay: 100,
 })
 
@@ -53,17 +53,17 @@ const { containerRef: cardsContainerRef } = createStaggerRevealRef()
       </div>
 
       <!-- Cards Grid -->
-      <div ref="cardsContainerRef" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+      <div ref="cardsContainerRef" class="flex max-w-6xl mx-auto max-md:flex-col flex-wrap gap-6 md:gap-8">
         <Card
           v-for="(reason, index) in reasons"
           :key="index"
-          class="group shadow-sm border-0 bg-card"
+          class="group shadow-sm hover:shadow-lg border-2 border-transparent hover:border-primary/50 bg-card md:flex-1 hover:rotate-3 hover:scale-105 transition-all duration-200 ease-in-out"
         >
           <CardHeader class="space-y-4 pb-4">
             <Icon
               :class="[
                 reason.icon,
-                'size-7 text-primary opacity-90 group-hover:opacity-100 transition-opacity dark:text-primary',
+                'size-7 text-primary opacity-90 group-hover:opacity-100 group-hover:text-accent/80 group-active:text-accent/80 transition-all duration-200',
               ]"
             />
             <CardTitle class="text-xl md:text-2xl font-bold text-foreground">

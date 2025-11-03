@@ -77,7 +77,7 @@ import { useScrollReveal } from '@/composables/useScrollReveal'
 
 const { createStaggerRevealRef, createRevealRef } = useScrollReveal({
   threshold: 0.1,
-  duration: 150,
+  duration: 500,
   rootMargin: '-70px',
 })
 

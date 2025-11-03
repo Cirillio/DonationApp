@@ -88,8 +88,16 @@ export function useScrollReveal(options: ScrollRevealOptions = {}) {
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              entry.target.classList.remove('opacity-0')
-              entry.target.classList.add('opacity-100')
+              const element = entry.target as HTMLElement
+              element.classList.remove('opacity-0')
+              element.classList.add('opacity-100')
+
+              // Удаляем transition-duration после завершения анимации
+              const handleTransitionEnd = () => {
+                element.style.removeProperty('transition-duration')
+                element.removeEventListener('transitionend', handleTransitionEnd)
+              }
+              element.addEventListener('transitionend', handleTransitionEnd)
             }
           })
         },
@@ -136,8 +144,17 @@ export function useScrollReveal(options: ScrollRevealOptions = {}) {
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
-                entry.target.classList.remove('opacity-0')
-                entry.target.classList.add('opacity-100')
+                const element = entry.target as HTMLElement
+                element.classList.remove('opacity-0')
+                element.classList.add('opacity-100')
+
+                // Удаляем transition-duration и transition-delay после завершения анимации
+                const handleTransitionEnd = () => {
+                  element.style.removeProperty('transition-duration')
+                  element.style.removeProperty('transition-delay')
+                  element.removeEventListener('transitionend', handleTransitionEnd)
+                }
+                element.addEventListener('transitionend', handleTransitionEnd)
               }
             })
           },
