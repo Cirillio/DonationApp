@@ -50,25 +50,6 @@ const onCountryChange = (countryId: string) => {
   resetPhoneField()
 }
 
-// Computed для преобразования Date в строку формата YYYY-MM-DD для input[type="date"]
-const birthDateString = computed({
-  get: () => {
-    if (!form.value.birth) return ''
-    const date = form.value.birth
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
-  },
-  set: (value: string) => {
-    if (!value) {
-      form.value.birth = null
-    } else {
-      form.value.birth = new Date(value)
-    }
-    donationStore.clearFieldError('blank', 'birth')
-  },
-})
 </script>
 
 <template>
