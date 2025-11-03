@@ -1,11 +1,16 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { defineAsyncComponent } from 'vue'
-import { DonationPageSkeleton } from '@/components/skeletons'
+import { DonationPageSkeleton, HomePageSkeleton } from '@/components/skeletons'
 export const mainRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/pages/HomePage.vue'),
+    component: defineAsyncComponent({
+      loader: () => import('@/pages/HomePage.vue'),
+      loadingComponent: HomePageSkeleton,
+      delay: 0,
+      timeout: 10000,
+    }),
     meta: {
       title: 'Главная',
       icon: 'f7--house',
@@ -27,6 +32,7 @@ export const mainRoutes: RouteRecordRaw[] = [
       description: 'Сделайте пожертвование на развитие нашего посёлка. Каждый вклад важен!',
     },
   },
+
   {
     path: '/news',
     name: 'news',
@@ -56,6 +62,10 @@ export const systemRoutes: RouteRecordRaw[] = [
     component: () => import('@/pages/NotFoundPage.vue'),
     meta: { title: '404' },
   },
+  {
+    path: '/home-skeleton',
+    component: HomePageSkeleton,
+      },
 ]
 
 export const routes: RouteRecordRaw[] = [...mainRoutes, ...systemRoutes]
