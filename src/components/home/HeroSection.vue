@@ -92,9 +92,15 @@
               ref="statsRef"
               class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full lg:max-w-3xl"
             >
-              <StatsCard value="1234" description="Активных участников" icon="f7--person" />
-              <StatsCard value="780 000" description="Собрано средств" icon="f7--money-rubl" />
-              <StatsCard value="18" description="Завершённых проектов" icon="f7--doc-checkmark" />
+              <div>
+                <StatsCard value="1234" description="Активных участников" icon="f7--person" />
+              </div>
+              <div>
+                <StatsCard value="780 000" description="Собрано средств" icon="f7--money-rubl" />
+              </div>
+              <div>
+                <StatsCard value="18" description="Завершённых проектов" icon="f7--doc-checkmark" />
+              </div>
             </div>
           </div>
         </div>
@@ -114,7 +120,7 @@ import { useScrollReveal } from '@/composables/useScrollReveal'
 const imageLoaded = ref(false)
 
 const { createStaggerRevealRef, createRevealRef } = useScrollReveal({
-  threshold: 0.1,
+  threshold: 0.025,
   duration: 500,
   rootMargin: '-70px',
 })
@@ -144,7 +150,7 @@ const { containerRef: statsRef } = createStaggerRevealRef()
   object-fit: cover;
   object-position: center;
   opacity: 0;
-  transition: opacity 0.6s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .hero-image-loaded {

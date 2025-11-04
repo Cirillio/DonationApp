@@ -31,7 +31,7 @@ const progressPercentage = computed(() => {
 
 <template>
   <Card
-    class="flex flex-col w-full rounded-md gap-6 max-sm:!border-0 !border border-primary/25 !py-6 shadow-none sm:shadow-md shadow-primary/5 !bg-transparent sm:!bg-card"
+    class="flex  flex-col w-full rounded-md gap-6 border-0  !py-6 shadow-none sm:shadow-md/75 shadow-primary/25 !bg-transparent sm:!bg-card"
   >
     <CardHeader
       class="flex gap-2 !px-4 sm:!px-6 md:gap-3 max-md:my-4 items-center max-md:flex-col max-md:justify-center"
@@ -43,6 +43,8 @@ const progressPercentage = computed(() => {
         </CardDescription>
       </div>
     </CardHeader>
+
+    <Separator class="bg-primary !h-[2px] max-md:hidden" />
 
     <!-- Mobile Progress Bar -->
     <div v-if="currentStep && totalSteps" class="md:hidden w-full px-4">
@@ -58,8 +60,6 @@ const progressPercentage = computed(() => {
         />
       </div>
     </div>
-
-    <Separator class="bg-primary/25 max-md:hidden" />
 
     <CardContent class="!px-4 sm:!px-6">
       <slot name="content" />

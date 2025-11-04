@@ -1,21 +1,15 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { usePhone } from '@/composables/usePhone'
 import { DEFAULT_BLANK_FORM, DEFAULT_PHONE_SPEC, PHONE_SPECS } from '@/lib/constants'
 import { useDonationStore } from '@/stores/donation'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Icon } from '@/components/ui/icon'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import CheckBlock from '@/components/ui/checkblock/CheckBlock.vue'
 import { AutoAnimated } from '@/components/ui/auto-animated'
 import DateInput from '@/components/common/DateInput.vue'
+import PhoneCountrySelector from '@/components/common/PhoneCountrySelector.vue'
 
 const donationStore = useDonationStore()
 
@@ -25,11 +19,18 @@ const errors = computed(() => donationStore.fieldErrors.blank)
 const {
   selectedSpec,
   currentMask,
-  selectById: selectPhoneCodeById,
+  selectById,
   parsePhoneFromClipboard,
 } = usePhone({
   defaultId: form.value.phoneCountry || DEFAULT_PHONE_SPEC.id,
 })
+
+// Синхронизируем selectedSpec с form.phoneCountry
+watch(() => form.value.phoneCountry, (newCountry) => {
+  if (newCountry && newCountry !== selectedSpec.value.id) {
+    selectById(newCountry)
+  }
+}, { immediate: true })
 
 const resetPhoneField = () => {
   form.value.phone = DEFAULT_BLANK_FORM.phone
@@ -44,8 +45,8 @@ const onPastePhone = (e: ClipboardEvent) => {
     form.value.phone = parsed
   }
 }
+
 const onCountryChange = (countryId: string) => {
-  selectPhoneCodeById(countryId)
   form.value.phoneCountry = countryId.toUpperCase() as 'RU' | 'TJ'
   resetPhoneField()
 }
@@ -63,29 +64,21 @@ const onCountryChange = (countryId: string) => {
       </label>
 
       <div class="flex rounded-md overflow-hidden shadow-xs *:text-lg">
-        <DropdownMenu>
-          <DropdownMenuTrigger as-child>
-            <Button :variant="'outline'" class="gap-2 !bg-card shadow-none rounded-r-none border-r-0 px-3">
+        <PhoneCountrySelector
+          v-model="form.phoneCountry"
+          :specs="PHONE_SPECS"
+          @update:model-value="onCountryChange"
+        >
+          <template #trigger="{ selectedSpec }">
+            <Button
+              variant="outline"
+              class="gap-2 !bg-card shadow-none rounded-r-none border-r-0 px-3"
+            >
               {{ selectedSpec.code }}
               <Icon class="f7--chevron-down size-4.5" />
             </Button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent :align="'start'"
-            class="duration-150 shadow-muted dark:shadow-black/50 shadow-md bg-card gap-1.5 p-1 ease-linear flex flex-col min-w-[220px]">
-            <DropdownMenuItem v-for="spec in PHONE_SPECS" :key="spec.id" @select="onCountryChange(spec.id)"
-              class="cursor-pointer p-0 rounded-md">
-              <Button variant="text" :class="[selectedSpec?.code === spec.code ? '!text-primary' : '']"
-                class="w-full hover:!bg-border/5 dark:hover:!bg-muted/50 text-base justify-start gap-3 md:gap-2 px-2 py-1.5 h-auto">
-                <Badge :variant="selectedSpec?.code === spec.code ? 'outline-primary' : 'outline'"
-                  class="font-mono font-semibold min-w-[3.5rem] h-7 md:h-5 justify-center max-md:text-base">
-                  {{ spec.code }}
-                </Badge>
-                <span class="max-md:text-lg">{{ spec.name }}</span>
-              </Button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          </template>
+        </PhoneCountrySelector>
 
         <Input v-model="form.phone" @paste="onPastePhone" @input="donationStore.clearFieldError('blank', 'phone')"
           :placeholder="selectedSpec.mask" v-mask="currentMask" name="phone" inputmode="tel" type="tel"

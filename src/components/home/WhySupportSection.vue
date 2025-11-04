@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {  CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Icon } from '@/components/ui/icon'
 import { useScrollReveal } from '@/composables/useScrollReveal'
+import InfoCard from '../common/InfoCard.vue'
 
 interface SupportReason {
   icon: string
@@ -54,18 +55,12 @@ const { containerRef: cardsContainerRef } = createStaggerRevealRef()
 
       <!-- Cards Grid -->
       <div ref="cardsContainerRef" class="flex max-w-6xl mx-auto max-md:flex-col flex-wrap gap-6 md:gap-8">
-        <Card
-          v-for="(reason, index) in reasons"
-          :key="index"
-          class="group shadow-sm hover:shadow-lg border-2 border-transparent hover:border-primary/50 bg-card md:flex-1 hover:rotate-3 hover:scale-105 transition-all duration-200 ease-in-out"
-        >
-          <CardHeader class="space-y-4 pb-4">
-            <Icon
-              :class="[
-                reason.icon,
-                'size-7 text-primary opacity-90 group-hover:opacity-100 group-hover:text-accent/80 group-active:text-accent/80 transition-all duration-200',
-              ]"
-            />
+        <InfoCard v-for="(reason, index) in reasons" :key="index">
+          <CardHeader class="gap-4">
+            <Icon :class="[
+              reason.icon,
+              'size-7 text-primary opacity-90 group-hover:opacity-100 group-hover:text-accent/80 group-active:text-accent/80 transition-all duration-200',
+            ]" />
             <CardTitle class="text-xl md:text-2xl font-bold text-foreground">
               {{ reason.title }}
             </CardTitle>
@@ -75,7 +70,8 @@ const { containerRef: cardsContainerRef } = createStaggerRevealRef()
               {{ reason.description }}
             </p>
           </CardContent>
-        </Card>
+
+        </InfoCard>
       </div>
     </div>
   </section>
