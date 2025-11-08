@@ -47,7 +47,9 @@
     "sa": "pnpm dlx shadcn-vue@latest add",
     "clean": "rm -rf dist node_modules/.vite",
     "prebuild": "pnpm type-check",
-    "optimize:images": "node scripts/optimize-images.js"
+    "optimize:images": "node scripts/optimize-images.js",
+    "format": "prettier --write \"src/**/*.{js,ts,vue,json,css,scss,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,ts,vue,json,css,scss,md}\""
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
@@ -78,6 +80,8 @@
     "@types/node": "^24.0.12",
     "@types/vue-the-mask": "^0.11.5",
     "@vitejs/plugin-vue": "^5.2.1",
+    "prettier": "^3.6.2",
+    "prettier-plugin-vue": "^1.1.6",
     "sharp": "^0.34.4",
     "typescript": "^5.7.2",
     "unplugin-vue-components": "^28.8.0",
