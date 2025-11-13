@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Icon } from '@/components/ui/icon'
-import { Button } from '@/components/ui/button'
 import BaseSection from '@/components/common/BaseSection.vue'
+import ActionButton from './ActionButton.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 
 const { createRevealRef, createStaggerRevealRef } = useScrollReveal({
@@ -47,15 +46,12 @@ const placeholderNews = [
     badge-icon="f7--book"
     title="Актуальные события"
     background="card"
-    > <!-- Карточки новостей -->
-    <div
-      ref="cardsContainerRef"
-      class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
     >
+    <div ref="cardsContainerRef" class="w-full flex flex-wrap gap-6 md:gap-8">
        <Card
         v-for="news in placeholderNews"
         :key="news.id"
-        class="group flex flex-col border-2 border-transparent hover:border-primary/50 transition-all shadow-sm shadow-black/10 hover:shadow-md hover:shadow-black/10 bg-background/80 backdrop-blur-xs"
+        class="group md:flex-2/5 lg:flex-1 flex flex-col hover:border-primary/50 transition-all hover:shadow-md hover:shadow-black/10 bg-background/80 backdrop-blur-xs"
         > <CardHeader class="pb-3"
           >
           <div class="flex items-start justify-between gap-4 mb-2">
@@ -90,13 +86,9 @@ const placeholderNews = [
         > </Card
       >
     </div>
-     <!-- Кнопка перехода к новостям -->
+
     <div ref="buttonRef" class="flex justify-center">
-       <Button as-child variant="outline" class="shadow-sm"
-        > <RouterLink to="/news" class="flex items-center gap-2"
-          > <span>Все новости</span> <Icon class="f7--arrow-right size-4" /> </RouterLink
-        > </Button
-      >
+       <ActionButton to="/news" label="Все новости" variant="ghost" />
     </div>
      </BaseSection
   >

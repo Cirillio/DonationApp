@@ -64,7 +64,7 @@ function hasFormChanges<T extends Record<string, unknown>>(
 
 function formatZodErrors(error: ZodError): Record<string, string> {
   const formatted: Record<string, string> = {}
-  error.issues.forEach((err) => {
+  error.issues.forEach(err => {
     const field = err.path[0]?.toString()
     if (field) {
       formatted[field] = err.message
@@ -74,6 +74,8 @@ function formatZodErrors(error: ZodError): Record<string, string> {
 }
 
 export const useDonationStore = defineStore('donation', () => {
+  const isBlankAnonymous = ref(false)
+
   const formData = reactive<{
     blank: BlankFormValues
     payment: PaymentFormValues
@@ -85,6 +87,7 @@ export const useDonationStore = defineStore('donation', () => {
   const getBlankSchema = () =>
     blankFormSchema({
       getPhone: () => getPhoneSpec(formData.blank.phoneCountry).code || '',
+      isAnonymous: () => isBlankAnonymous.value,
     })
 
   const getPaymentSchema = () => paymentFormSchema
@@ -242,6 +245,7 @@ export const useDonationStore = defineStore('donation', () => {
   })
 
   return {
+    isBlankAnonymous,
     formData,
     fieldErrors,
     formValid,

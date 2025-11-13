@@ -53,11 +53,11 @@
             >
                <Badge
                 variant="outline-primary"
-                class="text-sm !shadow-lg bg-primary/50 text-white/90 sm:text-base w-fit"
+                class="text-sm bg-primary/50 text-white/90 sm:text-base w-fit"
                 > <Icon class="f7--heart size-3.5 sm:size-4" /> Вместе мы сильнее </Badge
               >
               <h1
-                class="light:text-secondary-foreground text-shadow-sm text-4xl sm:text-3xl md:text-4xl lg:text-6xl 2xl:text-8xl font-bold leading-none"
+                class="light:text-secondary-foreground text-4xl sm:text-3xl md:text-4xl lg:text-6xl 2xl:text-8xl font-bold leading-none"
               >
                  Поддержите развитие нашего посёлка
               </h1>
@@ -68,11 +68,11 @@
                <Button
                 as-child
                 size="lg"
-                class="shadow-md text-xl py-2.5 px-6 transition-shadow w-full sm:w-auto"
+                class="text-xl py-2.5 px-6 hover:shadow-md transition-shadow w-full sm:w-auto"
                 > <RouterLink to="/donate">Поддержать проект</RouterLink> </Button
               > <button
                 as-child
-                class="shadow-md active:opacity-90 hover:opacity-90 text-xl bg-white/20 rounded-md transition-all duration-50 text-white py-2.5 px-6 w-full sm:w-auto"
+                class="active:shadow-md hover:shadow-md active:opacity-90 hover:opacity-90 text-xl bg-white/20 rounded-md transition-all duration-50 text-white py-2.5 px-6 w-full sm:w-auto"
               >
                  <RouterLink to="/statistic">Статистика</RouterLink> </button
               >

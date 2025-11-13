@@ -77,7 +77,7 @@ export function useScrollReveal(options: ScrollRevealOptions = {}) {
     const elementRef = ref<HTMLElement | null>(null)
 
     onMounted(() => {
-      if (!elementRef.value) return
+      if (!elementRef.value || !elementRef.value.classList) return
 
       // Добавляем начальное состояние
       elementRef.value.classList.add('opacity-0')
@@ -85,8 +85,8 @@ export function useScrollReveal(options: ScrollRevealOptions = {}) {
 
       // Используем IntersectionObserver для отслеживания появления
       const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
+        entries => {
+          entries.forEach(entry => {
             if (entry.isIntersecting) {
               const element = entry.target as HTMLElement
               element.classList.remove('opacity-0')
@@ -134,6 +134,7 @@ export function useScrollReveal(options: ScrollRevealOptions = {}) {
       const elements = Array.from(containerRef.value.children) as HTMLElement[]
 
       elements.forEach((element, index) => {
+        if (!element.classList) return
         // Добавляем начальное состояние
         element.classList.add('opacity-0')
         ;(element as any).style.setProperty('transition-duration', `${duration}ms`)
@@ -141,8 +142,8 @@ export function useScrollReveal(options: ScrollRevealOptions = {}) {
 
         // Используем IntersectionObserver для отслеживания появления
         const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
+          entries => {
+            entries.forEach(entry => {
               if (entry.isIntersecting) {
                 const element = entry.target as HTMLElement
                 element.classList.remove('opacity-0')

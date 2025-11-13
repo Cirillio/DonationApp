@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 export { default as Button } from './Button.vue'
 
 export const buttonVariants = cva(
-  "flex duration-150 ease-in-out w-fit cursor-pointer shadow-xs items-center justify-center whitespace-nowrap rounded-md  font-medium transition-all touch-manipulation disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "flex duration-150 ease-in-out w-fit cursor-pointer items-center justify-center whitespace-nowrap rounded-md  font-medium transition-all touch-manipulation disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
@@ -14,10 +14,10 @@ export const buttonVariants = cva(
           'bg-destructive border border-destructive/10 text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive/20',
 
         outline:
-          'bg-card/30 dark:bg-card/40 border border-border text-foreground hover:bg-card/50 dark:hover:bg-card/60 active:bg-card/60 dark:active:bg-card/70 hover:text-foreground focus-visible:ring-ring/20',
+          'bg-card/30 dark:bg-card/40 border-2 border-border text-foreground hover:bg-card/50 dark:hover:bg-card/60 active:bg-card/60 dark:active:bg-card/70 hover:text-foreground focus-visible:ring-ring/20',
 
         'outline-primary':
-          'bg-primary/10 border border-primary text-primary hover:bg-primary/20 active:bg-primary/20 focus-visible:ring-primary/20',
+          'bg-primary/10 border-2 border-primary text-primary hover:bg-primary/20 active:bg-primary/20 focus-visible:ring-primary/20',
 
         secondary:
           'bg-secondary border border-secondary/10 text-secondary-foreground hover:bg-secondary/90 active:bg-secondary/90 focus-visible:ring-secondary/20',

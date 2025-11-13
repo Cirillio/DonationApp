@@ -11,4 +11,5 @@ export type PhoneSpec = {
   name: string
   code: `+${number}`
   mask: string
+  maskString?: string
 }

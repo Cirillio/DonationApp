@@ -48,7 +48,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
                  <Card
                   v-for="i in 3"
                   :key="i"
-                  class="group dark:bg-secondary-foreground/10 bg-card/10 shadow-lg backdrop-blur-xl border-2 border-border/5"
+                  class="group dark:bg-secondary-foreground/10 bg-card/10 backdrop-blur-xl border-2 border-border/5"
                   > <CardHeader class="pb-3"
                     >
                     <div class="flex items-center justify-between">
@@ -87,10 +87,10 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
            <!-- Main Content: Image and Description -->
           <div class="w-full grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
              <!-- Image Card --> <Card
-              class="overflow-hidden border-2 border-transparent shadow-lg shadow-black/25 bg-background p-0 gap-0 h-[300px] md:h-[400px] lg:h-[460px]"
+              class="overflow-hidden border-2 border-transparent bg-background p-0 gap-0 h-[300px] md:h-[400px] lg:h-[460px]"
               > <Skeleton class="h-full w-full rounded-none" /> </Card
             > <!-- Description Card --> <Card
-              class="flex flex-col justify-center gap-6 p-6 md:p-8 border-2 border-transparent shadow-lg shadow-black/25 bg-card/80 backdrop-blur-xs h-[300px] md:h-[400px] lg:h-[460px]"
+              class="flex flex-col justify-center gap-6 p-6 md:p-8 border-2 border-transparent bg-card/80 backdrop-blur-xs h-[300px] md:h-[400px] lg:h-[460px]"
               > <CardHeader class="p-0"
                 >
                 <div class="flex items-center gap-3 mb-2">
@@ -119,7 +119,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
              <Card
               v-for="i in 4"
               :key="i"
-              class="group shadow-sm border-2 border-transparent hover:border-primary/50 bg-card"
+              class="group border-2 border-transparent hover:border-primary/50 bg-card"
               > <CardHeader class="pb-3"
                 >
                 <div class="flex items-center gap-3 mb-2">
@@ -157,7 +157,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
              <Card
               v-for="i in 3"
               :key="i"
-              class="flex flex-col border-2 border-transparent shadow-sm shadow-black/10 bg-background/80 backdrop-blur-xs"
+              class="flex flex-col border-2 border-transparent bg-background/80 backdrop-blur-xs"
               > <CardHeader class="pb-3"
                 >
                 <div class="flex items-start justify-between gap-4 mb-2">
@@ -204,7 +204,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
            <!-- Main Content: Card and Image -->
           <div class="w-full grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
              <!-- Description Card --> <Card
-              class="flex flex-col justify-center gap-6 p-6 md:p-8 border-2 border-transparent shadow-sm shadow-black/10 bg-card/80 backdrop-blur-xs"
+              class="flex flex-col justify-center gap-6 p-6 md:p-8 border-2 border-transparent bg-card/80 backdrop-blur-xs"
               > <CardHeader class="p-0"
                 >
                 <div class="flex items-center gap-3 mb-2">
@@ -227,7 +227,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
                  <Skeleton class="h-11 w-full md:w-fit rounded-md" /> </CardContent
               > </Card
             > <!-- Image Card --> <Card
-              class="overflow-hidden border-2 border-transparent shadow-sm shadow-black/10 bg-background p-0 gap-0 h-[300px] md:h-[400px] lg:h-[460px]"
+              class="overflow-hidden border-2 border-transparent bg-background p-0 gap-0 h-[300px] md:h-[400px] lg:h-[460px]"
               > <Skeleton class="h-full w-full rounded-none" /> </Card
             >
           </div>

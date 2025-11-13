@@ -3,24 +3,35 @@ import { DonationStatus } from '../types/donate'
 export const DONATE_STEPS: {
   step: number
   title: string
+  desc?: string
   status: DonationStatus
   icon: string
 }[] = [
   {
     step: 1,
     title: 'Анкета',
+    desc: 'Укажите информацию о себе',
     status: 'blank',
     icon: 'f7--person',
   },
   {
     step: 2,
     title: 'Оплата',
+    desc: 'Выберите способ оплаты и введите сумму',
     status: 'payment',
     icon: 'f7--creditcard',
   },
   {
     step: 3,
+    title: 'Подтверждение',
+    desc: 'Проверьте и подтвердите детали формы',
+    status: 'result',
+    icon: 'f7--doc-text',
+  },
+  {
+    step: 4,
     title: 'Результат',
+    desc: 'Посмотрите результаты вашего пожертвования',
     status: 'result',
     icon: 'f7--checkmark-circle',
   },

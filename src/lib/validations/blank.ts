@@ -5,19 +5,24 @@ const phoneSchema = (getPhoneCode: () => string) =>
   z
     .string('Пожалуйста, укажите номер телефона.')
     .nonempty('Телефон обязателен для заполнения.')
-    .refine((value) => {
+    .refine(value => {
       return isValidPhoneNumber(getPhoneCode() + ' ' + value)
     }, 'Номер указан неверно.')
 
-const nameSchema = z
-  .string()
-  .refine((value) => value.trim().length === 0 || value.trim().length >= 3, 'Хотя бы 3 символа.')
-  .max(50, 'Имя должно быть не длиннее 50 символов.')
-  .regex(/^[\p{L}\s-]*$/u, 'Имя может содержать только буквы, пробелы и тире.')
-  .optional()
+const nameSchema = (isAnonymous: () => boolean) =>
+  z
+    .string('Пожалуйста, укажите имя.')
+    .refine(value => {
+      if (isAnonymous()) {
+        return true
+      }
+      return value.trim().length >= 3
+    }, 'Имя должно быть не короче 3 символов.')
+    .max(50, 'Имя должно быть не длиннее 50 символов.')
+    .regex(/^[\p{L}\s-]*$/u, 'Имя может содержать только буквы, пробелы и дефис.')
 
 const birthSchema = z.preprocess(
-  (val) => {
+  val => {
     // Если null/undefined, возвращаем undefined для ошибки required
     if (val === null || val === undefined) return undefined
     // Если уже Date объект, возвращаем как есть
@@ -30,7 +35,7 @@ const birthSchema = z.preprocess(
     .date({
       message: 'Пожалуйста, заполните дату рождения.',
     })
-    .refine((date) => {
+    .refine(date => {
       const today = new Date()
       const age = today.getFullYear() - date.getFullYear()
       const monthDiff = today.getMonth() - date.getMonth()
@@ -41,7 +46,7 @@ const birthSchema = z.preprocess(
 
       return actualAge >= 18
     }, 'Вам должно быть не менее 18 лет.')
-    .refine((date) => {
+    .refine(date => {
       const today = new Date()
       const age = today.getFullYear() - date.getFullYear()
       const monthDiff = today.getMonth() - date.getMonth()
@@ -55,11 +60,11 @@ const birthSchema = z.preprocess(
 
 const isGroupSchema = z.boolean()
 
-const blankFormSchema = (config: { getPhone: () => string }) =>
+const blankFormSchema = (config: { getPhone: () => string; isAnonymous: () => boolean }) =>
   z.object({
     phone: phoneSchema(config.getPhone),
     phoneCountry: z.string(),
-    name: nameSchema,
+    name: nameSchema(config.isAnonymous),
     birth: birthSchema,
     isGroup: isGroupSchema,
   })

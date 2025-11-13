@@ -36,7 +36,7 @@ const backgroundClass = props.background === 'card' ? 'bg-card' : 'bg-background
       >
          <!-- Заголовок с Badge -->
         <div ref="headerRef" class="flex flex-col items-center gap-4 text-center">
-           <Badge variant="outline-primary" class="text-sm md:text-base shadow-lg bg-primary/10"
+           <Badge variant="outline-primary" class="text-sm md:text-base bg-primary/10"
             > <Icon :class="[badgeIcon, 'size-3.5 md:size-4']" /> {{ badgeText }} </Badge
           >
           <h2 class="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-primary">
