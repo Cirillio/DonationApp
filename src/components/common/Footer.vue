@@ -1,45 +1,20 @@
 <template>
-  <footer class="bg-card border-t border-border">
-    <div class="container mx-auto px-4 py-12">
-      <div class="grid gap-8 md:grid-cols-4">
+  <footer class="bg-background flex w-full py-12 justify-center border-t border-border">
+    <div class="container flex justify-between">
+      <div class="flex justify-between flex-col gap-16">
         <!-- Brand -->
         <div class="md:col-span-1">
-          <RouterLink
-            to="/"
-            class="flex items-center gap-2 font-bold text-foreground transition-colors hover:text-primary"
-          >
-            <AppLogo class="size-8" />
-            <span class="text-lg">Фонд Чилгази</span>
+          <RouterLink to="/" class="font-bold text-foreground transition-colors hover:text-primary">
+            <span class="text-4xl">Чилгази</span>
           </RouterLink>
 
-          <p class="text-pretty text-sm text-muted-foreground">
+          <p class="text-pretty text-lg text-muted-foreground">
             Вместе делаем наш посёлок лучше. Каждое пожертвование идёт на благо нашего сообщества.
           </p>
         </div>
-
-        <!-- Quick Links -->
-        <div>
-          <h3 class="mb-4 text-sm font-semibold text-foreground">
-            Навигация
-          </h3>
-          <ul class="space-y-2 text-sm">
-            <li v-for="link in mainRoutes" :key="link.path">
-              <RouterLink
-                :to="link.path"
-                class="text-muted-foreground transition-colors hover:text-primary"
-              >
-                {{ link.meta?.title }}
-              </RouterLink>
-            </li>
-          </ul>
-        </div>
-
         <!-- Contact -->
         <div>
-          <h3 class="mb-4 text-sm font-semibold text-foreground">
-            Контакты
-          </h3>
-          <ul class="space-y-2 text-sm">
+          <ul class="flex gap-2 text-sm">
             <li v-for="contact in CONTACTS" :key="contact.label">
               <a
                 target="_blank"
@@ -47,42 +22,36 @@
                 :type="contact.type"
                 class="flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
               >
-                <Icon :class="[contact.icon, 'iconify size-5']" />
-                <span>{{ contact.label }}</span>
+                <Button variant="outline">
+                  <Icon :class="[contact.icon, 'iconify size-5']" />
+                  <span>{{ contact.label }}</span>
+                </Button>
               </a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Info -->
-        <div>
-          <h3 class="mb-4 text-sm font-semibold text-foreground">
-            Информация
-          </h3>
-          <ul class="space-y-2 text-sm">
-            <li v-for="link in infoLinks" :key="link.href">
-              <RouterLink
-                :to="link.href"
-                class="text-muted-foreground transition-colors hover:text-primary"
-              >
-                {{ link.label }}
-              </RouterLink>
             </li>
           </ul>
         </div>
       </div>
 
-      <!-- Bottom Bar -->
-      <div
-        class="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground"
-      >
-        <p>&copy; {{ currentYear }} Фонд Чилгази. Все права защищены.</p>
+      <!-- Info -->
+      <div>
+        <h3 class="text-lg text-end mb-4 font-semibold text-foreground">Информация</h3>
+        <ul class="flex flex-col gap-2 items-end text-lg">
+          <li v-for="link in infoLinks" :key="link.href">
+            <RouterLink
+              :to="link.href"
+              class="text-muted-foreground transition-colors hover:text-primary"
+            >
+              {{ link.label }}
+            </RouterLink>
+          </li>
+        </ul>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
+import Button from '../ui/button/Button.vue'
 import AppLogo from '../app/AppLogo.vue'
 import { Icon } from '@/components/ui/icon'
 import { mainRoutes } from '@/router'

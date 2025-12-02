@@ -22,7 +22,7 @@
 import { ref, computed, watch } from 'vue'
 import { PHONE_SPECS, DEFAULT_PHONE_SPEC } from '@/lib/constants'
 import type { PhoneSpec } from '@/lib/types'
-import parsePhoneNumber from 'libphonenumber-js'
+import parsePhoneNumber from 'libphonenumber-js/min'
 
 export interface UsePhoneOptions {
   /**
@@ -36,15 +36,15 @@ export function usePhone(options?: UsePhoneOptions) {
   const defaultId = options?.defaultId ?? DEFAULT_PHONE_SPEC.id
 
   const selectedSpec = ref<PhoneSpec>(
-    PHONE_SPECS.find((spec) => spec.id === defaultId) ?? PHONE_SPECS[0]
+    PHONE_SPECS.find(spec => spec.id === defaultId) ?? PHONE_SPECS[0]
   )
 
   const currentMask = ref<string>('')
 
   watch(
     () => selectedSpec.value.id,
-    (newId) => {
-      const foundSpec = PHONE_SPECS.find((spec) => spec.id === newId)
+    newId => {
+      const foundSpec = PHONE_SPECS.find(spec => spec.id === newId)
 
       if (foundSpec) {
         currentMask.value = foundSpec.mask
@@ -57,7 +57,7 @@ export function usePhone(options?: UsePhoneOptions) {
   )
 
   const selectById = (id: string) => {
-    const found = PHONE_SPECS.find((spec) => spec.id === id)
+    const found = PHONE_SPECS.find(spec => spec.id === id)
     if (!found) {
       console.warn(`Phone spec with ID ${id} not found.`)
       return

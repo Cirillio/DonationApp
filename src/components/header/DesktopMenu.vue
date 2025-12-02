@@ -5,8 +5,8 @@
       :key="link.name"
       :to="link.path"
       :class="[
-        'text-sm font-medium transition-colors hover:text-primary',
-        route.path === link.path ? 'text-primary' : 'text-muted-foreground',
+        'text-base font-medium transition-colors hover:text-foreground/75',
+        route.path === link.path ? 'text-foreground' : 'text-muted-foreground',
       ]"
     >
       {{ link.meta?.title }}

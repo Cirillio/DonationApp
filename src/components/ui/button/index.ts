@@ -1,42 +1,30 @@
-import { cva, type VariantProps } from 'class-variance-authority'
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 
 export { default as Button } from './Button.vue'
 
 export const buttonVariants = cva(
-  "flex duration-150 ease-in-out w-fit cursor-pointer items-center justify-center whitespace-nowrap rounded-md  font-medium transition-all touch-manipulation disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
-        default:
-          'bg-primary border border-primary/10 text-primary-foreground hover:bg-primary/90 active:bg-primary/90 focus-visible:ring-primary/20',
-
+        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
         destructive:
-          'bg-destructive border border-destructive/10 text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive/20',
-
+          'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
-          'bg-card/30 dark:bg-card/40 border-2 border-border text-foreground hover:bg-card/50 dark:hover:bg-card/60 active:bg-card/60 dark:active:bg-card/70 hover:text-foreground focus-visible:ring-ring/20',
-
-        'outline-primary':
-          'bg-primary/10 border-2 border-primary text-primary hover:bg-primary/20 active:bg-primary/20 focus-visible:ring-primary/20',
-
-        secondary:
-          'bg-secondary border border-secondary/10 text-secondary-foreground hover:bg-secondary/90 active:bg-secondary/90 focus-visible:ring-secondary/20',
-
-        ghost:
-          'bg-muted/20 dark:bg-muted/30 border border-transparent text-foreground hover:bg-muted/50 dark:hover:bg-muted/50 active:bg-muted/60 dark:active:bg-muted/65 focus-visible:bg-muted/30 dark:focus-visible:bg-muted/40',
-
-        link: 'bg-transparent text-foreground hover:text-primary !shadow-none',
-
-        text: 'bg-transparent border border-transparent text-foreground !shadow-none',
-
-        accent:
-          'bg-accent border border-accent/10 text-accent-foreground hover:bg-accent/90 active:bg-accent/90 focus-visible:ring-accent/20',
+          'border bg-background shadow-xs hover:bg-input/50  dark:bg-input/75 dark:border-input dark:hover:bg-input/50',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+        soft: 'bg-input/75 text-foreground hover:bg-input focus-visible:ring-input/30 dark:bg-border/30 dark:hover:bg-border/50',
+        link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: 'px-3 py-1 text-base has-[>svg]:px-3',
-        sm: 'text-sm  gap-1.5 px-2.5 py-1.25 has-[>svg]:px-2.5',
-        lg: 'text-lg px-3.5 py-1.5 has-[>svg]:px-4',
+        default: 'h-9 px-4 py-2 has-[>svg]:px-3',
+        sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
+        lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
         icon: 'size-9',
+        'icon-sm': 'size-8',
+        'icon-lg': 'size-10',
       },
     },
     defaultVariants: {
@@ -45,5 +33,4 @@ export const buttonVariants = cva(
     },
   }
 )
-
 export type ButtonVariants = VariantProps<typeof buttonVariants>

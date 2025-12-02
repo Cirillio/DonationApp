@@ -3,7 +3,7 @@ import type { PhoneSpecId } from './phone'
 export type BlankFormValues = {
   phone: string | undefined
   phoneCountry: PhoneSpecId
-  birth: Date | null
+  birth: string | undefined
   name: string | undefined
   isGroup: boolean
 }

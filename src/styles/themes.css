@@ -1,5 +1,5 @@
 :root {
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 
   --background: oklch(1 0 0);
   --foreground: oklch(0.2099 0.0341 263.44);
@@ -14,7 +14,7 @@
   --card: oklch(0.97 0.0029 264.54);
   --card-foreground: oklch(0.2099 0.0341 263.44);
 
-  --popover: oklch(94% 0.02 255);
+  --popover: oklch(97.614% 0.00011 271.152);
   --popover-foreground: oklch(0.2099 0.0341 263.44);
 
   --muted: oklch(79.888% 0.00171 66.601);
@@ -30,7 +30,7 @@
 
   --border: oklch(0.9197 0.004 286.32);
   --input: oklch(95% 0 260);
-  --ring: oklch(82% 0.208 151);
+  --ring: oklch(51.791% 0.1857 258.363);
 
   --sidebar: hsl(0 0% 98%);
   --sidebar-foreground: hsl(240 5.3% 26.1%);
@@ -43,24 +43,24 @@
 }
 
 .dark {
-  --background: oklch(19.574% 0.00002 271.152);
-  --foreground: oklch(0.97 0.005 160);
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
   --primary: oklch(0.6877 0.0768 255.62);
-  --primary-foreground: oklch(0.2103 0.0059 285.89);
+  --primary-foreground: oklch(13% 0.02 255); /* Текст на кнопке темный */
   --secondary: oklch(100% 0.00011 271.152);
   --secondary-foreground: oklch(0.2099 0.0341 263.44);
-  --card: oklch(22.213% 0.00003 271.152);
-  --card-foreground: oklch(0.95 0.004 280);
-  --popover: oklch(0.22 0.006 260);
-  --popover-foreground: oklch(0.95 0.004 280);
-  --muted: oklch(0.3 0.015 255);
-  --muted-foreground: oklch(0.7 0.025 255);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.269 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(64.007% 0.31728 15.548);
   --accent-foreground: oklch(1 0 270);
   --destructive: oklch(62.52% 0.1912 28.004);
   --destructive-foreground: oklch(0.95 0.03 15);
-  --border: oklch(0.38 0.03 255);
-  --input: oklch(0.24 0.02 255);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.68 0.18 255);
 
   --sidebar: hsl(240 5.9% 10%);

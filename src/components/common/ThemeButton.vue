@@ -1,5 +1,5 @@
 <template>
-  <Button variant="outline" :size="isIcon ? 'icon' : 'default'" @click="() => toggleTheme(null)">
+  <Button variant="soft" :size="isIcon ? 'icon' : 'default'" @click="() => toggleTheme(null)">
     <Icon :class="[iconClass, 'size-6']" />
     <slot v-if="!isIcon" />
   </Button>
@@ -21,7 +21,7 @@ const { mode } = storeToRefs(useAppSettingsStore())
 const { toggleTheme } = useAppSettingsStore()
 
 const iconClass = computed(() => {
-  return APP_THEME.find((theme) => theme.mode === mode.value)?.icon || 'f7--sun-min'
+  return APP_THEME.find(theme => theme.mode === mode.value)?.icon || 'f7--sun-min'
 })
 </script>
 

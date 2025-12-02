@@ -25,7 +25,7 @@ export const DONATE_STEPS: {
     step: 3,
     title: 'Подтверждение',
     desc: 'Проверьте и подтвердите детали формы',
-    status: 'result',
+    status: 'confirm',
     icon: 'f7--doc-text',
   },
   {
@@ -42,11 +42,13 @@ export const MAX_STEPS = DONATE_STEPS.length
 export const STEP_TO_STATUS: Record<number, DonationStatus> = {
   1: 'blank',
   2: 'payment',
-  3: 'result',
+  3: 'confirm',
+  4: 'result',
 } as const
 
 export const STATUS_TO_STEP: Record<DonationStatus, number> = {
   blank: 1,
   payment: 2,
-  result: 3,
+  confirm: 3,
+  result: 4,
 } as const

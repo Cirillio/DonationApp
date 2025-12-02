@@ -1,14 +1,13 @@
 <template>
   <header
-    class="relative z-10 w-full border-b border-border   bg-background/80 supports-[backdrop-filter]:bg-background/80"
+    class="relative border-b border-border dark:bg-card z-10 w-full bg-background/80 supports-[backdrop-filter]:bg-background/80"
   >
-    <div class="container mx-auto flex h-[56px] items-center justify-between px-4">
+    <div class="container mx-auto flex h-[56px] items-center justify-between">
       <RouterLink
         to="/"
         class="flex items-center gap-2 font-bold text-foreground transition-colors hover:text-primary"
       >
-        <AppLogo class="size-8" />
-        <span class="text-lg">Фонд Чилгази</span>
+        <span class="text-lg">Чилгази</span>
       </RouterLink>
 
       <DesktopMenu />

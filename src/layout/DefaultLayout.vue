@@ -7,7 +7,7 @@ import { RouterView } from 'vue-router'
 <template>
   <div class="min-h-dvh flex flex-col">
     <Header />
-    <main class="flex-1">
+    <main class="flex">
       <RouterView />
     </main>
     <Footer />

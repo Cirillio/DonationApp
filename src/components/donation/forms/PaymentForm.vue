@@ -18,85 +18,89 @@
  * - Bidirectional sync between buttons and input field
  * - Visual payment method selection with icons
  */
-import { computed, onMounted, onUnmounted, watch } from "vue";
-import { useCurrencyInput, CurrencyDisplay } from "vue-currency-input";
-import { PAYMENT_AMOUNTS, PAYMENT_METHODS } from "@/lib/constants";
-import { useDonationStore } from "@/stores/donation";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { PaymentType } from "@/lib/types";
-import AutoAnimated from "@/components/ui/auto-animated/AutoAnimated.vue";
+import { computed, onMounted, onUnmounted, watch } from 'vue'
+import { useCurrencyInput, CurrencyDisplay } from 'vue-currency-input'
+import { PAYMENT_AMOUNTS, PAYMENT_METHODS } from '@/lib/constants'
+import { useDonationStore } from '@/stores/donation'
+import { Input } from '@/components/ui/input'
+import { Icon } from '@/components/ui/icon'
+import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button'
+import { PaymentType } from '@/lib/types'
+import AutoAnimated from '@/components/ui/auto-animated/AutoAnimated.vue'
 
-const donationStore = useDonationStore();
+const donationStore = useDonationStore()
 
-const form = computed(() => donationStore.formData.payment);
-const errors = computed(() => donationStore.fieldErrors.payment);
+const form = computed(() => donationStore.formData.payment)
+const errors = computed(() => donationStore.fieldErrors.payment)
 
 const { formattedValue, inputRef, numberValue, setValue } = useCurrencyInput({
-  currency: "RUB",
+  currency: 'RUB',
   currencyDisplay: CurrencyDisplay.hidden,
   precision: 2,
-});
+})
 
 const selectAmount = (amount: number) => {
-  form.value.amount = amount;
-  donationStore.clearFieldError("payment", "amount");
-};
+  form.value.amount = amount
+  donationStore.clearFieldError('payment', 'amount')
+}
 
-const isAmountSelected = (amount: number) => form.value.amount === amount;
+const isAmountSelected = (amount: number) => form.value.amount === amount
 
-const getPaymentAmountButtonVariant = (
-  amountValue: number
-): "outline-primary" | "outline" =>
-  isAmountSelected(amountValue) ? "outline-primary" : "outline";
+const getPaymentAmountButtonVariant = (amountValue: number): 'default' | 'soft' =>
+  isAmountSelected(amountValue) ? 'default' : 'soft'
 
-const clearNumberValueWatch = watch(numberValue, (value) => {
-  form.value.amount = value ?? 0;
-  donationStore.clearFieldError("payment", "amount");
-});
+const clearNumberValueWatch = watch(numberValue, value => {
+  form.value.amount = value ?? 0
+  donationStore.clearFieldError('payment', 'amount')
+})
 
 const clearFormAmountWatch = watch(
   () => form.value.amount,
-  (value) => {
+  value => {
     if (value !== numberValue.value) {
-      setValue(value ? value : null);
+      setValue(value ? value : null)
     }
   },
   { immediate: true }
-);
+)
 
 const selectPaymentType = (type: PaymentType | undefined) => {
-  if (form.value.type === type) return;
-  form.value.type = type;
-  donationStore.clearFieldError("payment", "type");
-};
+  if (form.value.type === type) return
+  form.value.type = type
+  donationStore.clearFieldError('payment', 'type')
+}
 
 onMounted(() => {
   if (form.value.amount) {
-    formattedValue.value = String(form.value.amount);
+    formattedValue.value = String(form.value.amount)
   }
-});
+})
 
 onUnmounted(() => {
-  clearNumberValueWatch();
-  clearFormAmountWatch();
-});
+  clearNumberValueWatch()
+  clearFormAmountWatch()
+})
 </script>
 
 <template>
-  <div class="flex flex-col gap-12">
+  <div class="flex flex-col gap-4">
     <!-- Amount Field -->
     <div class="flex flex-col gap-2">
-      <div class="relative mt-4">
+      <label for="form-amount" class="flex w-fit text-lg font-medium items-center label-required">
+        <Icon class="f7--money-rubl size-6 mr-1" />
+        Сумма</label
+      >
+      <div class="relative">
         <Input
           ref="inputRef"
+          id="form-amount"
           :model-value="formattedValue ?? ''"
-          @update:model-value="(val) => (formattedValue = String(val))"
+          @update:model-value="val => (formattedValue = String(val))"
           inputmode="numeric"
-          placeholder="Сумма пожертвования*"
+          placeholder="100,00"
           :aria-invalid="!!errors.amount"
-          class="max-md:min-h-11 text-xl pr-10"
+          class="text-lg! h-10 px-3!"
         />
         <span
           class="iconify text-muted-foreground absolute right-2 top-1/2 -translate-y-1/2 f7--money-rubl size-6"
@@ -109,12 +113,12 @@ onUnmounted(() => {
         </p>
       </AutoAnimated>
 
-      <div class="flex flex-wrap gap-1 mt-2 w-full">
+      <div class="flex flex-wrap gap-1 w-full">
         <Button
           v-for="amount in PAYMENT_AMOUNTS"
           :key="amount.label"
           :variant="getPaymentAmountButtonVariant(amount.value)"
-          class="py-4 text-lg text-foreground px-9 max-sm:flex-1"
+          class="text-base max-sm:flex-1"
           @click="selectAmount(amount.value)"
         >
           {{ amount.label }}
@@ -124,18 +128,21 @@ onUnmounted(() => {
 
     <!-- Payment Method Field -->
     <div class="flex flex-col gap-1">
-      <p class="text-muted-foreground font-medium max-md:!text-sm">Способ оплаты*</p>
+      <label class="flex w-fit text-lg font-medium items-center label-required">
+        <Icon class="f7--creditcard size-6 mr-1" />
+        Способ оплаты</label
+      >
 
       <div class="flex max-sm:flex-col gap-2">
         <Button
           v-for="p in PAYMENT_METHODS"
           :key="p.type"
-          class="w-full flex-1 text-foreground min-h-14"
+          class="w-full flex-1 min-h-14"
           @click="selectPaymentType(p.type)"
-          :variant="form.type === p.type ? 'outline-primary' : 'outline'"
+          :variant="form.type === p.type ? 'default' : 'soft'"
         >
           <div class="flex w-full text-lg justify-center font-normal gap-3 items-center">
-            <img :src="p.icon" :alt="p.type" class="size-7" />
+            <img :src="p.icon" :alt="p.type" class="size-6" />
             {{ p.name }}
           </div>
         </Button>
@@ -149,9 +156,7 @@ onUnmounted(() => {
 
     <!-- Note/Comment Field -->
     <div class="flex flex-col gap-1">
-      <p class="text-muted-foreground font-medium max-md:!text-sm">
-        Комментарий (необязательно) p
-      </p>
+      <p class="text-muted-foreground font-medium max-md:!text-sm">Комментарий (необязательно)</p>
 
       <Textarea
         v-model="form.note"

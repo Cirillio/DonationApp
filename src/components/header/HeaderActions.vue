@@ -1,6 +1,12 @@
 <template>
-  <div :class="isMobile ? 'flex flex-col gap-4 items-center w-full' : 'hidden md:inline-flex gap-2 items-center h-full'">
-    <Button as-child :size="isMobile ? 'lg' : 'icon'" :class="isMobile ? 'w-full' : ''">
+  <div
+    :class="
+      isMobile
+        ? 'flex flex-col gap-4 items-center w-full'
+        : 'hidden md:inline-flex gap-2 items-center h-full'
+    "
+  >
+    <Button as-child :size="isMobile ? 'sm' : 'icon'" :class="isMobile ? 'w-full' : ''">
       <RouterLink to="/donate" class="flex items-center gap-2" @click="handleClick">
         <Icon class="f7--heart size-6" />
         <span v-if="isMobile">Поддержать</span>
@@ -16,14 +22,14 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
-import ThemeButton from '@/components/settings/ThemeButton.vue'
+import ThemeButton from '@/components/common/ThemeButton.vue'
 import { getThemeLabel } from '@/lib/constants/settings'
 import { computed } from 'vue'
 import { useAppSettingsStore } from '@/stores/settings'
 import { storeToRefs } from 'pinia'
 const { mode } = storeToRefs(useAppSettingsStore())
 
-const themeLabel = computed(()=>getThemeLabel(mode.value))
+const themeLabel = computed(() => getThemeLabel(mode.value))
 
 interface Props {
   variant?: 'desktop' | 'mobile'
@@ -34,7 +40,7 @@ interface Emits {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'desktop'
+  variant: 'desktop',
 })
 
 const emit = defineEmits<Emits>()

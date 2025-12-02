@@ -117,6 +117,7 @@ export const useDonationStore = defineStore('donation', () => {
     payment: false,
   })
 
+  const formConfirmed = ref<boolean>(false)
   const paymentResult = ref<{ success: boolean; paymentId?: string } | null>(null)
   const paymentCompleted = ref(false)
   const transitionDirection = ref<'forward' | 'backward'>('forward')
@@ -152,7 +153,8 @@ export const useDonationStore = defineStore('donation', () => {
   const stepsValidity: ComputedRef<Record<number, boolean>> = computed(() => ({
     1: formValid.blank,
     2: formValid.payment,
-    3: paymentCompleted.value,
+    3: formConfirmed.value,
+    4: paymentCompleted.value,
   }))
 
   function isCurrentStep(step: DonationStatus): boolean {
@@ -181,11 +183,8 @@ export const useDonationStore = defineStore('donation', () => {
     }
   }
 
-  function finish(result?: { success: boolean; paymentId?: string }) {
-    if (result) {
-      paymentResult.value = result
-    }
-    currentStep.value = 3
+  function confirmForm() {
+    formConfirmed.value = true
   }
 
   /**
@@ -219,6 +218,7 @@ export const useDonationStore = defineStore('donation', () => {
     formValid.payment = false
     fieldErrors.blank = {}
     fieldErrors.payment = {}
+    formConfirmed.value = false
     paymentResult.value = null
     paymentCompleted.value = false
   }
@@ -261,7 +261,7 @@ export const useDonationStore = defineStore('donation', () => {
     nextStep,
     prevStep,
     goToStep,
-    finish,
+    confirmForm,
     checkPaymentToken,
     setPaymentResult,
     resetForm,
