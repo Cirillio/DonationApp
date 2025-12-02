@@ -123,7 +123,7 @@ const onCountryChange = (countryId: PhoneSpecId) => {
       <Input
         v-model="form.name"
         @input="donationStore.clearFieldError('blank', 'name')"
-        placeholder="ФИО*"
+        placeholder="ФИО"
         type="text"
         :aria-invalid="!!errors.name"
         name="name"
